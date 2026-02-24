@@ -1,0 +1,341 @@
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>REVYL | System Initialization</title>
+    <script src="https://cdn.tailwindcss.com/3.4.17"></script>
+    <style>
+        :root {
+            --bg-void: #050505;
+            --fg-primary: #ffffff;
+            --fg-secondary: #666666;
+            --fg-tertiary: #333333;
+            --border-color: rgba(255, 255, 255, 0.15);
+            --accent-active: #00ff41;
+            --font-display: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+            --font-mono: 'JetBrains Mono', 'Fira Code', monospace;
+        }
+        body, html {
+            background-color: var(--bg-void);
+            color: var(--fg-primary);
+            font-family: var(--font-mono);
+            margin: 0;
+            padding: 0;
+        }
+
+        /* ── Loader overlay ── */
+        #revyl-loader,
+        #revyl-loader * {
+            font-family: var(--font-mono);
+        }
+        #revyl-loader {
+            position: fixed;
+            inset: 0;
+            width: 100vw;
+            height: 100vh;
+            z-index: 9999;
+            background-color: var(--bg-void);
+            display: flex;
+            flex-direction: column;
+            opacity: 1;
+            transform: scale(1);
+            filter: blur(0px);
+            transform-origin: center center;
+            /* transition only applies when .fade-out is added */
+            transition: opacity 0.9s cubic-bezier(0.4, 0, 0.2, 1),
+                        transform 0.9s cubic-bezier(0.4, 0, 0.2, 1),
+                        filter 0.9s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+        #revyl-loader.fade-out {
+            opacity: 0;
+            transform: scale(1.02);
+            filter: blur(8px);
+            pointer-events: none;
+        }
+        .header-hud {
+            display: grid;
+            grid-template-columns: 1fr 1fr 1fr;
+            border-bottom: 1px solid var(--border-color);
+            font-size: 10px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            height: 60px;
+            align-items: center;
+            width: 100%;
+        }
+        .hud-item {
+            padding: 0 24px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            height: 100%;
+            border-right: 1px solid var(--border-color);
+            color: var(--fg-secondary);
+        }
+        .hud-item:last-child { border-right: none; }
+        .status-dot { width: 6px; height: 6px; background: var(--accent-active); border-radius: 50%; box-shadow: 0 0 10px var(--accent-active); animation: blink 1s infinite; }
+        @keyframes blink { 0%, 100% { opacity: 1; } 50% { opacity: 0.3; } }
+
+        .main-container {
+            display: grid;
+            grid-template-columns: 60% 40%;
+            height: calc(100vh - 100px); /* 60px header + 40px footer */
+            overflow: hidden;
+        }
+
+        .log-section {
+            border-right: 1px solid var(--border-color);
+            padding: 40px;
+            display: flex;
+            flex-direction: column;
+            gap: 4px;
+            font-size: 12px;
+            overflow-y: hidden;
+            position: relative;
+        }
+
+        .log-entry {
+            color: var(--fg-secondary);
+            line-height: 1.4;
+            opacity: 0;
+            transform: translateY(10px);
+            animation: fadeInUp 0.2s forwards;
+        }
+        .log-entry.success { color: var(--accent-active); }
+        .log-entry.warning { color: #ffcc00; }
+
+        @keyframes fadeInUp {
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .visual-section {
+            padding: 40px;
+            background: radial-gradient(circle at center, #0a0a0a 0%, #050505 100%);
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            position: relative;
+        }
+
+        .revyl-wordmark {
+            font-family: var(--font-mono);
+            font-size: 72px;
+            font-weight: 700;
+            letter-spacing: -2px;
+            color: var(--fg-primary);
+            margin-bottom: 40px;
+            position: relative;
+            filter: drop-shadow(0 0 20px rgba(255,255,255,0.15));
+            animation: glitch 4s infinite;
+            line-height: 1;
+        }
+
+        .revyl-wordmark::after {
+            content: 'REVYL';
+            position: absolute;
+            left: 0;
+            top: 0;
+            color: var(--accent-active);
+            opacity: 0;
+            clip-path: polygon(0 30%, 100% 30%, 100% 50%, 0 50%);
+            animation: glitch-clip 4s infinite;
+        }
+
+        @keyframes glitch {
+            0% { transform: translate(0); }
+            1% { transform: translate(-2px, 2px); }
+            2% { transform: translate(2px, -2px); }
+            3% { transform: translate(0); }
+            95% { transform: translate(0); }
+            96% { transform: translate(3px, 0); }
+            97% { transform: translate(-3px, 1px); }
+            98% { transform: translate(0); }
+        }
+
+        @keyframes glitch-clip {
+            0%, 90% { opacity: 0; transform: translate(0); }
+            91% { opacity: 0.8; transform: translate(4px, 0); }
+            92% { opacity: 0; transform: translate(0); }
+            96% { opacity: 0.6; transform: translate(-3px, 0); }
+            97% { opacity: 0; }
+        }
+
+        .revyl-tagline {
+            font-size: 10px;
+            letter-spacing: 4px;
+            color: var(--fg-secondary);
+            text-transform: uppercase;
+            margin-bottom: 48px;
+        }
+
+        .progress-container {
+            width: 100%;
+            max-width: 300px;
+        }
+        .progress-label {
+            font-size: 10px;
+            color: var(--fg-secondary);
+            text-transform: uppercase;
+            margin-bottom: 12px;
+            display: flex;
+            justify-content: space-between;
+        }
+        .progress-bar-bg {
+            width: 100%;
+            height: 2px;
+            background: var(--fg-tertiary);
+            position: relative;
+            overflow: hidden;
+        }
+        .progress-bar-fill {
+            position: absolute;
+            left: 0;
+            top: 0;
+            height: 100%;
+            background: var(--fg-primary);
+            width: 0%;
+            transition: width 0.3s ease-out;
+            box-shadow: 0 0 10px var(--fg-primary);
+        }
+
+        .scanline {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(
+                to bottom,
+                rgba(255,255,255,0) 0%,
+                rgba(255,255,255,0.03) 50%,
+                rgba(255,255,255,0) 100%
+            );
+            background-size: 100% 4px;
+            pointer-events: none;
+            z-index: 10;
+        }
+
+        .footer-hud {
+            height: 40px;
+            border-top: 1px solid var(--border-color);
+            display: flex;
+            align-items: center;
+            padding: 0 24px;
+            font-size: 10px;
+            color: var(--fg-tertiary);
+            letter-spacing: 1px;
+        }
+    </style>
+</head>
+<body>
+<div id="revyl-loader">
+    <header class="header-hud">
+        <div class="hud-item">
+            <span>SYSTEM BOOT</span>
+            <span class="status-dot"></span>
+        </div>
+        <div class="hud-item">
+            <span>REVYL CORE LOAD</span>
+        </div>
+        <div class="hud-item" style="justify-content: center;">
+            <span>SECURE_INIT_204</span>
+        </div>
+    </header>
+
+    <main class="main-container">
+        <div class="log-section" id="log-container">
+        </div>
+
+        <div class="visual-section">
+            <div class="scanline"></div>
+            <div class="revyl-wordmark">REVYL</div>
+            <div class="revyl-tagline">Neural Topology Engine</div>
+
+            <div class="progress-container">
+                <div class="progress-label">
+                    <span>Initialization Progress</span>
+                    <span id="percent-val">0%</span>
+                </div>
+                <div class="progress-bar-bg">
+                    <div class="progress-bar-fill" id="progress-fill"></div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <footer class="footer-hud">
+        (C) 2024 REVYL TECHNOLOGIES // KERNEL: 0.8.4-RELEASE // CLUSTERS: 128 NODE_LOCAL
+    </footer>
+</div><!-- /#revyl-loader -->
+
+    <script>
+        const logs = [
+            "[ 0.000 ] Booting kernel...",
+            "[ 0.142 ] CPU detection: Neural Core x128 found",
+            "[ 0.285 ] RAM Check: 1024GB LPDDR6 OK",
+            "[ 0.410 ] Loading Mesh Pipeline...",
+            "[ 0.612 ] Initializing OpenGL/Vulkan bridge...",
+            "[ 0.890 ] Success: Graphics context established",
+            "[ 1.204 ] Loading weights for Topology-Net-v4...",
+            "[ 1.550 ] Syncing buffers with local GPU cluster...",
+            "[ 1.821 ] Latency check: 1.2ms [STABLE]",
+            "[ 2.100 ] WARNING: Non-critical parity mismatch in Node 04",
+            "[ 2.250 ] Correcting topology data structures...",
+            "[ 2.410 ] Success: Parity restored",
+            "[ 2.700 ] Preparing voxel-to-mesh conversion layer",
+            "[ 3.120 ] Loading export modules: GLTF, USDZ, OBJ",
+            "[ 3.500 ] Adaptive refinement algorithms initialized",
+            "[ 3.820 ] Boolean operation engine loaded [Live History Mode]",
+            "[ 4.100 ] System entropy verified",
+            "[ 4.300 ] ESTABLISHING NEURAL LINK...",
+            "[ 4.600 ] HANDSHAKE SUCCESSFUL",
+            "[ 5.000 ] REVYL ENGINE IS ONLINE"
+        ];
+
+        const logContainer = document.getElementById('log-container');
+        const progressFill = document.getElementById('progress-fill');
+        const percentVal = document.getElementById('percent-val');
+        const loader = document.getElementById('revyl-loader');
+
+        // Total display time: 3500ms. Logs run for ~2700ms, leaving 800ms fade.
+        const TOTAL_LOG_DURATION = 2700;
+        const interval = TOTAL_LOG_DURATION / logs.length;
+
+        let currentLog = 0;
+
+        function addLog() {
+            if (currentLog >= logs.length) return;
+
+            const entry = document.createElement('div');
+            entry.className = 'log-entry';
+            if (logs[currentLog].includes('Success') || logs[currentLog].includes('ONLINE')) entry.classList.add('success');
+            if (logs[currentLog].includes('WARNING')) entry.classList.add('warning');
+            entry.innerText = logs[currentLog];
+            logContainer.appendChild(entry);
+            logContainer.scrollTop = logContainer.scrollHeight;
+
+            const progress = Math.min(100, Math.floor((currentLog / (logs.length - 1)) * 100));
+            progressFill.style.width = progress + '%';
+            percentVal.innerText = progress + '%';
+
+            currentLog++;
+            if (currentLog < logs.length) {
+                // slight jitter keeps it feeling organic, capped so we stay within budget
+                const jitter = (Math.random() - 0.5) * (interval * 0.4);
+                setTimeout(addLog, interval + jitter);
+            }
+        }
+
+        // Start logs shortly after page load
+        setTimeout(addLog, 200);
+
+        // After 3500ms begin the fade-out (transition is 0.8s)
+        setTimeout(() => {
+            loader.classList.add('fade-out');
+            // Remove from DOM after transition completes
+            loader.addEventListener('transitionend', () => loader.remove(), { once: true });
+        }, 3500);
+    </script>
+</body>
+</html>

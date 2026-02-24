@@ -1,0 +1,165 @@
+---
+import Layout from '@/layouts/Layout.astro';
+
+const topBg = 'bg-[#151619]';
+const topText = 'text-white';
+const topBorder = 'border-gray-700';
+const topMuted = 'text-gray-400';
+const forceDark = true;
+---
+
+<Layout title="Terms of Service | Revyl" description="Revyl, Inc. Terms of Service" forceDark={forceDark}>
+  <div class={`${topBg} ${topText}`}>
+    <section class="px-6 py-24 md:py-36">
+      <div class="max-w-3xl mx-auto">
+        <p class={`text-sm uppercase tracking-wider ${topMuted} mb-4`}>Legal</p>
+        <h1 class="text-4xl md:text-5xl font-light tracking-tight mb-4">
+          Terms of Service
+        </h1>
+        <p class={`text-sm ${topMuted}`}>Last updated August 6, 2025</p>
+      </div>
+    </section>
+
+    <section class={`px-6 pb-24 md:pb-36`}>
+      <div class="max-w-3xl mx-auto prose-container">
+
+        <div class={`border-t ${topBorder} pt-10`}>
+          <h2>Revyl, Inc. Terms of Service</h2>
+
+          <p>
+            If you signed a separate Cover Page to access the Product with the same account, and that agreement has not ended, the terms below do not apply to you. Instead, your separate Cover Page applies to your use of the Product.
+          </p>
+
+          <p>
+            This Agreement is between Revyl, Inc. and the company or person accessing or using the Product. This Agreement consists of: (1) the Order Form below and (2) the Framework Terms defined below.
+          </p>
+
+          <p>
+            If you are accessing or using the Product on behalf of your company, you represent that you are authorized to accept this Agreement on behalf of your company. By signing up, accessing, or using the Product, Customer indicates its acceptance of this Agreement and agrees to be bound by the terms and conditions of this Agreement.
+          </p>
+        </div>
+
+        <div class={`border-t ${topBorder} pt-10 mt-10`}>
+          <h2>Cover Page</h2>
+
+          <h3>Order Form</h3>
+
+          <p>
+            <strong>Framework Terms:</strong> This Order Form incorporates and is governed by the Framework Terms that are made up of the Key Terms below and the Common Paper Cloud Service Agreement Standard Terms Version 2.0, which are incorporated by reference. Any modifications to the Standard Terms made in the Cover Page will control over conflicts with the Standard Terms. Capitalized words have the meanings given in the Cover Page or the Standard Terms.
+          </p>
+
+          <p>
+            <strong>Cloud Service:</strong> Revyl is an AI-Native testing platform that connects end-to-end tests with telemetry traces to catch and triage bugs before they reach production.
+          </p>
+
+          <p>
+            <strong>Order Date:</strong> The Effective Date
+          </p>
+
+          <p>
+            <strong>Subscription Period:</strong> 1 year(s)
+          </p>
+
+          <p>
+            <strong>Cloud Service Fees:</strong> Fees are calculated on a per project basis.
+          </p>
+
+          <p>
+            <strong>Payment Process:</strong> Automatic payment: Customer authorizes Provider to bill and charge Customer's payment method on file Annually for immediate payment or deduction without further approval.
+          </p>
+
+          <p>
+            <strong>Non-Renewal Notice Period:</strong> At least 30 days before the end of the current Subscription Period.
+          </p>
+        </div>
+
+        <div class={`border-t ${topBorder} pt-10 mt-10`}>
+          <h2>Key Terms</h2>
+
+          <p>
+            <strong>Customer:</strong> The company or person who accesses or uses the Product. If the person accepting this Agreement is doing so on behalf of a company, all use of the word "Customer" in the Agreement will mean that company.
+          </p>
+
+          <p>
+            <strong>Provider:</strong> Revyl, Inc.
+          </p>
+
+          <p>
+            <strong>Effective Date:</strong> The date Customer first accepts this Agreement.
+          </p>
+
+          <p>
+            <strong>Governing Law:</strong> The laws of the State of Delaware
+          </p>
+
+          <p>
+            <strong>Chosen Courts:</strong> The state or federal courts located in Delaware
+          </p>
+        </div>
+
+        <div class={`border-t ${topBorder} pt-10 mt-10`}>
+          <h2>Covered Claims</h2>
+
+          <p>
+            <strong>Provider Covered Claims:</strong> Any action, proceeding, or claim that the Cloud Service, when used by Customer according to the terms of the Agreement, violates, misappropriates, or otherwise infringes upon anyone else's intellectual property or other proprietary rights.
+          </p>
+
+          <p>
+            <strong>Customer Covered Claims:</strong> Any action, proceeding, or claim that (1) the Customer Content, when used according to the terms of the Agreement, violates, misappropriates, or otherwise infringes upon anyone else's intellectual property or other proprietary rights; or (2) results from Customer's breach or alleged breach of Section 2.1 (Restrictions on Customer).
+          </p>
+
+          <p>
+            <strong>General Cap Amount:</strong> The fees paid or payable by Customer to Provider in the 12 month period immediately before the claim.
+          </p>
+        </div>
+
+        <div class={`border-t ${topBorder} pt-10 mt-10`}>
+          <h2>Notice Address</h2>
+
+          <p>
+            <strong>For Provider:</strong> <a href="mailto:legal@revyl.com">legal@revyl.com</a>
+          </p>
+
+          <p>
+            <strong>For Customer:</strong> The main email address on Customer's account.
+          </p>
+        </div>
+
+      </div>
+    </section>
+  </div>
+</Layout>
+
+<style>
+  .prose-container h2 {
+    font-size: 1.5rem;
+    font-weight: 300;
+    letter-spacing: -0.025em;
+    margin-bottom: 1.5rem;
+    color: white;
+  }
+  .prose-container h3 {
+    font-size: 1.125rem;
+    font-weight: 500;
+    margin-bottom: 1rem;
+    color: white;
+  }
+  .prose-container p {
+    font-size: 0.9375rem;
+    line-height: 1.75;
+    color: rgb(156 163 175);
+    margin-bottom: 1.25rem;
+  }
+  .prose-container strong {
+    color: rgb(209 213 219);
+    font-weight: 600;
+  }
+  .prose-container a {
+    color: #C4A1FF;
+    text-decoration: underline;
+    text-underline-offset: 2px;
+  }
+  .prose-container a:hover {
+    opacity: 0.8;
+  }
+</style>

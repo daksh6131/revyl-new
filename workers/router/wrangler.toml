@@ -1,0 +1,20 @@
+name = "revyl-router"
+main = "src/index.ts"
+compatibility_date = "2024-01-01"
+
+# Routes - uncomment when ready to deploy
+# routes = [
+#   { pattern = "revyl.com/*", zone_name = "revyl.com" }
+# ]
+
+[vars]
+WEBFLOW_ORIGIN = "https://revyl-site.webflow.io"
+BLOG_ORIGIN = "https://revyl-blog.pages.dev"
+
+# Environment-specific overrides
+[env.production]
+# routes = [{ pattern = "revyl.com/*", zone_name = "revyl.com" }]
+
+[env.staging]
+name = "revyl-router-staging"
+# routes = [{ pattern = "staging.revyl.com/*", zone_name = "revyl.com" }]

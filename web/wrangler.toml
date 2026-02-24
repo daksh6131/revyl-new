@@ -1,0 +1,11 @@
+name = "revyl-blog"
+compatibility_date = "2024-01-01"
+pages_build_output_dir = "dist"
+
+# Production configuration
+[env.production]
+vars = { ENVIRONMENT = "production" }
+
+# Preview configuration (for non-production branches)
+[env.preview]
+vars = { ENVIRONMENT = "preview" }

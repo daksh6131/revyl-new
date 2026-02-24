@@ -1,0 +1,2561 @@
+---
+import Layout from '@/layouts/Layout.astro';
+import PhoneShader from '@/components/PhoneShader';
+import CTAButton from '@/components/CTAButton.astro';
+import Icon from '@/components/Icon.astro';
+---
+
+<Layout title="Revyl | The Mobile Reliability Platform" hideFooter={true} forceDark={true}>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Geist+Mono:wght@300;400;500;600&family=JetBrains+Mono:wght@300;400;500;600&display=swap');
+
+  :root {
+    --void: #050505;
+    --panel: #0a0a0a;
+    --fg: #ffffff;
+    --fg2: #666666;
+    --fg3: #333333;
+    --border: rgba(255, 255, 255, 0.1);
+    --corner: rgba(255, 255, 255, 0.45);
+    --accent: #C4A1FF;
+    --accent-dark: #1C1732;
+    --mono: 'JetBrains Mono', 'Fira Code', monospace;
+    --display: 'Funnel Display', sans-serif;
+    --sans: 'Public Sans', sans-serif;
+    /* rail offset — must match ::before/::after positions */
+    --rail: clamp(20px, 2vw, 32px);
+  }
+  * { box-sizing: border-box; cursor: none !important; }
+  body { background-color: var(--void); font-family: var(--sans); }
+
+  /* ── All page content constrained within the vertical rails ── */
+  /* Every top-level block (header, sections, footer) sits between the rails.
+     Horizontal border lines span this full inset width. */
+  .hud-header,
+  .hero-grid,
+  .features-split,
+  .ascii-cta,
+  footer,
+  .page-wrap > section {
+    margin-left: var(--rail);
+    margin-right: var(--rail);
+  }
+  .page-wrap { padding-top: 72px; }
+
+  /* ── Scout-style vertical page rails ── */
+  /* Two fixed vertical lines running the full page height */
+  .page-wrap::before,
+  .page-wrap::after {
+    content: '';
+    position: fixed;
+    top: 0;
+    bottom: 0;
+    width: 1px;
+    background: var(--border);
+    pointer-events: none;
+    z-index: 30;
+  }
+  .page-wrap::before { left: var(--rail); }
+  .page-wrap::after  { right: var(--rail); }
+  h1, h2, h3, h4, h5, h6 { font-family: var(--display); }
+  ::-webkit-scrollbar { width: 0px; }
+
+  /* Hide Layout.astro's native header on this page only */
+  :global(header.relative) {
+    display: none !important;
+  }
+
+  /* Kill Layout.astro body bg and ALL its container chrome */
+  :global(body) {
+    background-color: var(--void) !important;
+  }
+  :global(.flex-1.flex.flex-col.relative.w-full),
+  :global(.flex-1.flex.flex-col) {
+    max-width: 100% !important;
+    border: none !important;
+    margin: 0 !important;
+    padding: 0 !important;
+  }
+  /* Kill Layout corner decorations */
+  :global(.flex-1.flex.flex-col.relative.w-full > div[class*="absolute"]),
+  :global(.flex-1.flex.flex-col.relative.w-full > div[class*="border-t"]),
+  :global(.flex-1.flex.flex-col.relative.w-full > div[class*="border-b"]) {
+    display: none !important;
+  }
+
+  /* HUD header — Good-fella layout × Hex style */
+  .hud-header {
+    position: fixed !important;
+    top: 0;
+    left: var(--rail);
+    right: var(--rail);
+    z-index: 9999;
+    width: auto;
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) auto minmax(0, 1fr);
+    height: 72px;
+    border: 1px solid var(--border);
+    background: #000 !important;
+    backdrop-filter: none;
+    -webkit-backdrop-filter: none;
+    isolation: isolate;
+    margin-top: 0;
+    margin-left: 0;
+    margin-right: 0;
+    transform: translateZ(0);
+    will-change: transform;
+  }
+  /* col 1: menu left */
+  .hud-col-menu {
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+    border-right: 1px solid var(--border);
+    padding: 0 clamp(20px, 3vw, 36px);
+  }
+  /* col 2: logo centered */
+  .hud-col-logo {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 0 clamp(20px, 3vw, 36px);
+    border-right: 1px solid var(--border);
+    gap: 10px;
+  }
+  .hud-logo {
+    display: flex;
+    align-items: center;
+    text-decoration: none;
+    color: #fff;
+    flex-shrink: 0;
+  }
+  .hud-logo svg {
+    display: block;
+    fill: #ffffff;
+  }
+  .hud-logo img {
+    display: block;
+    height: 56px;
+    width: auto;
+  }
+  /* col 3: CTAs flush right */
+  .hud-menu-btn {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    background: none;
+    border: none;
+    color: rgba(255,255,255,0.45);
+    font-family: var(--mono);
+    font-size: 10px;
+    text-transform: uppercase;
+    letter-spacing: 0.15em;
+    cursor: none;
+    padding: 0 16px;
+    height: 100%;
+    transition: color 0.15s;
+  }
+  .hud-menu-btn:hover { color: rgba(255,255,255,0.85); }
+  .hud-menu-lines {
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+  }
+  .hud-menu-lines span {
+    display: block;
+    width: 16px;
+    height: 1px;
+    background: currentColor;
+    transition: width 0.2s;
+  }
+  .hud-menu-lines span:last-child { width: 10px; }
+  .hud-menu-btn:hover .hud-menu-lines span { width: 16px; }
+
+  .hud-col-ctas {
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+    overflow: hidden;
+    padding-right: clamp(20px, 3vw, 36px);
+  }
+  .hud-col-ctas .rv-btn {
+    border-radius: 0;
+    border-top: none;
+    border-bottom: none;
+    border-left: 1px solid var(--border);
+    border-right: none;
+    height: 72px;
+    min-width: 0;
+    padding: 0 clamp(20px, 2.5vw, 32px);
+    font-size: clamp(9px, 0.75vw, 11px);
+    letter-spacing: 0.08em;
+  }
+  /* Last button has no right border — the nav outer border serves as the right edge */
+  .hud-col-ctas .rv-btn:last-child {
+    border-right: none;
+  }
+  .status-dot { display: none; }
+
+  /* Hero grid */
+  /* All direct page content sits above the fixed bg layers */
+  .hero-grid, #hud-nav {
+    position: relative;
+    z-index: 1;
+  }
+
+  .hero-grid {
+    display: grid;
+    grid-template-columns: 60% 40%;
+    min-height: calc(100vh - 64px);
+    border-bottom: 1px solid var(--border);
+  }
+  .hero-left {
+    display: flex;
+    flex-direction: column;
+    border-right: 1px solid var(--border);
+    position: relative;
+  }
+  .hero-right {
+    position: relative;
+    background: transparent;
+    overflow: hidden;
+  }
+
+
+  /* Hero content */
+  .hero-label {
+    font-family: 'Chakra Petch', sans-serif;
+    font-weight: 600;
+    color: var(--fg2);
+    font-size: 11px;
+    text-transform: uppercase;
+    margin-bottom: 24px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    letter-spacing: 0.1em;
+  }
+  .hero-label::before {
+    content: '';
+    display: inline-block;
+    flex-shrink: 0;
+    width: 7px;
+    height: 7px;
+    border-radius: 2px;
+    background: currentColor;
+  }
+  .hero-title {
+    font-family: var(--display);
+    font-size: clamp(3rem, 7vw, 8rem);
+    line-height: 0.88;
+    letter-spacing: -0.04em;
+    font-weight: 300;
+    margin-bottom: 40px;
+    text-transform: uppercase;
+  }
+  .hero-desc {
+    width: 100%;
+    font-family: var(--sans);
+    font-size: 14px;
+    line-height: 1.7;
+    color: var(--fg2);
+    text-align: left;
+    padding-left: 0;
+  }
+
+  /* Specs strip */
+  .specs-strip {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    border-top: 1px solid var(--border);
+  }
+  .spec-cell {
+    padding: 20px 24px;
+    border-right: 1px solid var(--border);
+    font-family: var(--mono);
+  }
+  .spec-cell:last-child { border-right: none; }
+  .spec-label { font-family: var(--mono); font-size: 9px; color: var(--fg2); text-transform: uppercase; letter-spacing: 0.1em; margin-bottom: 6px; display: block; }
+  .spec-value { font-family: var(--display); font-size: 16px; font-weight: 500; color: var(--fg); }
+
+  /* Scan lines */
+  .scan-lines {
+    background: repeating-linear-gradient(0deg, rgba(255,255,255,0.025), rgba(255,255,255,0.025) 1px, transparent 1px, transparent 4px);
+    position: absolute; top: 0; left: 0; right: 0; bottom: 0;
+    pointer-events: none; z-index: 1;
+  }
+  .overlay-ui {
+    position: absolute; z-index: 2; pointer-events: none;
+    width: 100%; height: 100%; padding: 24px;
+    display: flex; flex-direction: column; justify-content: space-between;
+  }
+  .ui-badge {
+    align-self: flex-start;
+    background: var(--accent);
+    color: var(--accent-dark);
+    padding: 4px 8px;
+    font-size: 10px;
+    font-family: var(--mono);
+    font-weight: bold;
+    letter-spacing: 0.05em;
+  }
+  .ui-coords {
+    font-family: var(--mono);
+    font-size: 10px;
+    color: var(--fg2);
+    text-align: right;
+  }
+
+  /* ── Sticky-left / scroll-right feature section ── */
+  .features-split {
+    display: grid;
+    grid-template-columns: 320px 1fr;
+    border-top: 1px solid var(--border);
+    border-bottom: 1px solid var(--border);
+    min-height: 100vh;
+  }
+
+  /* Left sticky nav wrapper — must be align-self:start for sticky child to work */
+  .features-nav-col {
+    align-self: start;
+    position: sticky;
+    top: 72px;
+    border-right: 1px solid var(--border);
+  }
+
+  /* Left sticky nav */
+  .features-nav {
+    height: calc(100vh - 72px);
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+    border-right: none;
+  }
+  .features-nav-label {
+    font-family: 'Chakra Petch', sans-serif;
+    font-size: 9px;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.2em;
+    color: var(--fg3);
+    padding: 28px 32px 16px;
+    display: flex;
+    align-items: center;
+    gap: 7px;
+    border-bottom: 1px solid var(--border);
+  }
+  .features-nav-label::before {
+    content: '';
+    display: inline-block;
+    flex-shrink: 0;
+    width: 6px;
+    height: 6px;
+    border-radius: 2px;
+    background: currentColor;
+  }
+  .features-nav-list {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    padding: 12px 0;
+    gap: 2px;
+  }
+  .features-nav-item {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 14px 16px;
+    margin: 0 12px;
+    border-radius: 4px;
+    font-family: 'Chakra Petch', sans-serif;
+    font-size: 11px;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    color: var(--fg3);
+    cursor: none;
+    transition: color 0.2s, background 0.2s;
+    text-decoration: none;
+    position: relative;
+  }
+
+  /* Square indicator — filled by default, dim */
+  .nav-indicator {
+    flex-shrink: 0;
+    width: 10px;
+    height: 10px;
+    border-radius: 2px;
+    background: rgba(255,255,255,0.15);
+    transition: background 0.2s, box-shadow 0.2s;
+  }
+
+  /* Label takes remaining space */
+  .features-nav-item > span:not(.nav-indicator) {
+    flex: 1;
+  }
+
+  .features-nav-item .nav-arrow {
+    flex-shrink: 0;
+    width: 14px;
+    height: 14px;
+    opacity: 0.2;
+    transition: opacity 0.2s, transform 0.3s cubic-bezier(0.4, 0, 0.2, 1), color 0.2s;
+    color: var(--fg2);
+  }
+
+  .features-nav-item:hover {
+    color: var(--fg2);
+    background: rgba(255,255,255,0.03);
+  }
+  .features-nav-item:hover .nav-indicator {
+    background: rgba(196, 161, 255, 0.4);
+  }
+  .features-nav-item:hover .nav-arrow { opacity: 0.4; }
+
+  /* Active state — bright filled square, full border, glow */
+  .features-nav-item.is-active {
+    color: var(--fg);
+    background: rgba(196, 161, 255, 0.08);
+    outline: 1px solid var(--accent);
+    outline-offset: -1px;
+    z-index: 1;
+  }
+  .features-nav-item.is-active .nav-indicator {
+    background: var(--accent);
+    box-shadow: 0 0 8px rgba(196, 161, 255, 0.8);
+  }
+  .features-nav-item.is-active .nav-arrow {
+    opacity: 1;
+    color: var(--accent);
+    transform: rotate(90deg);
+  }
+
+  /* Right scrollable content */
+  .features-content {
+    display: flex;
+    flex-direction: column;
+  }
+
+  /* Individual feature panel */
+  .feature-panel {
+    display: grid;
+    grid-template-rows: auto 1fr auto;
+    min-height: 100vh;
+    border-bottom: 1px solid var(--border);
+    padding: 64px 56px;
+    position: relative;
+    overflow: hidden;
+  }
+  .feature-panel:last-child { border-bottom: none; }
+
+  .feature-panel-top {
+    margin-bottom: 56px;
+  }
+  .feature-panel-index {
+    font-family: var(--mono);
+    font-size: 9px;
+    text-transform: uppercase;
+    letter-spacing: 0.2em;
+    color: var(--fg3);
+    margin-bottom: 20px;
+    display: block;
+  }
+  .feature-panel-title {
+    font-family: var(--display);
+    font-size: clamp(2rem, 4vw, 3.5rem);
+    font-weight: 300;
+    letter-spacing: -0.04em;
+    line-height: 1.05;
+    text-transform: uppercase;
+    margin-bottom: 24px;
+    color: var(--fg);
+  }
+  .feature-panel-desc {
+    font-family: var(--sans);
+    font-size: 14px;
+    line-height: 1.75;
+    color: var(--fg2);
+    max-width: 520px;
+  }
+
+  .feature-panel-illustration {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex: 1;
+    min-height: 300px;
+  }
+
+  .feature-panel-footer {
+    margin-top: 48px;
+    display: flex;
+    align-items: center;
+    gap: 24px;
+  }
+  .feature-panel-link {
+    font-family: var(--mono);
+    font-size: 11px;
+    text-transform: uppercase;
+    letter-spacing: 0.12em;
+    color: var(--fg2);
+    text-decoration: none;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    transition: color 0.2s;
+    border-bottom: 1px solid transparent;
+    padding-bottom: 2px;
+  }
+  .feature-panel-link:hover {
+    color: var(--fg);
+    border-color: var(--fg2);
+  }
+
+  /* Responsive */
+  @media (max-width: 900px) {
+    .features-split {
+      grid-template-columns: 1fr;
+    }
+    .features-nav {
+      position: static;
+      height: auto;
+      border-right: none;
+      border-bottom: 1px solid var(--border);
+      flex-direction: row;
+      overflow-x: auto;
+      flex-wrap: nowrap;
+    }
+    .features-nav-label { display: none; }
+    .features-nav-list { flex-direction: row; }
+    .features-nav-item {
+      padding: 20px 24px;
+      font-size: 16px;
+      border-bottom: none;
+      border-right: 1px solid var(--border);
+      white-space: nowrap;
+      flex-shrink: 0;
+    }
+    .features-nav-item.is-active::before {
+      left: 0; right: 0; top: auto;
+      width: auto; height: 2px;
+      bottom: 0;
+    }
+    .feature-panel { padding: 40px 24px; min-height: auto; }
+    .nav-arrow { display: none; }
+  }
+
+  /* ── Edge-to-edge Scout grid system ── */
+  /* Sections: full-width, borders on the row itself, content padded inside */
+  .section-inner {
+    padding: 72px clamp(32px, 4vw, 64px);
+  }
+  .section-inner--tight {
+    padding: 48px clamp(32px, 4vw, 64px) 0;
+  }
+
+  /* Section label */
+  .section-label {
+    font-family: 'Chakra Petch', sans-serif;
+    font-size: 10px;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.15em;
+    color: var(--fg2);
+    margin-bottom: 16px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+  .section-label::before {
+    content: '';
+    display: inline-block;
+    flex-shrink: 0;
+    width: 7px;
+    height: 7px;
+    border-radius: 2px;
+    background: currentColor;
+  }
+
+  /* ASCII CTA section */
+  .ascii-cta {
+    position: relative;
+    min-height: 110vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: flex-start;
+    padding-top: 8vh;
+    overflow: hidden;
+    background: var(--void);
+    border-top: 1px solid var(--border);
+  }
+  #ascii-bg {
+    position: absolute;
+    inset: 0;
+    font-family: var(--mono);
+    font-size: 11px;
+    line-height: 1.55;
+    color: rgba(196,161,255,0.12);
+    white-space: pre;
+    overflow: hidden;
+    pointer-events: none;
+    user-select: none;
+    padding: 0;
+    margin: 0;
+  }
+  .ascii-cta-content {
+    position: relative;
+    z-index: 2;
+    text-align: center;
+    padding: 0 24px;
+  }
+  .ascii-cta-logo {
+    position: absolute;
+    bottom: 0;
+    left: 50%;
+    transform: translateX(-50%);
+    z-index: 0;
+    width: clamp(320px, 70vw, 900px);
+    opacity: 0.045;
+    pointer-events: none;
+    user-select: none;
+    color: #fff;
+  }
+  .ascii-cta-title {
+    font-family: var(--display);
+    font-size: clamp(3rem, 7vw, 8rem);
+    font-weight: 300;
+    letter-spacing: -0.04em;
+    line-height: 0.88;
+    text-transform: uppercase;
+    margin-bottom: 48px;
+    color: var(--fg);
+  }
+  .ascii-cta-title em {
+    font-style: normal;
+    font-weight: 300;
+    color: var(--accent);
+  }
+  .ascii-cta-actions {
+    display: flex;
+    gap: 12px;
+    justify-content: center;
+    align-items: center;
+    flex-wrap: wrap;
+  }
+  /* Numbers grid */
+  .numbers-grid {
+    position: relative;
+    overflow: hidden;
+    border-top: none;
+    border-bottom: none;
+  }
+  .numbers-marquee {
+    display: flex;
+    width: max-content;
+    animation: numbers-marquee 22s linear infinite;
+    background: none;
+  }
+  .numbers-track {
+    display: grid;
+    grid-template-columns: repeat(4, minmax(200px, 1fr));
+    border-right: 1px solid var(--border);
+  }
+  .numbers-track:last-child { border-right: none; }
+  .numbers-grid::before { display: none; }
+  @keyframes numbers-marquee {
+    0% { transform: translateX(0); }
+    100% { transform: translateX(-50%); }
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .numbers-marquee { animation: none; }
+  }
+  .number-cell {
+    padding: 36px 28px 32px;
+    text-align: center;
+    border-right: 1px solid var(--border);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 12px;
+    min-height: 140px;
+  }
+  .number-cell:last-child { border-right: none; }
+  .number-value {
+    font-family: var(--display);
+    font-size: clamp(2.6rem, 4.6vw, 4.4rem);
+    font-weight: 200;
+    letter-spacing: -0.02em;
+    color: #f3f1ff;
+    line-height: 0.9;
+  }
+  .number-label {
+    font-family: var(--mono);
+    font-size: 9px;
+    text-transform: uppercase;
+    letter-spacing: 0.2em;
+    color: rgba(255,255,255,0.45);
+  }
+
+  /* Scale grid */
+  .scale-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    border-top: 1px solid var(--border);
+    border-bottom: 1px solid var(--border);
+  }
+  .scale-card {
+    padding: 28px;
+    border-right: 1px solid var(--border);
+    border-bottom: 1px solid var(--border);
+  }
+  .scale-card:nth-child(even) { border-right: none; }
+  .scale-card:nth-child(3), .scale-card:nth-child(4) { border-bottom: none; }
+  .scale-card-title { font-family: var(--mono); font-size: 11px; text-transform: uppercase; letter-spacing: 0.1em; color: var(--fg2); margin-bottom: 20px; }
+
+  /* ── Vertical dot-pattern bar chart (Fin-style) ── */
+  .vbar-chart-wrap {
+    padding: 32px;
+    border-right: 1px solid var(--border);
+  }
+  .vbar-chart-wrap:last-child { border-right: none; }
+  .vbar-chart-title {
+    font-family: var(--mono);
+    font-size: 10px;
+    text-transform: uppercase;
+    letter-spacing: 0.12em;
+    color: var(--fg2);
+    margin-bottom: 24px;
+  }
+  /* Chart body: y-axis + bars area */
+  .vbar-chart-body {
+    position: relative;
+    display: flex;
+    gap: 0;
+    height: 220px;
+  }
+  /* Y-axis column */
+  .vbar-yaxis {
+    display: flex;
+    flex-direction: column-reverse;
+    justify-content: space-between;
+    padding-bottom: 24px; /* align with x-label area */
+    margin-right: 10px;
+    flex-shrink: 0;
+  }
+  .vbar-ylabel {
+    font-family: var(--mono);
+    font-size: 9px;
+    color: var(--fg3);
+    line-height: 1;
+  }
+  /* Bars + gridlines container */
+  .vbar-plot {
+    position: relative;
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+  }
+  /* Dashed gridlines */
+  .vbar-gridlines {
+    position: absolute;
+    inset: 0;
+    bottom: 24px; /* leave room for x-labels */
+    pointer-events: none;
+  }
+  .vbar-gridline {
+    position: absolute;
+    left: 0;
+    right: 0;
+    height: 1px;
+    border-top: 1px dashed rgba(255,255,255,0.1);
+  }
+  /* Bars row */
+  .vbar-bars {
+    display: flex;
+    gap: 10px;
+    align-items: flex-end;
+    flex: 1;
+    padding-bottom: 0;
+    position: relative;
+    z-index: 1;
+  }
+  /* Single bar column (bar + label) */
+  .vbar-col {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    height: 100%;
+    justify-content: flex-end;
+  }
+  /* The bar itself */
+  .vbar {
+    width: 100%;
+    position: relative;
+    /* square dot pattern: 1px dot on a 6px grid */
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='6' height='6'%3E%3Crect x='0' y='0' width='1' height='1' fill='rgba(255,255,255,0.03)'/%3E%3C/svg%3E");
+    background-size: 6px 6px;
+    background-color: rgba(255,255,255,0.04);
+    border: 1px solid rgba(255,255,255,0.12);
+    border-bottom: none;
+    min-height: 4px;
+  }
+  .vbar.is-revyl {
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='6' height='6'%3E%3Crect x='0' y='0' width='1' height='1' fill='rgba(196,161,255,0.06)'/%3E%3C/svg%3E");
+    background-size: 6px 6px;
+    background-color: rgba(196,161,255,0.08);
+    border-color: var(--accent);
+    box-shadow: 0 0 20px rgba(196,161,255,0.12);
+  }
+  /* Value badge at top of bar */
+  .vbar-badge {
+    position: absolute;
+    top: -28px;
+    left: 50%;
+    transform: translateX(-50%);
+    font-family: var(--mono);
+    font-size: 10px;
+    color: var(--fg2);
+    background: var(--panel);
+    border: 1px solid var(--border);
+    padding: 2px 6px;
+    white-space: nowrap;
+    letter-spacing: 0.05em;
+  }
+  .vbar.is-revyl .vbar-badge {
+    color: var(--accent);
+    border-color: var(--accent);
+    background: var(--accent-dark);
+  }
+  /* X-axis label */
+  .vbar-xlabel {
+    font-family: var(--mono);
+    font-size: 9px;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    color: var(--fg3);
+    text-align: center;
+    margin-top: 8px;
+    line-height: 1.4;
+    width: 100%;
+  }
+  .vbar-col.is-revyl .vbar-xlabel { color: var(--accent); }
+
+  /* Dot matrix — nav background texture */
+  .dot-matrix {
+    background-image: radial-gradient(circle, rgba(196,161,255,0.35) 1px, transparent 1px);
+    background-size: 8px 8px;
+  }
+
+  /* ── Fullscreen nav overlay ── */
+  #hud-nav {
+    display: grid;
+    grid-template-rows: 60px 1fr auto;
+  }
+  .fnav-topbar {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    border-bottom: 1px solid var(--border);
+    align-items: center;
+  }
+  .fnav-topbar-logo {
+    padding: 0 clamp(20px,3vw,36px);
+    display: flex;
+    align-items: center;
+    border-right: 1px solid var(--border);
+    height: 100%;
+  }
+  .fnav-topbar-center {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-right: 1px solid var(--border);
+    height: 100%;
+    font-family: var(--mono);
+    font-size: 10px;
+    text-transform: uppercase;
+    letter-spacing: 0.15em;
+    color: rgba(255,255,255,0.3);
+  }
+  .fnav-topbar-close {
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+    padding: 0 clamp(20px,3vw,36px);
+    height: 100%;
+  }
+  #hud-nav-close {
+    font-family: var(--mono);
+    font-size: 10px;
+    text-transform: uppercase;
+    letter-spacing: 0.15em;
+    color: rgba(255,255,255,0.45);
+    background: none;
+    border: 1px solid rgba(255,255,255,0.12);
+    padding: 7px 16px;
+    cursor: none;
+    transition: color 0.15s, border-color 0.15s;
+  }
+  #hud-nav-close:hover {
+    color: #fff;
+    border-color: rgba(255,255,255,0.35);
+  }
+
+  /* Main nav body — 3-col Freight-style */
+  .fnav-body {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    border-bottom: 1px solid var(--border);
+    overflow: hidden;
+  }
+  .fnav-col {
+    padding: clamp(40px,6vh,72px) clamp(28px,4vw,56px);
+    border-right: 1px solid var(--border);
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+  }
+  .fnav-col:last-child { border-right: none; }
+  .fnav-section-label {
+    font-family: var(--mono);
+    font-size: 9px;
+    text-transform: uppercase;
+    letter-spacing: 0.2em;
+    color: rgba(255,255,255,0.25);
+    display: block;
+    margin-bottom: 20px;
+  }
+  .fnav-link {
+    font-family: var(--display);
+    font-size: clamp(2rem, 3.5vw, 3.5rem);
+    font-weight: 400;
+    letter-spacing: -0.02em;
+    line-height: 1.05;
+    color: rgba(255,255,255,0.75);
+    text-decoration: none;
+    display: inline-block;
+    position: relative;
+    padding: 8px 10px;
+    transition: color 0.18s, transform 0.18s;
+    cursor: none;
+  }
+  /* corner bracket corners — same techy detail as footer links */
+  .fnav-link::before,
+  .fnav-link::after {
+    content: '';
+    position: absolute;
+    width: 8px;
+    height: 8px;
+    border-color: rgba(255,255,255,0.2);
+    border-style: solid;
+    opacity: 0;
+    transition: opacity 0.2s, border-color 0.2s;
+  }
+  .fnav-link::before { top: 2px;    left: 2px;  border-width: 1px 0 0 1px; }
+  .fnav-link::after  { bottom: 2px; right: 2px; border-width: 0 1px 1px 0; }
+  .fnav-link:hover {
+    color: #fff;
+    transform: translateX(6px);
+  }
+  .fnav-link:hover::before,
+  .fnav-link:hover::after {
+    opacity: 1;
+    border-color: rgba(255,255,255,0.45);
+  }
+
+  /* Bottom bar of nav */
+  .fnav-bottom {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: clamp(20px, 3vh, 32px) clamp(20px,3vw,36px);
+    border-top: 1px solid var(--border);
+  }
+  .fnav-bottom-ctas {
+    display: flex;
+    gap: 10px;
+  }
+  .fnav-bottom-links {
+    display: flex;
+    gap: 24px;
+  }
+  .fnav-bottom-link {
+    font-family: var(--mono);
+    font-size: 10px;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    color: rgba(255,255,255,0.3);
+    text-decoration: none;
+    transition: color 0.15s;
+    cursor: none;
+  }
+  .fnav-bottom-link:hover { color: rgba(255,255,255,0.7); }
+
+  .footer-social-link,
+  .footer-link {
+    position: relative;
+    font-family: 'Chakra Petch', sans-serif;
+    font-size: 11px;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    color: var(--fg2);
+    text-decoration: none;
+    transition: color 0.2s;
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    padding: 6px 10px;
+  }
+  .footer-social-link::before,
+  .footer-social-link::after,
+  .footer-link::before,
+  .footer-link::after {
+    content: '';
+    position: absolute;
+    width: 6px;
+    height: 6px;
+    border-color: var(--fg3);
+    border-style: solid;
+    opacity: 0;
+    transition: opacity 0.2s, border-color 0.2s;
+  }
+  .footer-social-link::before,
+  .footer-link::before { top: 2px; left: 2px; border-width: 1px 0 0 1px; }
+  .footer-social-link::after,
+  .footer-link::after  { bottom: 2px; right: 2px; border-width: 0 1px 1px 0; }
+  .footer-social-link:hover,
+  .footer-link:hover { color: var(--fg); }
+  .footer-social-link:hover::before,
+  .footer-social-link:hover::after,
+  .footer-link:hover::before,
+  .footer-link:hover::after { border-color: var(--fg2); opacity: 1; }
+
+  /* Fullscreen nav — mobile: single scrollable column */
+  .nav-columns {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    width: 100%;
+    max-width: 900px;
+    padding: 0 48px;
+  }
+  .nav-col {
+    padding: 0 32px;
+    border-right: 1px solid var(--border);
+  }
+  .nav-col:first-child { padding-left: 0; }
+  .nav-col:last-child  { border-right: none; padding-right: 0; }
+
+  @media (max-width: 700px) {
+    .nav-columns {
+      grid-template-columns: 1fr;
+      padding: 0 24px;
+      max-height: calc(100vh - 60px);
+      overflow-y: auto;
+    }
+    .nav-col {
+      border-right: none;
+      border-bottom: 1px solid var(--border);
+      padding: 0 0 16px;
+    }
+    .nav-col:last-child { border-bottom: none; }
+    .nav-section-label { padding-top: 16px; }
+  }
+
+  @media (max-width: 480px) {
+    .hud-header { font-size: 9px; letter-spacing: 0.5px; }
+    .hud-cell { padding: 0 10px; }
+  }
+
+  /* All responsive breakpoints consolidated */
+  @media (max-width: 900px) {
+    .hero-grid { grid-template-columns: 1fr; }
+    .hero-right { height: 50vh; order: -1; border-right: none; border-bottom: 1px solid var(--border); }
+    .hero-left { border-right: none; }
+    .vbar-chart-wrap { border-right: none; border-bottom: 1px solid var(--border); }
+    .vbar-chart-wrap:last-child { border-bottom: none; }
+    .perf-grid { grid-template-columns: 1fr !important; }
+    .numbers-grid { grid-template-columns: repeat(2, 1fr); }
+    .scale-grid { grid-template-columns: 1fr; }
+    .scale-card { border-right: none; }
+    .scale-card:nth-child(3), .scale-card:nth-child(4) { border-bottom: none; }
+    .specs-strip { grid-template-columns: 1fr 1fr; }
+    .hud-header { grid-template-columns: minmax(0, 1fr) auto minmax(0, 1fr); }
+    .hud-col-logo,
+    .hud-col-menu {
+      padding: 0 16px;
+    }
+    .hud-col-ctas {
+      display: none;
+    }
+    /* footer columns stack on mobile */
+    footer > div:first-child { grid-template-columns: 1fr !important; }
+    footer > div:first-child > div { border-right: none !important; border-bottom: 1px solid var(--border); }
+    footer > div:first-child > div:last-child { border-bottom: none; }
+    footer > div:last-child { flex-direction: column; gap: 8px; }
+  }
+</style>
+
+<style is:global>
+    /* Kill Layout.astro corner decoration divs on this page */
+    .flex-1.flex.flex-col.relative.w-full > div[class*="absolute"] {
+      display: none !important;
+    }
+    #revyl-loader.fade-out {
+      opacity: 0 !important;
+      transform: scale(1.02) !important;
+      filter: blur(8px) !important;
+      pointer-events: none;
+    }
+    /* Purple phosphor palette; JetBrains Mono for entire loader */
+    #revyl-loader,
+    #revyl-loader * { font-family: 'JetBrains Mono', monospace; }
+    #revyl-loader { --p: #c4a1ff; --pd: #7c3aed; --pm: #a78bfa; --pf: #e0c9ff; }
+
+    /* CRT scanline overlay */
+    #revyl-loader::before {
+      content: '';
+      position: fixed;
+      inset: 0;
+      background: repeating-linear-gradient(
+        0deg,
+        transparent,
+        transparent 2px,
+        rgba(0,0,0,0.15) 2px,
+        rgba(0,0,0,0.15) 4px
+      );
+      pointer-events: none;
+      z-index: 10000;
+    }
+    /* Vignette */
+    #revyl-loader::after {
+      content: '';
+      position: fixed;
+      inset: 0;
+      background: radial-gradient(ellipse at center, transparent 55%, rgba(10,0,20,0.85) 100%);
+      pointer-events: none;
+      z-index: 10000;
+    }
+
+    .rl-titlebar {
+      flex-shrink: 0;
+      height: 28px;
+      background: #1c1732;
+      border-bottom: 1px solid #3d2b6e;
+      color: #c4a1ff;
+      display: flex;
+      align-items: center;
+      padding: 0 14px;
+      font-size: 11px;
+      letter-spacing: 0.06em;
+      gap: 14px;
+      font-family: 'JetBrains Mono', monospace;
+    }
+    .rl-titlebar-dots { display: flex; gap: 6px; }
+    .rl-titlebar-dot  { width: 9px; height: 9px; border-radius: 50%; background: #3d2b6e; }
+    .rl-titlebar-dot:nth-child(1) { background: #ff5f57; }
+    .rl-titlebar-dot:nth-child(2) { background: #ffbd2e; }
+    .rl-titlebar-dot:nth-child(3) { background: #28ca42; }
+
+    .rl-main {
+      display: grid;
+      grid-template-columns: 58% 42%;
+      flex: 1;
+      overflow: hidden;
+      border-top: 1px solid #2d1b4e;
+    }
+
+    /* Left: boot log pane */
+    .rl-logs {
+      border-right: 1px solid #2d1b4e;
+      padding: 20px 24px;
+      display: flex;
+      flex-direction: column;
+      gap: 0;
+      font-size: 12px;
+      line-height: 1.65;
+      overflow: hidden;
+      position: relative;
+    }
+    .rl-prompt-line {
+      color: #7c5cbf;
+      font-size: 11px;
+      margin-bottom: 8px;
+      flex-shrink: 0;
+    }
+    .rl-entry {
+      color: #c4a1ff;
+      opacity: 0;
+      white-space: nowrap;
+      overflow: hidden;
+      animation: rl-type 0.15s forwards;
+    }
+    .rl-entry.ok   { color: #e0c9ff; font-weight: 600; }
+    .rl-entry.warn { color: #fbbf24; }
+    .rl-entry.dim  { color: #7c5cbf; }
+    @keyframes rl-type { to { opacity: 1; } }
+
+    /* Blinking cursor at end of last line */
+    .rl-cursor {
+      display: inline-block;
+      width: 7px;
+      height: 13px;
+      background: #c4a1ff;
+      vertical-align: middle;
+      margin-left: 2px;
+      box-shadow: 0 0 6px #c4a1ff;
+      animation: rl-blink 0.8s step-end infinite;
+    }
+    @keyframes rl-blink { 0%,100%{opacity:1} 50%{opacity:0} }
+
+    /* Right: terminal "session" pane */
+    .rl-right {
+      display: flex;
+      flex-direction: column;
+      overflow: hidden;
+      background: #08000f;
+    }
+    .rl-right-header {
+      flex-shrink: 0;
+      padding: 10px 16px;
+      border-bottom: 1px solid #2d1b4e;
+      font-size: 10px;
+      color: #7c5cbf;
+      letter-spacing: 0.1em;
+    }
+    .rl-term-body {
+      flex: 1;
+      padding: 20px 16px;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: flex-start;
+      gap: 6px;
+      overflow: hidden;
+    }
+    .rl-ascii {
+      font-size: 7.5px;
+      line-height: 1.2;
+      color: #a78bfa;
+      white-space: pre;
+      text-shadow: 0 0 12px #c4a1ff88;
+      margin: 0 0 20px;
+      padding: 0;
+      letter-spacing: 0;
+      background: none;
+      border: none;
+      font-family: 'JetBrains Mono', monospace;
+    }
+    .rl-stat-row {
+      font-size: 11px;
+      color: #7c5cbf;
+      display: flex;
+      gap: 8px;
+      align-items: baseline;
+    }
+    .rl-stat-row .rl-key { color: #c4a1ff; }
+    .rl-stat-row .rl-val { color: #e0c9ff; }
+
+    /* Progress bar */
+    .rl-bar-section {
+      flex-shrink: 0;
+      padding: 12px 16px 16px;
+      border-top: 1px solid #2d1b4e;
+    }
+    .rl-bar-meta {
+      font-size: 10px;
+      color: #7c5cbf;
+      display: flex;
+      justify-content: space-between;
+      margin-bottom: 6px;
+      letter-spacing: 0.06em;
+    }
+    .rl-bar-track {
+      width: 100%;
+      height: 4px;
+      background: #1c1732;
+      position: relative;
+      border: 1px solid #3d2b6e;
+    }
+    .rl-bar-fill {
+      position: absolute;
+      left: 0; top: 0; height: 100%;
+      background: #c4a1ff;
+      width: 0%;
+      transition: width 0.25s ease-out;
+      box-shadow: 0 0 10px #c4a1ff, 0 0 24px #c4a1ff55;
+    }
+
+    .rl-statusbar {
+      flex-shrink: 0;
+      height: 24px;
+      background: #0d0020;
+      border-top: 1px solid #2d1b4e;
+      display: flex;
+      align-items: center;
+      padding: 0 16px;
+      gap: 24px;
+      font-size: 10px;
+      color: #7c5cbf;
+      letter-spacing: 0.08em;
+    }
+    .rl-statusbar span { display: flex; align-items: center; gap: 6px; }
+    .rl-status-dot {
+      width: 5px; height: 5px;
+      border-radius: 50%;
+      background: #c4a1ff;
+      box-shadow: 0 0 6px #c4a1ff;
+      animation: rl-blink 1s infinite;
+    }
+  #revyl-loader,
+  #revyl-loader * { font-family: 'JetBrains Mono', monospace !important; }
+
+  /* ── HUD vertex corner brackets ── */
+  /* L-shaped brackets at each corner where a section edge meets the rails */
+  .hud-corner {
+    position: absolute;
+    width: 8px;
+    height: 8px;
+    pointer-events: none;
+    z-index: 35;
+    border-color: var(--accent);
+    border-style: solid;
+  }
+  /* top-left: border on top + left */
+  .hud-corner[data-c="tl"] {
+    top: 0; left: 0;
+    border-width: 1px 0 0 1px;
+  }
+  /* top-right: border on top + right */
+  .hud-corner[data-c="tr"] {
+    top: 0; right: 0;
+    border-width: 1px 1px 0 0;
+  }
+  /* bottom-left: border on bottom + left */
+  .hud-corner[data-c="bl"] {
+    bottom: 0; left: 0;
+    border-width: 0 0 1px 1px;
+  }
+  /* bottom-right: border on bottom + right */
+  .hud-corner[data-c="br"] {
+    bottom: 0; right: 0;
+    border-width: 0 1px 1px 0;
+  }
+
+  /* ── Scout-style shuffle reveal ── */
+  .rv-char {
+    display: inline-block;
+    opacity: 0;
+    white-space: pre;
+  }
+  .rv-char.rv-space {
+    display: inline;
+  }
+</style>
+
+<!-- ── REVYL LOADER OVERLAY ── -->
+<div id="revyl-loader" style="
+  position: fixed;
+  inset: 0;
+  width: 100vw;
+  height: 100vh;
+  z-index: 9999;
+  background: #08000f;
+  display: flex;
+  flex-direction: column;
+  font-family: 'JetBrains Mono', monospace;
+  color: #c4a1ff;
+  opacity: 1;
+  transform: scale(1);
+  filter: blur(0px);
+  transform-origin: center center;
+  transition: opacity 0.9s cubic-bezier(0.4, 0, 0.2, 1),
+              transform 0.9s cubic-bezier(0.4, 0, 0.2, 1),
+              filter 0.9s cubic-bezier(0.4, 0, 0.2, 1);
+">
+
+
+  <!-- Terminal title bar -->
+  <div class="rl-titlebar">
+    <div class="rl-titlebar-dots">
+      <div class="rl-titlebar-dot"></div>
+      <div class="rl-titlebar-dot"></div>
+      <div class="rl-titlebar-dot"></div>
+    </div>
+    <span>revyl@boot-terminal — /sys/init</span>
+  </div>
+
+  <!-- Main split -->
+  <div class="rl-main">
+
+    <!-- Left: scrolling boot log -->
+    <div class="rl-logs" id="rl-log-container">
+      <div class="rl-prompt-line">root@revyl-kernel:~$ ./boot --init-sequence</div>
+    </div>
+
+    <!-- Right: static terminal session -->
+    <div class="rl-right">
+      <div class="rl-right-header">SESSION // revyl@node-01 — tty0</div>
+      <div class="rl-term-body">
+        <pre class="rl-ascii">
+ ██████╗ ███████╗██╗   ██╗██╗   ██╗██╗
+ ██╔══██╗██╔════╝██║   ██║╚██╗ ██╔╝██║
+ ██████╔╝█████╗  ██║   ██║ ╚████╔╝ ██║
+ ██╔══██╗██╔══╝  ╚██╗ ██╔╝  ╚██╔╝  ██║
+ ██║  ██║███████╗ ╚████╔╝    ██║   ███████╗
+ ╚═╝  ╚═╝╚══════╝  ╚═══╝     ╚═╝   ╚══════╝</pre>
+        <div class="rl-stat-row"><span class="rl-key">hostname</span><span style="color:#3d2b6e">............</span><span class="rl-val">revyl-node-01</span></div>
+        <div class="rl-stat-row"><span class="rl-key">kernel  </span><span style="color:#3d2b6e">............</span><span class="rl-val">rvl-1.0.0-release</span></div>
+        <div class="rl-stat-row"><span class="rl-key">uptime  </span><span style="color:#3d2b6e">............</span><span class="rl-val">0d 0h 0m 3s</span></div>
+        <div class="rl-stat-row"><span class="rl-key">devices </span><span style="color:#3d2b6e">............</span><span class="rl-val">10,000+ online</span></div>
+        <div class="rl-stat-row"><span class="rl-key">platform</span><span style="color:#3d2b6e">............</span><span class="rl-val">iOS + Android</span></div>
+        <div class="rl-stat-row"><span class="rl-key">latency </span><span style="color:#3d2b6e">............</span><span class="rl-val">&lt; 50ms</span></div>
+        <div class="rl-stat-row"><span class="rl-key">status  </span><span style="color:#3d2b6e">............</span><span class="rl-val" id="rl-status">INITIALIZING</span></div>
+      </div>
+      <div class="rl-bar-section">
+        <div class="rl-bar-meta">
+          <span>INIT PROGRESS</span>
+          <span id="rl-pct">0%</span>
+        </div>
+        <div class="rl-bar-track">
+          <div class="rl-bar-fill" id="rl-bar"></div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- Status bar -->
+  <div class="rl-statusbar">
+    <span><span class="rl-status-dot"></span>ACTIVE</span>
+    <span>KERNEL: 1.0.0</span>
+    <span>CLUSTERS: 128</span>
+    <span>TTY: /dev/tty0</span>
+    <span style="margin-left:auto">© 2024 REVYL TECHNOLOGIES</span>
+  </div>
+</div>
+<script is:inline>
+  (function() {
+    var params = new URLSearchParams(location.search);
+    if (params.has('skiploader')) {
+      var el = document.getElementById('revyl-loader');
+      if (el) { el.style.display = 'none'; el.remove(); }
+      window.__loaderSkip = true;
+    }
+  })();
+</script>
+
+<script>
+  (function() {
+    if (window.__loaderSkip) return;
+    const logs = [
+      { t: 'dim', m: '> dmesg | head -20' },
+      { t: '',    m: '[  0.000] Initializing kernel subsystems...' },
+      { t: '',    m: '[  0.142] cpu0: Neural Core x128 @ 4.2GHz' },
+      { t: '',    m: '[  0.285] mem: 1024GB LPDDR6 OK' },
+      { t: '',    m: '[  0.410] Loading device mesh pipeline...' },
+      { t: '',    m: '[  0.612] Initializing WebRTC bridge...' },
+      { t: 'ok',  m: '[  0.890] ok: streaming context established' },
+      { t: '',    m: '[  1.204] Loading AI test orchestrator...' },
+      { t: '',    m: '[  1.550] Syncing device farm: 10,000 nodes' },
+      { t: '',    m: '[  1.821] net: latency 48ms [STABLE]' },
+      { t: 'warn',m: '[  2.100] warn: parity mismatch node-04' },
+      { t: '',    m: '[  2.250] Correcting topology structures...' },
+      { t: 'ok',  m: '[  2.410] ok: parity restored' },
+      { t: '',    m: '[  2.700] Loading iOS 18.2 runtime...' },
+      { t: '',    m: '[  3.000] Loading Android 15 runtime...' },
+      { t: 'ok',  m: '[  3.200] ok: runtimes mounted' },
+      { t: '',    m: '[  3.400] CI/CD bridge loaded' },
+      { t: '',    m: '[  3.550] Verifying system entropy...' },
+      { t: 'ok',  m: '[  3.700] ok: entropy verified' },
+      { t: 'ok',  m: '[  3.850] REVYL ENGINE ONLINE — ready.' },
+    ];
+
+    const container = document.getElementById('rl-log-container');
+    const bar       = document.getElementById('rl-bar');
+    const pct       = document.getElementById('rl-pct');
+    const status    = document.getElementById('rl-status');
+    const loader    = document.getElementById('revyl-loader');
+    if (!container || !bar || !pct || !loader) return;
+
+    // keep a blinking cursor element at the bottom
+    const cursor = document.createElement('span');
+    cursor.className = 'rl-cursor';
+
+    const DURATION = 2600;
+    const interval = DURATION / logs.length;
+    let i = 0;
+
+    function tick() {
+      if (i >= logs.length) {
+        if (status) status.textContent = 'ONLINE';
+        return;
+      }
+      // remove cursor from wherever it was
+      cursor.remove();
+
+      const entry = logs[i];
+      const el = document.createElement('div');
+      el.className = 'rl-entry' + (entry.t ? ' ' + entry.t : '');
+      el.textContent = entry.m;
+      el.appendChild(cursor);
+      container.appendChild(el);
+      container.scrollTop = container.scrollHeight;
+
+      const p = Math.min(100, Math.floor((i / (logs.length - 1)) * 100));
+      bar.style.width = p + '%';
+      pct.textContent = p + '%';
+
+      i++;
+      if (i < logs.length) {
+        const jitter = (Math.random() - 0.5) * interval * 0.4;
+        setTimeout(tick, interval + jitter);
+      } else {
+        if (status) status.textContent = 'ONLINE';
+      }
+    }
+
+    setTimeout(tick, 150);
+
+    setTimeout(function() {
+      loader.classList.add('fade-out');
+      loader.addEventListener('transitionend', function() {
+        loader.remove();
+        sessionStorage.setItem(window.__LOADER_KEY || 'revyl_loader_v2', '1');
+      }, { once: true });
+    }, 3500);
+  })();
+</script>
+
+<!-- HUD HEADER -->
+<div class="hud-header">
+    <!-- Col 1: Menu -->
+    <div class="hud-col-menu">
+      <button class="hud-menu-btn" id="hud-menu-btn" aria-label="Open menu">
+        MENU
+        <div class="hud-menu-lines" aria-hidden="true">
+          <span></span>
+          <span></span>
+        </div>
+      </button>
+    </div>
+    <!-- Col 2: Logo -->
+    <div class="hud-col-logo">
+      <a href="/" class="hud-logo" aria-label="Revyl">
+        <img src="/images/container.svg" alt="Revyl" width="120" height="20" />
+      </a>
+      <span class="status-dot"></span>
+    </div>
+    <!-- Col 3: CTAs -->
+    <div class="hud-col-ctas">
+      <CTAButton href="https://app.revyl.ai/signup" variant="primary">Get started free</CTAButton>
+    </div>
+  </div>
+
+<div class="page-wrap" style="position: relative; background: var(--void); color: var(--fg); min-height: 100vh;">
+  <!-- Dot grid background -->
+  <div aria-hidden="true" style="
+    position: fixed; top: 0; bottom: 0; left: var(--rail); right: var(--rail);
+    z-index: 0; pointer-events: none;
+    background-image: radial-gradient(circle, rgba(196,161,255,0.22) 1px, transparent 1px);
+    background-size: 8px 8px;
+    opacity: 0.25;
+  "></div>
+
+  <!-- Fullscreen nav overlay -->
+  <div id="hud-nav" style="position: fixed; inset: 0; z-index: 1100; background: var(--void); visibility: hidden; opacity: 0; transition: opacity 0.26s ease, visibility 0.26s ease;">
+
+    <!-- dot matrix bg -->
+    <div class="dot-matrix" style="position: absolute; inset: 0; opacity: 0.12; pointer-events: none;"></div>
+
+    <!-- Top bar: logo | NAV | close -->
+    <div class="fnav-topbar">
+      <div class="fnav-topbar-logo">
+        <a href="/" class="hud-logo" aria-label="Revyl">
+          <img src="/images/container.svg" alt="Revyl" width="120" height="20" />
+        </a>
+      </div>
+      <div class="fnav-topbar-center">Navigation</div>
+      <div class="fnav-topbar-close">
+        <button id="hud-nav-close">CLOSE ×</button>
+      </div>
+    </div>
+
+    <!-- Main links — 3 columns, full height -->
+    <div class="fnav-body">
+      <!-- Col 1: Products -->
+      <div class="fnav-col">
+        <span class="fnav-section-label">Products</span>
+        <a href="/products/ios-testing" class="fnav-link">iOS Testing</a>
+        <a href="/products/android-testing" class="fnav-link">Android Testing</a>
+        <a href="/products/mobile-infrastructure" class="fnav-link">Infrastructure</a>
+      </div>
+      <!-- Col 2: Features -->
+      <div class="fnav-col">
+        <span class="fnav-section-label">Features</span>
+        <a href="/features/cli" class="fnav-link">CLI</a>
+        <a href="/features/mcp" class="fnav-link">MCP</a>
+        <a href="/features/crash-reporting" class="fnav-link">Reporting</a>
+      </div>
+      <!-- Col 3: Company -->
+      <div class="fnav-col">
+        <span class="fnav-section-label">Company</span>
+        <a href="/pricing" class="fnav-link">Pricing</a>
+        <a href="https://docs.revyl.com" class="fnav-link">Docs</a>
+        <a href="/blog" class="fnav-link">Blog</a>
+      </div>
+    </div>
+
+    <!-- Bottom bar: CTAs + links -->
+    <div class="fnav-bottom">
+      <div class="fnav-bottom-ctas">
+        <CTAButton href="https://app.revyl.ai/signup" variant="primary">Get started free</CTAButton>
+        <CTAButton href="https://cal.com/landseer-enga/book-a-demo" variant="secondary">Book a demo</CTAButton>
+      </div>
+      <div class="fnav-bottom-links">
+        <a href="https://x.com/tryrevyl" class="fnav-bottom-link">Twitter</a>
+        <a href="https://www.linkedin.com/company/revylai" class="fnav-bottom-link">LinkedIn</a>
+        <a href="https://github.com/RevylAI" class="fnav-bottom-link">GitHub</a>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- HERO -->
+  <div class="hero-grid">
+    <!-- LEFT: text content -->
+    <div class="hero-left">
+      <div style="padding: 8vh 4vw; flex-grow: 1; display: flex; flex-direction: column; justify-content: center;">
+        <span class="hero-label">Mobile Reliability Platform</span>
+        <h1 class="hero-title">The<br/>Mobile<br/>Reliability<br/>Platform.</h1>
+        <p class="hero-desc">
+          AI-native testing for iOS and Android.<br/>
+          Ship faster. Break nothing.
+        </p>
+        <div style="display: flex; gap: 12px; margin-top: 40px; flex-wrap: wrap;">
+          <CTAButton href="https://cal.com/landseer-enga/book-a-demo" variant="primary">Book a demo</CTAButton>
+          <CTAButton href="https://app.revyl.ai/signup" variant="secondary">Get started free</CTAButton>
+        </div>
+      </div>
+
+      <!-- Specs strip -->
+      <div class="specs-strip">
+        <div class="spec-cell">
+          <span class="spec-label">Parallel Sessions</span>
+          <span class="spec-value">10,000+</span>
+        </div>
+        <div class="spec-cell">
+          <span class="spec-label">Polling Latency</span>
+          <span class="spec-value">&lt; 50ms</span>
+        </div>
+        <div class="spec-cell">
+          <span class="spec-label">Platforms</span>
+          <span class="spec-value">iOS + Android</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- RIGHT: PhoneShader panel -->
+    <div class="hero-right">
+      <div class="scan-lines"></div>
+      <div style="position: absolute; inset: 0; z-index: 1; display: flex; align-items: center; justify-content: center; padding: 40px;">
+        <PhoneShader client:load />
+      </div>
+      <div class="overlay-ui">
+        <span class="ui-badge">RENDER: LIVE</span>
+        <div class="ui-coords">
+          iOS 18.2 · iPhone 16<br/>
+          DEVICE: ONLINE
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- FEATURES — sticky left nav + scrollable right panels -->
+  <div class="features-split">
+
+    <!-- LEFT: sticky nav -->
+    <div class="features-nav-col">
+    <div class="features-nav">
+      <div class="features-nav-list">
+        <a href="#feature-tests" class="features-nav-item is-active" data-target="feature-tests">
+          <span class="nav-indicator"></span>
+          <span>Plain English</span>
+          <svg class="nav-arrow" viewBox="0 0 24 24" fill="currentColor" width="16" height="16"><path d="M13.1717 12.0007L8.22192 7.05093L9.63614 5.63672L16.0001 12.0007L9.63614 18.3646L8.22192 16.9504L13.1717 12.0007Z"/></svg>
+        </a>
+        <a href="#feature-stream" class="features-nav-item" data-target="feature-stream">
+          <span class="nav-indicator"></span>
+          <span>Live Streaming</span>
+          <svg class="nav-arrow" viewBox="0 0 24 24" fill="currentColor" width="16" height="16"><path d="M13.1717 12.0007L8.22192 7.05093L9.63614 5.63672L16.0001 12.0007L9.63614 18.3646L8.22192 16.9504L13.1717 12.0007Z"/></svg>
+        </a>
+        <a href="#feature-traces" class="features-nav-item" data-target="feature-traces">
+          <span class="nav-indicator"></span>
+          <span>Exec Traces</span>
+          <svg class="nav-arrow" viewBox="0 0 24 24" fill="currentColor" width="16" height="16"><path d="M13.1717 12.0007L8.22192 7.05093L9.63614 5.63672L16.0001 12.0007L9.63614 18.3646L8.22192 16.9504L13.1717 12.0007Z"/></svg>
+        </a>
+      </div>
+    </div>
+    </div><!-- /features-nav-col -->
+
+    <!-- RIGHT: scrollable content -->
+    <div class="features-content">
+
+      <!-- Panel 01: Write tests in plain English -->
+      <div class="feature-panel" id="feature-tests">
+        <div class="feature-panel-top">
+          <span class="feature-panel-index">01 — Plain Language</span>
+          <h3 class="feature-panel-title">Write tests in<br/>plain English</h3>
+          <p class="feature-panel-desc">No page objects. No selectors. Describe what you want to test and the AI agent figures out the rest — tap targets, scroll positions, assertions.</p>
+        </div>
+
+        <div class="feature-panel-illustration">
+          <svg width="100%" height="100%" viewBox="0 0 560 340" fill="none" xmlns="http://www.w3.org/2000/svg" style="max-width:560px; opacity:0.9;">
+            <!-- Editor frame -->
+            <rect x="0" y="0" width="560" height="340" rx="2" stroke="rgba(255,255,255,0.08)" stroke-width="1" fill="rgba(255,255,255,0.02)"/>
+            <!-- Title bar -->
+            <rect x="0" y="0" width="560" height="36" fill="rgba(255,255,255,0.03)"/>
+            <circle cx="20" cy="18" r="5" fill="rgba(255,255,255,0.08)"/>
+            <circle cx="38" cy="18" r="5" fill="rgba(255,255,255,0.08)"/>
+            <circle cx="56" cy="18" r="5" fill="rgba(255,255,255,0.08)"/>
+            <text x="80" y="22" font-family="monospace" font-size="10" fill="rgba(255,255,255,0.2)" letter-spacing="1">test_login.rvl — Revyl</text>
+            <!-- Line numbers bg -->
+            <rect x="0" y="36" width="48" height="304" fill="rgba(255,255,255,0.015)"/>
+            <!-- Line numbers -->
+            <text x="18" y="70"  font-family="monospace" font-size="11" fill="rgba(255,255,255,0.12)">1</text>
+            <text x="18" y="96"  font-family="monospace" font-size="11" fill="rgba(255,255,255,0.12)">2</text>
+            <text x="18" y="122" font-family="monospace" font-size="11" fill="rgba(255,255,255,0.12)">3</text>
+            <text x="18" y="148" font-family="monospace" font-size="11" fill="rgba(255,255,255,0.12)">4</text>
+            <text x="18" y="174" font-family="monospace" font-size="11" fill="rgba(255,255,255,0.12)">5</text>
+            <text x="18" y="200" font-family="monospace" font-size="11" fill="rgba(255,255,255,0.12)">6</text>
+            <text x="18" y="226" font-family="monospace" font-size="11" fill="rgba(255,255,255,0.12)">7</text>
+            <text x="18" y="252" font-family="monospace" font-size="11" fill="rgba(255,255,255,0.12)">8</text>
+            <!-- Active line highlight -->
+            <rect x="48" y="136" width="512" height="22" fill="rgba(196,161,255,0.06)"/>
+            <!-- Code -->
+            <text x="64" y="70"  font-family="monospace" font-size="11" fill="#C4A1FF">test</text>
+            <text x="104" y="70" font-family="monospace" font-size="11" fill="rgba(255,255,255,0.5)">"User login flow"</text>
+            <text x="64" y="96"  font-family="monospace" font-size="11" fill="rgba(255,255,255,0.25)">  // open app</text>
+            <text x="64" y="122" font-family="monospace" font-size="11" fill="rgba(255,255,255,0.4)">  launch</text>
+            <text x="132" y="122" font-family="monospace" font-size="11" fill="rgba(255,255,255,0.6)">MyApp</text>
+            <text x="64" y="148" font-family="monospace" font-size="11" fill="rgba(255,255,255,0.4)">  tap</text>
+            <text x="100" y="148" font-family="monospace" font-size="11" fill="#e0c9ff">"Login button"</text>
+            <text x="64" y="174" font-family="monospace" font-size="11" fill="rgba(255,255,255,0.4)">  enter</text>
+            <text x="116" y="174" font-family="monospace" font-size="11" fill="#e0c9ff">"user@acme.com"</text>
+            <text x="64" y="200" font-family="monospace" font-size="11" fill="rgba(255,255,255,0.4)">  enter</text>
+            <text x="116" y="200" font-family="monospace" font-size="11" fill="#e0c9ff">"my_password"</text>
+            <text x="64" y="226" font-family="monospace" font-size="11" fill="rgba(255,255,255,0.4)">  assert</text>
+            <text x="124" y="226" font-family="monospace" font-size="11" fill="#4ade80">"Dashboard visible"</text>
+            <!-- Status bar -->
+            <rect x="0" y="304" width="560" height="36" fill="rgba(196,161,255,0.04)" stroke="rgba(196,161,255,0.1)" stroke-width="0" />
+            <line x1="0" y1="304" x2="560" y2="304" stroke="rgba(255,255,255,0.06)" stroke-width="1"/>
+            <circle cx="20" cy="322" r="5" fill="#4ade80"/>
+            <text x="34" y="326" font-family="monospace" font-size="10" fill="rgba(255,255,255,0.35)" letter-spacing="1">PASSED · 1.2s · 4 steps · iOS 18.2 iPhone 16 Pro</text>
+          </svg>
+        </div>
+
+        <div class="feature-panel-footer">
+          <a href="https://docs.revyl.com" class="feature-panel-link">Read the docs <span>↗</span></a>
+          <a href="https://app.revyl.ai/signup" class="feature-panel-link">Try it free <span>→</span></a>
+        </div>
+      </div>
+
+      <!-- Panel 02: Live device streaming -->
+      <div class="feature-panel" id="feature-stream">
+        <div class="feature-panel-top">
+          <span class="feature-panel-index">02 — Live Streaming</span>
+          <h3 class="feature-panel-title">Watch devices<br/>run live</h3>
+          <p class="feature-panel-desc">WebRTC-powered device streaming at 24–30fps. See every tap, scroll, and assertion play out in real time — from anywhere in the world.</p>
+        </div>
+
+        <div class="feature-panel-illustration">
+          <svg width="100%" height="100%" viewBox="0 0 560 340" fill="none" xmlns="http://www.w3.org/2000/svg" style="max-width:560px;">
+            <!-- Grid background -->
+            <defs>
+              <pattern id="grid" width="24" height="24" patternUnits="userSpaceOnUse">
+                <path d="M 24 0 L 0 0 0 24" fill="none" stroke="rgba(255,255,255,0.04)" stroke-width="0.5"/>
+              </pattern>
+            </defs>
+            <rect width="560" height="340" fill="url(#grid)" rx="2"/>
+            <!-- 3 phones side by side -->
+            <!-- Phone 1 (active) -->
+            <rect x="60" y="30" width="110" height="190" rx="10" stroke="rgba(196,161,255,0.6)" stroke-width="1.5" fill="rgba(196,161,255,0.04)"/>
+            <rect x="68" y="44" width="94" height="164" fill="rgba(0,0,0,0.5)"/>
+            <circle cx="115" cy="38" r="3" fill="rgba(196,161,255,0.4)"/>
+            <!-- REC indicator -->
+            <circle cx="148" cy="38" r="4" fill="#ef4444"/>
+            <text x="155" y="41" font-family="monospace" font-size="7" fill="rgba(255,255,255,0.5)">REC</text>
+            <!-- Phone 1 screen content -->
+            <rect x="76" y="54" width="78" height="10" rx="1" fill="rgba(255,255,255,0.12)"/>
+            <rect x="76" y="70" width="54" height="8" rx="1" fill="rgba(255,255,255,0.06)"/>
+            <rect x="76" y="92" width="78" height="24" rx="2" fill="rgba(196,161,255,0.2)" stroke="rgba(196,161,255,0.4)" stroke-width="0.5"/>
+            <text x="99" y="108" font-family="monospace" font-size="8" fill="rgba(196,161,255,0.9)">Log In</text>
+            <!-- Touch indicator -->
+            <circle cx="115" cy="104" r="12" stroke="rgba(196,161,255,0.5)" stroke-width="1" fill="none"/>
+            <circle cx="115" cy="104" r="4" fill="rgba(196,161,255,0.4)"/>
+            <!-- Phone 1 label -->
+            <text x="70" y="234" font-family="monospace" font-size="8" fill="rgba(196,161,255,0.7)" letter-spacing="0.5">iOS 18.2</text>
+            <text x="70" y="246" font-family="monospace" font-size="8" fill="rgba(255,255,255,0.25)">iPhone 16 Pro</text>
+
+            <!-- Phone 2 -->
+            <rect x="225" y="30" width="110" height="190" rx="10" stroke="rgba(255,255,255,0.12)" stroke-width="1" fill="rgba(255,255,255,0.02)"/>
+            <rect x="233" y="44" width="94" height="164" fill="rgba(0,0,0,0.5)"/>
+            <circle cx="280" cy="38" r="3" fill="rgba(255,255,255,0.15)"/>
+            <rect x="241" y="54" width="78" height="10" rx="1" fill="rgba(255,255,255,0.08)"/>
+            <rect x="241" y="70" width="54" height="8" rx="1" fill="rgba(255,255,255,0.04)"/>
+            <rect x="241" y="92" width="78" height="24" rx="2" fill="rgba(255,255,255,0.06)" stroke="rgba(255,255,255,0.12)" stroke-width="0.5"/>
+            <text x="264" y="108" font-family="monospace" font-size="8" fill="rgba(255,255,255,0.5)">Log In</text>
+            <text x="235" y="234" font-family="monospace" font-size="8" fill="rgba(255,255,255,0.3)" letter-spacing="0.5">Android 15</text>
+            <text x="235" y="246" font-family="monospace" font-size="8" fill="rgba(255,255,255,0.15)">Pixel 9 Pro</text>
+
+            <!-- Phone 3 -->
+            <rect x="390" y="30" width="110" height="190" rx="10" stroke="rgba(255,255,255,0.12)" stroke-width="1" fill="rgba(255,255,255,0.02)"/>
+            <rect x="398" y="44" width="94" height="164" fill="rgba(0,0,0,0.5)"/>
+            <circle cx="445" cy="38" r="3" fill="rgba(255,255,255,0.15)"/>
+            <rect x="406" y="54" width="78" height="10" rx="1" fill="rgba(255,255,255,0.08)"/>
+            <rect x="406" y="70" width="54" height="8" rx="1" fill="rgba(255,255,255,0.04)"/>
+            <rect x="406" y="92" width="78" height="24" rx="2" fill="rgba(255,255,255,0.06)" stroke="rgba(255,255,255,0.12)" stroke-width="0.5"/>
+            <text x="429" y="108" font-family="monospace" font-size="8" fill="rgba(255,255,255,0.5)">Log In</text>
+            <text x="400" y="234" font-family="monospace" font-size="8" fill="rgba(255,255,255,0.3)" letter-spacing="0.5">iOS 17.6</text>
+            <text x="400" y="246" font-family="monospace" font-size="8" fill="rgba(255,255,255,0.15)">iPhone 15</text>
+
+            <!-- Stream stats bar -->
+            <rect x="0" y="278" width="560" height="62" fill="rgba(0,0,0,0.4)" stroke="rgba(255,255,255,0.06)" stroke-width="0"/>
+            <line x1="0" y1="278" x2="560" y2="278" stroke="rgba(255,255,255,0.08)" stroke-width="1"/>
+            <text x="20" y="298" font-family="monospace" font-size="9" fill="rgba(255,255,255,0.2)" letter-spacing="1">STREAM STATS</text>
+            <!-- Stats -->
+            <text x="20" y="322" font-family="monospace" font-size="10" fill="#C4A1FF">24fps</text>
+            <text x="20" y="334" font-family="monospace" font-size="8" fill="rgba(255,255,255,0.2)">framerate</text>
+            <text x="120" y="322" font-family="monospace" font-size="10" fill="#C4A1FF">48ms</text>
+            <text x="120" y="334" font-family="monospace" font-size="8" fill="rgba(255,255,255,0.2)">latency</text>
+            <text x="210" y="322" font-family="monospace" font-size="10" fill="#C4A1FF">WebRTC</text>
+            <text x="210" y="334" font-family="monospace" font-size="8" fill="rgba(255,255,255,0.2)">protocol</text>
+            <text x="310" y="322" font-family="monospace" font-size="10" fill="#4ade80">● LIVE</text>
+            <text x="310" y="334" font-family="monospace" font-size="8" fill="rgba(255,255,255,0.2)">3 devices</text>
+          </svg>
+        </div>
+
+        <div class="feature-panel-footer">
+          <a href="https://docs.revyl.com" class="feature-panel-link">Start streaming <span>↗</span></a>
+          <a href="https://app.revyl.ai/signup" class="feature-panel-link">Try it free <span>→</span></a>
+        </div>
+      </div>
+
+      <!-- Panel 03: Execution traces -->
+      <div class="feature-panel" id="feature-traces">
+        <div class="feature-panel-top">
+          <span class="feature-panel-index">03 — Execution Traces</span>
+          <h3 class="feature-panel-title">Know exactly<br/>what went wrong</h3>
+          <p class="feature-panel-desc">Video clips of every action. Step-by-step traces with timestamps, screenshots at each step, and one-click shareable failure reports.</p>
+        </div>
+
+        <div class="feature-panel-illustration">
+          <svg width="100%" height="100%" viewBox="0 0 560 340" fill="none" xmlns="http://www.w3.org/2000/svg" style="max-width:560px; opacity:0.9;">
+            <!-- Report card bg -->
+            <rect x="0" y="0" width="560" height="340" rx="2" stroke="rgba(255,255,255,0.08)" stroke-width="1" fill="rgba(255,255,255,0.02)"/>
+            <!-- Header -->
+            <rect x="0" y="0" width="560" height="48" fill="rgba(255,255,255,0.025)"/>
+            <line x1="0" y1="48" x2="560" y2="48" stroke="rgba(255,255,255,0.08)" stroke-width="1"/>
+            <text x="24" y="28" font-family="monospace" font-size="10" fill="rgba(255,255,255,0.3)" letter-spacing="1">EXECUTION TRACE</text>
+            <text x="24" y="42" font-family="monospace" font-size="9" fill="rgba(255,255,255,0.15)">test_login.rvl · run #4821 · 2024-01-15 09:41:22</text>
+            <!-- PASS badge -->
+            <rect x="480" y="12" width="60" height="22" rx="1" fill="rgba(74,222,128,0.1)" stroke="rgba(74,222,128,0.3)" stroke-width="1"/>
+            <text x="493" y="27" font-family="monospace" font-size="9" fill="#4ade80" letter-spacing="1">PASS</text>
+
+            <!-- Trace steps -->
+            <!-- Step 1 -->
+            <line x1="40" y1="72" x2="40" y2="108" stroke="rgba(196,161,255,0.2)" stroke-width="1" stroke-dasharray="2,2"/>
+            <circle cx="40" cy="72" r="6" fill="rgba(196,161,255,0.15)" stroke="#C4A1FF" stroke-width="1"/>
+            <text x="40" y="75" font-family="monospace" font-size="7" fill="#C4A1FF" text-anchor="middle">1</text>
+            <text x="60" y="68" font-family="monospace" font-size="11" fill="rgba(255,255,255,0.7)">launch(MyApp)</text>
+            <text x="60" y="82" font-family="monospace" font-size="9" fill="rgba(255,255,255,0.25)">app_launched · cold_start</text>
+            <rect x="420" y="60" width="48" height="18" rx="1" fill="rgba(255,255,255,0.03)" stroke="rgba(255,255,255,0.08)" stroke-width="0.5"/>
+            <text x="434" y="73" font-family="monospace" font-size="9" fill="rgba(255,255,255,0.25)">0.3s</text>
+
+            <!-- Step 2 -->
+            <line x1="40" y1="110" x2="40" y2="148" stroke="rgba(196,161,255,0.2)" stroke-width="1" stroke-dasharray="2,2"/>
+            <circle cx="40" cy="110" r="6" fill="rgba(196,161,255,0.15)" stroke="#C4A1FF" stroke-width="1"/>
+            <text x="40" y="113" font-family="monospace" font-size="7" fill="#C4A1FF" text-anchor="middle">2</text>
+            <text x="60" y="106" font-family="monospace" font-size="11" fill="rgba(255,255,255,0.7)">tap("Login button")</text>
+            <text x="60" y="120" font-family="monospace" font-size="9" fill="rgba(255,255,255,0.25)">element_found · coords (187, 412)</text>
+            <rect x="420" y="98" width="48" height="18" rx="1" fill="rgba(255,255,255,0.03)" stroke="rgba(255,255,255,0.08)" stroke-width="0.5"/>
+            <text x="434" y="111" font-family="monospace" font-size="9" fill="rgba(255,255,255,0.25)">0.1s</text>
+
+            <!-- Step 3 -->
+            <line x1="40" y1="150" x2="40" y2="188" stroke="rgba(196,161,255,0.2)" stroke-width="1" stroke-dasharray="2,2"/>
+            <circle cx="40" cy="150" r="6" fill="rgba(196,161,255,0.15)" stroke="#C4A1FF" stroke-width="1"/>
+            <text x="40" y="153" font-family="monospace" font-size="7" fill="#C4A1FF" text-anchor="middle">3</text>
+            <text x="60" y="146" font-family="monospace" font-size="11" fill="rgba(255,255,255,0.7)">enter("user@acme.com")</text>
+            <text x="60" y="160" font-family="monospace" font-size="9" fill="rgba(255,255,255,0.25)">keyboard_input · 13 chars</text>
+            <rect x="420" y="138" width="48" height="18" rx="1" fill="rgba(255,255,255,0.03)" stroke="rgba(255,255,255,0.08)" stroke-width="0.5"/>
+            <text x="434" y="151" font-family="monospace" font-size="9" fill="rgba(255,255,255,0.25)">0.8s</text>
+
+            <!-- Step 4 -->
+            <line x1="40" y1="190" x2="40" y2="228" stroke="rgba(74,222,128,0.2)" stroke-width="1" stroke-dasharray="2,2"/>
+            <circle cx="40" cy="190" r="6" fill="rgba(74,222,128,0.12)" stroke="#4ade80" stroke-width="1"/>
+            <text x="40" y="193" font-family="monospace" font-size="7" fill="#4ade80" text-anchor="middle">4</text>
+            <text x="60" y="186" font-family="monospace" font-size="11" fill="rgba(255,255,255,0.7)">assert("Dashboard visible")</text>
+            <text x="60" y="200" font-family="monospace" font-size="9" fill="#4ade80">✓ element_found · visible · in_viewport</text>
+            <rect x="420" y="178" width="48" height="18" rx="1" fill="rgba(74,222,128,0.05)" stroke="rgba(74,222,128,0.25)" stroke-width="0.5"/>
+            <text x="434" y="191" font-family="monospace" font-size="9" fill="#4ade80">PASS</text>
+
+            <!-- Summary bar -->
+            <line x1="0" y1="278" x2="560" y2="278" stroke="rgba(255,255,255,0.06)" stroke-width="1"/>
+            <rect x="0" y="278" width="560" height="62" fill="rgba(74,222,128,0.03)"/>
+            <circle cx="24" cy="309" r="5" fill="#4ade80"/>
+            <text x="38" y="313" font-family="monospace" font-size="10" fill="rgba(255,255,255,0.4)">All 4 steps passed · total 1.2s · iOS 18.2 · iPhone 16 Pro</text>
+            <text x="38" y="328" font-family="monospace" font-size="9" fill="rgba(255,255,255,0.2)">Share report → revyl.ai/r/4821</text>
+          </svg>
+        </div>
+
+        <div class="feature-panel-footer">
+          <a href="https://docs.revyl.com" class="feature-panel-link">View sample report <span>↗</span></a>
+          <a href="https://app.revyl.ai/signup" class="feature-panel-link">Try it free <span>→</span></a>
+        </div>
+      </div>
+
+    </div><!-- /features-content -->
+  </div><!-- /features-split -->
+
+  <script>
+  // Highlight active nav item based on scroll position
+  (function() {
+    const navItems = document.querySelectorAll('.features-nav-item[data-target]');
+    const panels = document.querySelectorAll('.feature-panel[id]');
+    if (!navItems.length || !panels.length) return;
+
+    function onScroll() {
+      let active = panels[0].id;
+      panels.forEach(panel => {
+        const rect = panel.getBoundingClientRect();
+        if (rect.top <= window.innerHeight * 0.4) {
+          active = panel.id;
+        }
+      });
+      navItems.forEach(item => {
+        item.classList.toggle('is-active', item.dataset.target === active);
+      });
+    }
+
+    window.addEventListener('scroll', onScroll, { passive: true });
+    onScroll();
+
+    // Smooth scroll on click
+    navItems.forEach(item => {
+      item.addEventListener('click', (e) => {
+        e.preventDefault();
+        const target = document.getElementById(item.dataset.target);
+        if (target) target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+      });
+    });
+  })();
+  </script>
+
+  <!-- PERFORMANCE -->
+  <section style="border-bottom: 1px solid var(--border);">
+    <div class="section-inner">
+      <span class="section-label">Performance</span>
+      <h2 style="font-family: var(--display); font-size: clamp(2rem, 5vw, 4rem); font-weight: 300; letter-spacing: -0.04em; text-transform: uppercase; margin-bottom: 16px;">Built for speed and scale</h2>
+      <p style="font-family: var(--sans); font-size: 14px; color: var(--fg2); max-width: 560px; line-height: 1.7; margin-bottom: 0;">
+        Optimized for the tight loop an AI agent needs: capture the screen, ground the instruction, execute the action, verify the result.
+      </p>
+    </div>
+
+    <!-- Vertical dot-pattern bar charts — edge to edge -->
+    <div class="perf-grid" style="display: grid; grid-template-columns: 1fr 1fr; border-top: 1px solid var(--border); border-bottom: 1px solid var(--border); margin-top: 48px; margin-bottom: 0;">
+
+      <!-- Chart 1: State Polling Latency -->
+      <div class="vbar-chart-wrap">
+        <div class="vbar-chart-title">FIG 1 — State Polling Latency</div>
+        <div class="vbar-chart-body">
+          <!-- Y-axis -->
+          <div class="vbar-yaxis">
+            <div class="vbar-ylabel">80%</div>
+            <div class="vbar-ylabel">60%</div>
+            <div class="vbar-ylabel">40%</div>
+            <div class="vbar-ylabel">20%</div>
+            <div class="vbar-ylabel">&nbsp;</div>
+          </div>
+          <!-- Plot area -->
+          <div class="vbar-plot">
+            <!-- Gridlines at 20/40/60/80% from bottom -->
+            <div class="vbar-gridlines">
+              <div class="vbar-gridline" style="bottom: calc(20% + 24px);"></div>
+              <div class="vbar-gridline" style="bottom: calc(40% + 24px);"></div>
+              <div class="vbar-gridline" style="bottom: calc(60% + 24px);"></div>
+              <div class="vbar-gridline" style="bottom: calc(80% + 24px);"></div>
+            </div>
+            <!-- Bars -->
+            <div class="vbar-bars">
+              <div class="vbar-col is-revyl">
+                <div class="vbar is-revyl" style="height: 7%;">
+                  <span class="vbar-badge">~50ms</span>
+                </div>
+                <div class="vbar-xlabel">Revyl</div>
+              </div>
+              <div class="vbar-col">
+                <div class="vbar" style="height: 57%;">
+                  <span class="vbar-badge">~400ms</span>
+                </div>
+                <div class="vbar-xlabel">In-house</div>
+              </div>
+              <div class="vbar-col">
+                <div class="vbar" style="height: 86%;">
+                  <span class="vbar-badge">~650ms</span>
+                </div>
+                <div class="vbar-xlabel">Browser­Stack</div>
+              </div>
+              <div class="vbar-col">
+                <div class="vbar" style="height: 93%;">
+                  <span class="vbar-badge">~700ms</span>
+                </div>
+                <div class="vbar-xlabel">Sauce Labs</div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <p style="font-family: var(--mono); font-size: 11px; color: var(--fg3); margin-top: 12px; line-height: 1.5;">Latency based on internal benchmarks vs leading device farm providers.</p>
+      </div>
+
+      <!-- Chart 2: Time to First Device Action -->
+      <div class="vbar-chart-wrap">
+        <div class="vbar-chart-title">FIG 2 — Time to First Device Action</div>
+        <div class="vbar-chart-body">
+          <!-- Y-axis -->
+          <div class="vbar-yaxis">
+            <div class="vbar-ylabel">80%</div>
+            <div class="vbar-ylabel">60%</div>
+            <div class="vbar-ylabel">40%</div>
+            <div class="vbar-ylabel">20%</div>
+            <div class="vbar-ylabel">&nbsp;</div>
+          </div>
+          <!-- Plot area -->
+          <div class="vbar-plot">
+            <!-- Gridlines -->
+            <div class="vbar-gridlines">
+              <div class="vbar-gridline" style="bottom: calc(20% + 24px);"></div>
+              <div class="vbar-gridline" style="bottom: calc(40% + 24px);"></div>
+              <div class="vbar-gridline" style="bottom: calc(60% + 24px);"></div>
+              <div class="vbar-gridline" style="bottom: calc(80% + 24px);"></div>
+            </div>
+            <!-- Bars -->
+            <div class="vbar-bars">
+              <div class="vbar-col is-revyl">
+                <div class="vbar is-revyl" style="height: 4%;">
+                  <span class="vbar-badge">~8s</span>
+                </div>
+                <div class="vbar-xlabel">Revyl</div>
+              </div>
+              <div class="vbar-col">
+                <div class="vbar" style="height: 25%;">
+                  <span class="vbar-badge">~45s</span>
+                </div>
+                <div class="vbar-xlabel">Browser­Stack</div>
+              </div>
+              <div class="vbar-col">
+                <div class="vbar" style="height: 33%;">
+                  <span class="vbar-badge">~60s</span>
+                </div>
+                <div class="vbar-xlabel">Sauce Labs</div>
+              </div>
+              <div class="vbar-col">
+                <div class="vbar" style="height: 100%;">
+                  <span class="vbar-badge">~180s</span>
+                </div>
+                <div class="vbar-xlabel">In-house</div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <p style="font-family: var(--mono); font-size: 11px; color: var(--fg3); margin-top: 12px; line-height: 1.5;">Time from test trigger to first action on a real device, across 100 runs.</p>
+      </div>
+
+    </div>
+
+    <!-- Numbers grid — edge to edge -->
+    <div class="numbers-grid">
+      <div class="numbers-marquee" aria-label="Key platform stats">
+        <div class="numbers-track">
+          <div class="number-cell">
+            <div class="number-label">Parallel Sessions</div>
+            <div class="number-value">10,000+</div>
+          </div>
+          <div class="number-cell">
+            <div class="number-label">FPS Streaming</div>
+            <div class="number-value">24–30</div>
+          </div>
+          <div class="number-cell">
+            <div class="number-label">Polling Latency</div>
+            <div class="number-value">~50ms</div>
+          </div>
+          <div class="number-cell">
+            <div class="number-label">Compute Tiers</div>
+            <div class="number-value">3</div>
+          </div>
+        </div>
+        <div class="numbers-track" aria-hidden="true">
+          <div class="number-cell">
+            <div class="number-label">Parallel Sessions</div>
+            <div class="number-value">10,000+</div>
+          </div>
+          <div class="number-cell">
+            <div class="number-label">FPS Streaming</div>
+            <div class="number-value">24–30</div>
+          </div>
+          <div class="number-cell">
+            <div class="number-label">Polling Latency</div>
+            <div class="number-value">~50ms</div>
+          </div>
+          <div class="number-cell">
+            <div class="number-label">Compute Tiers</div>
+            <div class="number-value">3</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- SCALE -->
+  <section style="border-bottom: 1px solid var(--border);">
+    <div class="section-inner">
+      <span class="section-label">Scale</span>
+      <h2 style="font-family: var(--display); font-size: clamp(2rem, 5vw, 4rem); font-weight: 300; letter-spacing: -0.04em; text-transform: uppercase; margin-bottom: 16px;">Every build. Every PR. Every time.</h2>
+      <p style="font-family: var(--sans); font-size: 14px; color: var(--fg2); max-width: 560px; line-height: 1.7; margin-bottom: 0;">
+        Massively parallel execution across iOS and Android. Cut your test suite from hours to minutes.
+      </p>
+    </div>
+
+    <!-- Scale grid — edge to edge -->
+    <div class="scale-grid" style="margin-top: 48px;">
+      <div class="scale-card">
+        <div class="scale-card-title">Parallel Test Runs</div>
+        <img src="/images/2.svg" alt="Parallel test execution" style="width: 100%; height: auto;" />
+      </div>
+      <div class="scale-card">
+        <div class="scale-card-title">Reporting</div>
+        <img src="/images/1.svg" alt="Test reporting dashboard" style="width: 100%; height: auto;" />
+      </div>
+      <div class="scale-card">
+        <div class="scale-card-title">Drag and Drop .zip / .apk / .app to get started</div>
+        <img src="/images/3.svg" alt="Drag and drop app upload" style="width: 100%; height: auto;" />
+      </div>
+      <div class="scale-card">
+        <div class="scale-card-title">Call from CI/CD</div>
+        <img src="/images/5.svg" alt="CI/CD integrations" style="width: 100%; height: auto;" />
+      </div>
+    </div>
+  </section>
+
+  <!-- HUD GRID CTA -->
+  <section class="ascii-cta">
+    <canvas id="hud-grid" aria-hidden="true" style="position:absolute;inset:0;width:100%;height:100%;pointer-events:none;"></canvas>
+    <div class="ascii-cta-content">
+      <h2 class="ascii-cta-title">
+        Ship mobile.<br/>
+        Ship with <em>confidence.</em>
+      </h2>
+      <div class="ascii-cta-actions">
+        <CTAButton href="https://app.revyl.ai/signup" variant="primary">Get started free</CTAButton>
+        <CTAButton href="https://cal.com/landseer-enga/book-a-demo" variant="secondary">Book a demo</CTAButton>
+      </div>
+    </div>
+    <svg class="ascii-cta-logo" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 88 25" fill="none">
+      <path d="M6.42281 12.5L15.2597 21.3015L12.0483 24.5L0 12.5L12.0483 0.5L15.2597 3.69855L6.42281 12.5Z" fill="currentColor"/>
+      <path d="M30.5237 12.5L18.4755 24.5L15.264 21.3015L24.1009 12.5L15.2597 3.69855L18.4711 0.5L30.5193 12.5H30.5237Z" fill="currentColor"/>
+      <path d="M9.6386 12.5L15.2597 6.90145L20.8807 12.5L15.2597 18.0985L9.6386 12.5Z" fill="currentColor"/>
+      <path d="M36.1424 19.4526V5.31441H43.1873C44.6594 5.31441 45.816 5.65187 46.6572 6.32678C47.4984 7.00169 47.919 7.95005 47.919 9.17187C47.919 9.87005 47.7613 10.481 47.4459 11.0046C47.1304 11.5166 46.6631 11.9122 46.0439 12.1915V12.2613C46.6397 12.2613 47.1012 12.4242 47.4283 12.7501C47.7555 13.0642 47.919 13.5239 47.919 14.129V19.4526H45.5006V13.8497H38.5783V19.4526H36.1424ZM38.5783 11.7901H42.9946C43.8007 11.7901 44.4199 11.5981 44.8522 11.2141C45.2962 10.8301 45.5181 10.289 45.5181 9.59078C45.5181 8.88096 45.2962 8.33987 44.8522 7.9675C44.4199 7.5835 43.8007 7.39151 42.9946 7.39151H38.5783V11.7901Z" fill="currentColor"/>
+      <path d="M55.4853 19.6621C54.3754 19.6621 53.4057 19.441 52.5762 18.9988C51.7584 18.545 51.1275 17.905 50.6835 17.0788C50.2396 16.2526 50.0176 15.2868 50.0176 14.1813C50.0176 13.0759 50.2337 12.1217 50.666 11.3188C51.11 10.5042 51.735 9.87587 52.5412 9.43369C53.3473 8.9915 54.2995 8.77041 55.3977 8.77041C56.4492 8.77041 57.3546 8.97987 58.114 9.39878C58.8734 9.80605 59.4576 10.3937 59.8665 11.1617C60.2871 11.9181 60.4974 12.8199 60.4974 13.8671V14.7399H52.2958C52.3893 15.694 52.7106 16.433 53.2597 16.9566C53.8088 17.4686 54.5448 17.7246 55.4678 17.7246C56.1454 17.7246 56.7004 17.5966 57.1326 17.3406C57.5649 17.0846 57.8628 16.7006 58.0264 16.1886H60.4448C60.1878 17.2824 59.6212 18.1377 58.7449 18.7544C57.8804 19.3595 56.7938 19.6621 55.4853 19.6621ZM52.3659 13.0817H58.2192C58.1257 12.3137 57.8336 11.726 57.3429 11.3188C56.8523 10.8999 56.2038 10.6904 55.3977 10.6904C54.5916 10.6904 53.9256 10.8999 53.3999 11.3188C52.8741 11.726 52.5295 12.3137 52.3659 13.0817Z" fill="currentColor"/>
+      <path d="M65.4528 19.4526L60.9665 8.97987H63.4725L66.7321 16.8344H66.8022L70.0092 8.97987H72.4452L67.9588 19.4526H65.4528Z" fill="currentColor"/>
+      <path d="M73.8962 23.6417V21.7391H76.3321L77.296 19.4351L72.6694 8.97987H75.1579L78.4701 16.6599H78.5577L81.7472 8.97987H84.1306L79.6443 19.4526L78.6804 21.7217C78.4234 22.3268 78.143 22.7981 77.8392 23.1355C77.5471 23.473 77.0623 23.6417 76.3847 23.6417H73.8962Z" fill="currentColor"/>
+      <path d="M85.6166 19.4526V4.79078H88V19.4526H85.6166Z" fill="currentColor"/>
+    </svg>
+  </section>
+
+  <script>
+  (function () {
+    const canvas = document.getElementById('hud-grid');
+    if (!canvas) return;
+    const ctx = canvas.getContext('2d');
+
+    const CELL  = 8;
+    const MAX_R = 1.2;
+    const MIN_R = 0.13;
+
+    let mx = -9999, my = -9999;
+    let tmx = -9999, tmy = -9999;
+    let hasMoused = false;
+
+    const section = canvas.closest('section');
+
+    section.addEventListener('mousemove', (e) => {
+      const r = section.getBoundingClientRect();
+      tmx = e.clientX - r.left;
+      tmy = e.clientY - r.top;
+      hasMoused = true;
+    }, { passive: true });
+
+    section.addEventListener('mouseleave', () => {
+      hasMoused = false;
+      tmx = -9999; tmy = -9999;
+    });
+
+    function resize() {
+      canvas.width  = section.offsetWidth;
+      canvas.height = section.offsetHeight;
+    }
+    resize();
+    window.addEventListener('resize', resize, { passive: true });
+
+    function draw() {
+      if (hasMoused) {
+        mx += (tmx - mx) * 0.08;
+        my += (tmy - my) * 0.08;
+      } else {
+        mx = -9999; my = -9999;
+      }
+
+      const W = canvas.width;
+      const H = canvas.height;
+      ctx.clearRect(0, 0, W, H);
+
+      const cols = Math.ceil(W / CELL) + 1;
+      const rows = Math.ceil(H / CELL) + 1;
+      const diagMax = Math.hypot(W, H);
+
+      for (let r = 0; r < rows; r++) {
+        for (let c = 0; c < cols; c++) {
+          const x = c * CELL;
+          const y = r * CELL;
+
+          // Base size: large top-left, fades diagonally toward bottom-right
+          const diagDist = Math.hypot(x, y);
+          const baseT = Math.max(0, 1 - (diagDist / diagMax) * 1.35);
+          const baseR = MIN_R + (MAX_R - MIN_R) * Math.pow(baseT, 1.4);
+
+          // Mouse proximity boost
+          let boost = 0;
+          if (hasMoused) {
+            const d = Math.hypot(x - mx, y - my);
+            const prox = Math.max(0, 1 - d / 80);
+            boost = MAX_R * 2.5 * prox * prox;
+          }
+
+          const radius = Math.min(MAX_R * 2, baseR + boost);
+          if (radius < 0.08) continue;
+
+          const alpha = 0.06 + 0.28 * ((radius - MIN_R) / (MAX_R - MIN_R));
+
+          ctx.beginPath();
+          ctx.arc(x, y, radius, 0, Math.PI * 2);
+          ctx.fillStyle = 'rgba(196,161,255,' + alpha + ')';
+          ctx.fill();
+        }
+      }
+
+      requestAnimationFrame(draw);
+    }
+
+    requestAnimationFrame(draw);
+  })();
+  </script>
+
+  <!-- FOOTER — edge-to-edge Scout grid style -->
+  <footer style="border-top: 1px solid var(--border); overflow: hidden;">
+
+    <!-- 3-column info grid — full width, borders run edge to edge -->
+    <div style="display: grid; grid-template-columns: 1fr 1fr 1fr; border-bottom: 1px solid var(--border);">
+
+      <!-- CONTACT -->
+      <div style="padding: clamp(28px,4vw,48px); border-right: 1px solid var(--border);">
+        <span style="font-family: var(--mono); font-size: 9px; text-transform: uppercase; letter-spacing: 0.2em; color: var(--fg3); display: block; margin-bottom: 28px;">Contact</span>
+        <div style="display: flex; flex-direction: column; gap: 4px; margin-bottom: 36px;">
+          <a href="mailto:hello@revyl.ai" class="footer-link">hello@revyl.ai</a>
+          <a href="https://app.revyl.ai/signup" class="footer-link">Get in touch</a>
+        </div>
+        <div style="display: flex; flex-direction: column; gap: 4px;">
+          <a href="https://mobilereliability.com/" class="footer-link">Mobile Reliability Podcast</a>
+          <a href="/blog" class="footer-link">Blog</a>
+          <a href="https://docs.revyl.com" class="footer-link">Learn more ↗</a>
+        </div>
+      </div>
+
+      <!-- CONNECT -->
+      <div style="padding: clamp(28px,4vw,48px); border-right: 1px solid var(--border);">
+        <span style="font-family: var(--mono); font-size: 9px; text-transform: uppercase; letter-spacing: 0.2em; color: var(--fg3); display: block; margin-bottom: 28px;">Connect</span>
+        <div style="display: flex; flex-direction: column; gap: 4px;">
+          <a href="https://x.com/tryrevyl" class="footer-link">Twitter / X</a>
+          <a href="https://www.linkedin.com/company/revylai" class="footer-link">LinkedIn</a>
+          <a href="https://github.com/RevylAI" class="footer-link">GitHub</a>
+        </div>
+      </div>
+
+      <!-- SUBSCRIBE -->
+      <div style="padding: clamp(28px,4vw,48px);">
+        <span style="font-family: var(--mono); font-size: 9px; text-transform: uppercase; letter-spacing: 0.2em; color: var(--fg3); display: block; margin-bottom: 28px;">Subscribe</span>
+        <form style="display: flex; align-items: center; border-bottom: 1px solid rgba(255,255,255,0.15);" onsubmit="return false;">
+          <input
+            type="email"
+            placeholder="Email"
+            style="flex: 1; background: none; border: none; outline: none; font-family: var(--mono); font-size: 12px; color: var(--fg); padding: 8px 0; caret-color: var(--accent);"
+          />
+          <button type="submit" style="background: none; border: none; padding: 8px 0 8px 12px; font-family: var(--mono); font-size: 14px; color: var(--fg2); transition: color 0.2s;" onmouseover="this.style.color='var(--fg)'" onmouseout="this.style.color='var(--fg2)'">→</button>
+        </form>
+        <div style="display: flex; align-items: center; gap: 16px; margin-top: 36px;">
+          <img src="https://badges.oneleet.com/badge/68a9c8ed-1bbe-458e-be18-636fc5361a98?dark=true" alt="SOC 2 Type II" style="height: 64px;" />
+          <img src="https://badges.oneleet.com/badge/5a728019-58b6-4661-ae92-46d2eec05db8?dark=true" alt="HIPAA Compliant" style="height: 64px;" />
+        </div>
+      </div>
+
+    </div>
+
+    <!-- Bottom bar -->
+    <div style="display: flex; align-items: center; justify-content: space-between; padding: 14px clamp(24px,3vw,48px); border-bottom: 1px solid var(--border);">
+      <span style="font-family: var(--mono); font-size: 9px; color: var(--fg3);">&copy;2026 REVYL</span>
+      <a href="/privacy" class="footer-link" style="font-size: 9px;">Privacy Policy</a>
+      <a href="/terms" class="footer-link" style="font-size: 9px;">Terms of Service</a>
+    </div>
+
+    <!-- Giant wordmark — blueprint grid behind, text on top -->
+    <div style="overflow: hidden; line-height: 0; user-select: none; position: relative;">
+
+      <!-- Blueprint grid overlay (behind the text) -->
+      <svg aria-hidden="true" preserveAspectRatio="xMidYMid slice"
+        style="position: absolute; inset: 0; width: 100%; height: 100%; pointer-events: none;"
+        xmlns="http://www.w3.org/2000/svg">
+        <defs>
+          <pattern id="footer-grid" x="0" y="0" width="48" height="48" patternUnits="userSpaceOnUse">
+            <path d="M 48 0 L 0 0 0 48" fill="none" stroke="rgba(255,255,255,0.06)" stroke-width="0.5"/>
+          </pattern>
+        </defs>
+        <rect width="100%" height="100%" fill="url(#footer-grid)" />
+      </svg>
+
+      <!-- Wordmark SVG -->
+      <svg id="footer-wordmark-svg" viewBox="0 0 1000 300" preserveAspectRatio="xMidYMid meet"
+        style="width: 100%; height: auto; display: block; position: relative;"
+        xmlns="http://www.w3.org/2000/svg">
+        <text id="footer-wordmark-text"
+          x="500" y="260"
+          text-anchor="middle"
+          font-family="'Funnel Display', sans-serif"
+          font-size="280"
+          font-weight="800"
+          letter-spacing="-5"
+          fill="#C4A1FF"
+          text-rendering="geometricPrecision"
+        >REVYL</text>
+      </svg>
+    </div>
+
+  </footer>
+</div>
+
+<script is:inline>
+  /* ── Scout-style shuffle/scramble reveal ── */
+  (function() {
+    var CHARS = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789!@#$%&?';
+    var CHAR_DURATION = 40;   // ms per shuffle frame
+    var SHUFFLES = 6;         // random frames before lock
+    var STAGGER = 28;         // ms between each character starting
+
+    function rand(str) {
+      return str[Math.floor(Math.random() * str.length)];
+    }
+
+    function splitHeading(el) {
+      // Collect child nodes, preserving <br> and inline elements
+      var nodes = Array.from(el.childNodes);
+      el.innerHTML = '';
+
+      nodes.forEach(function(node) {
+        if (node.nodeName === 'BR') {
+          el.appendChild(document.createElement('br'));
+        } else if (node.nodeType === Node.TEXT_NODE) {
+          var text = node.textContent;
+          for (var i = 0; i < text.length; i++) {
+            var ch = text[i];
+            var span = document.createElement('span');
+            if (ch === ' ') {
+              span.className = 'rv-char rv-space';
+              span.textContent = ' ';
+            } else {
+              span.className = 'rv-char';
+              span.dataset.final = ch;
+              span.textContent = ch;
+            }
+            el.appendChild(span);
+          }
+        } else {
+          // Inline element (e.g. <em>) — wrap its text chars too
+          var clone = node.cloneNode(true);
+          var inner = clone.textContent;
+          clone.textContent = '';
+          for (var j = 0; j < inner.length; j++) {
+            var ch2 = inner[j];
+            var s = document.createElement('span');
+            if (ch2 === ' ') {
+              s.className = 'rv-char rv-space';
+              s.textContent = ' ';
+            } else {
+              s.className = 'rv-char';
+              s.dataset.final = ch2;
+              s.textContent = ch2;
+            }
+            clone.appendChild(s);
+          }
+          el.appendChild(clone);
+        }
+      });
+    }
+
+    function scrambleChar(span, finalCh, shuffles, charDuration) {
+      var count = 0;
+      var pool = finalCh === finalCh.toLowerCase() ? CHARS.toLowerCase() : CHARS;
+      span.style.opacity = '1';
+
+      function tick() {
+        if (count < shuffles) {
+          span.textContent = rand(pool);
+          count++;
+          setTimeout(tick, charDuration);
+        } else {
+          span.textContent = finalCh;
+        }
+      }
+      tick();
+    }
+
+    function animateHeading(el, globalDelay) {
+      var chars = el.querySelectorAll('.rv-char:not(.rv-space)');
+      chars.forEach(function(span, i) {
+        var finalCh = span.dataset.final || span.textContent;
+        setTimeout(function() {
+          scrambleChar(span, finalCh, SHUFFLES, CHAR_DURATION);
+        }, globalDelay + i * STAGGER);
+      });
+      // Show spaces immediately
+      el.querySelectorAll('.rv-char.rv-space').forEach(function(s) {
+        s.style.opacity = '1';
+      });
+    }
+
+    document.addEventListener('DOMContentLoaded', function() {
+      var headings = document.querySelectorAll('h1, h2, h3, h4, h5, h6');
+      headings.forEach(function(h) {
+        if (h.closest('#hud-nav') || h.closest('#revyl-loader')) return;
+        splitHeading(h);
+      });
+
+      // Hero headings fire immediately
+      var heroHeadings = document.querySelectorAll('.hero-grid h1, .hero-grid h2');
+      heroHeadings.forEach(function(h) { animateHeading(h, 0); });
+
+      // All others fire on scroll
+      var obs = new IntersectionObserver(function(entries) {
+        entries.forEach(function(entry) {
+          if (entry.isIntersecting) {
+            animateHeading(entry.target, 0);
+            obs.unobserve(entry.target);
+          }
+        });
+      }, { threshold: 0.15 });
+
+      headings.forEach(function(h) {
+        if (h.closest('#hud-nav') || h.closest('#revyl-loader')) return;
+        if (!h.closest('.hero-grid')) obs.observe(h);
+      });
+    });
+  })();
+</script>
+
+<script is:inline>
+  /* ── HUD vertex corner brackets ── */
+  (function() {
+    function addCorners(el, opts) {
+      if (el.querySelector('.hud-corner')) return;
+      var pos = getComputedStyle(el).position;
+      if (pos === 'static') el.style.position = 'relative';
+      var corners = [];
+      if (!opts || !opts.skipTop) corners.push('tl','tr');
+      if (!opts || !opts.skipBottom) corners.push('bl','br');
+      corners.forEach(function(c) {
+        var s = document.createElement('span');
+        s.className = 'hud-corner';
+        s.setAttribute('data-c', c);
+        s.setAttribute('aria-hidden', 'true');
+        el.appendChild(s);
+      });
+    }
+
+    document.addEventListener('DOMContentLoaded', function() {
+      var targets = Array.prototype.slice.call(document.querySelectorAll(
+        '.hud-header, .hero-grid, .features-split, section, footer'
+      ));
+      targets = targets.filter(function(el) {
+        if (el.closest('#hud-nav') || el.closest('#revyl-loader')) return;
+        return true;
+      });
+      targets.sort(function(a, b) {
+        return a.getBoundingClientRect().top - b.getBoundingClientRect().top;
+      });
+      targets.forEach(function(el, i) {
+        var isHero = el.classList.contains('hero-grid');
+        var isNav = el.classList.contains('hud-header');
+        var skipTop = false;
+        if (isHero) {
+          skipTop = true; // hero only shows bottom corners
+        } else if (!isNav && i > 0) {
+          var prev = targets[i - 1];
+          var r1 = prev.getBoundingClientRect();
+          var r2 = el.getBoundingClientRect();
+          if (Math.abs(r2.top - r1.bottom) < 2) skipTop = true;
+        }
+        addCorners(el, { skipTop: skipTop, skipBottom: false });
+      });
+    });
+  })();
+</script>
+
+<script is:inline>
+  document.addEventListener('DOMContentLoaded', function() {
+    var hudMenuBtn = document.getElementById('hud-menu-btn');
+    var hudNavClose = document.getElementById('hud-nav-close');
+    var hudNav = document.getElementById('hud-nav');
+    function openNav() {
+      if (!hudNav) return;
+      hudNav.style.visibility = 'visible';
+      requestAnimationFrame(function() { hudNav.style.opacity = '1'; });
+    }
+    function closeNav() {
+      if (!hudNav) return;
+      hudNav.style.opacity = '0';
+      hudNav.style.visibility = 'hidden';
+    }
+    if (hudMenuBtn) hudMenuBtn.addEventListener('click', openNav);
+    if (hudNavClose) hudNavClose.addEventListener('click', closeNav);
+    document.addEventListener('keydown', function(e) { if (e.key === 'Escape') closeNav(); });
+  });
+</script>
+
+<script is:inline>
+  /* Fit footer wordmark SVG viewBox tightly to the text bbox so it fills edge-to-edge */
+  (function() {
+    function fitWordmark() {
+      var svg  = document.getElementById('footer-wordmark-svg');
+      var text = document.getElementById('footer-wordmark-text');
+      if (!svg || !text) return;
+      try {
+        var bb = text.getBBox();
+        /* Add a tiny vertical pad (4px each side) so ascenders/descenders aren't clipped */
+        var pad = 4;
+        svg.setAttribute('viewBox', (bb.x - pad) + ' ' + (bb.y - pad) + ' ' + (bb.width + pad * 2) + ' ' + (bb.height + pad * 2));
+      } catch(e) {}
+    }
+    if (document.fonts && document.fonts.ready) {
+      document.fonts.ready.then(fitWordmark);
+    } else {
+      window.addEventListener('load', fitWordmark);
+    }
+  })();
+</script>
+</Layout>

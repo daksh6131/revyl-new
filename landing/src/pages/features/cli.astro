@@ -1,0 +1,49 @@
+---
+import Layout from '@/layouts/Layout.astro';
+
+const topBg = 'bg-[#151619]';
+const topText = 'text-white';
+const topBorder = 'border-gray-700';
+const topMuted = 'text-gray-400';
+const forceDark = true;
+---
+
+<Layout title="CLI | Revyl" forceDark={forceDark}>
+  <div class={`${topBg} ${topText}`}>
+    <section class="px-6 py-24 md:py-36">
+      <div class="max-w-4xl mx-auto">
+        <div class="mb-4">
+          <span class={`text-sm uppercase tracking-wider ${topMuted}`}>Features</span>
+        </div>
+        <h1 class="text-4xl md:text-5xl lg:text-6xl font-light tracking-tight mb-6">
+          CLI
+        </h1>
+        <p class={`text-xl md:text-2xl ${topMuted} mb-10 max-w-2xl`}>
+          Run tests from your terminal. One command to trigger your entire test suite.
+        </p>
+        <div class="flex flex-col sm:flex-row gap-4">
+          <a
+            href="https://app.revyl.ai/signup"
+            class="inline-flex items-center justify-center h-12 px-8 text-base font-medium bg-[#C4A1FF] text-[#1C1732] hover:opacity-90 transition-opacity"
+          >
+            Get Started
+          </a>
+          <a
+            href="https://docs.revyl.com"
+            class={`inline-flex items-center justify-center h-12 px-8 text-base font-medium border ${topBorder} hover:bg-white/5 transition-colors`}
+          >
+            Read the Docs
+          </a>
+        </div>
+      </div>
+    </section>
+
+    <section class={`px-6 py-16 md:py-24 border-t ${topBorder}`}>
+      <div class="max-w-4xl mx-auto text-center">
+        <p class={`text-lg ${topMuted}`}>
+          Full page coming soon. In the meantime, <a href="https://docs.revyl.com" class="text-[#C4A1FF] hover:opacity-80 transition-opacity underline">check out our docs</a>.
+        </p>
+      </div>
+    </section>
+  </div>
+</Layout>

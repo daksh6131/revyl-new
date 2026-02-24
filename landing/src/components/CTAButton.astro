@@ -1,0 +1,196 @@
+---
+interface Props {
+  href: string;
+  variant?: 'primary' | 'secondary';
+  size?: 'sm' | 'md';
+  class?: string;
+}
+
+const {
+  href,
+  variant = 'primary',
+  size = 'md',
+  class: className = '',
+} = Astro.props;
+---
+
+<a href={href} class={`rv-btn rv-btn--${variant} rv-btn--${size} ${className}`}>
+  <span class="rv-btn-fill" aria-hidden="true"></span>
+  <span class="rv-btn-left">
+    <span class="rv-btn-dot" aria-hidden="true"></span>
+    <span class="rv-btn-label"><slot /></span>
+  </span>
+  <svg class="rv-btn-arrow" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M13.1717 12.0007L8.22192 7.05093L9.63614 5.63672L16.0001 12.0007L9.63614 18.3646L8.22192 16.9504L13.1717 12.0007Z"/></svg>
+</a>
+
+
+<style is:global>
+  .rv-btn {
+    position: relative;
+    display: inline-flex;
+    align-items: center;
+    justify-content: space-between;
+    font-family: 'Chakra Petch', sans-serif;
+    font-weight: 600;
+    /* 18px at 1440px, scales down to 13px */
+    font-size: clamp(13px, 1.25vw, 18px);
+    text-transform: uppercase;
+    letter-spacing: -0.03em;
+    line-height: 1.2;
+    text-decoration: none;
+    white-space: nowrap;
+    cursor: none;
+    overflow: hidden;
+    background: transparent;
+    outline: none;
+    padding: 0.75em;
+    min-width: clamp(160px, 15.28vw, 220px);
+  }
+
+  /* Left group: dot + label */
+  .rv-btn-left {
+    position: relative;
+    z-index: 2;
+    display: flex;
+    align-items: center;
+    gap: 0.5em;
+    flex-shrink: 0;
+    font-family: "Chakra Petch";
+  }
+
+  /* Small square dot bullet */
+  .rv-btn-dot {
+    display: block;
+    flex-shrink: 0;
+    width: 0.75em;
+    height: 0.75em;
+    border-radius: 2px;
+    background: currentColor;
+    transition: background 0.15s ease;
+  }
+
+  /* Arrow icon: 16px at base = 1em */
+  .rv-btn-arrow {
+    position: relative;
+    z-index: 2;
+    pointer-events: none;
+    flex-shrink: 0;
+    display: block;
+    width: 1em;
+    height: 1em;
+    transition: color 0.15s ease, transform 0.2s ease;
+  }
+  .rv-btn:hover .rv-btn-arrow {
+    transform: translateX(3px);
+  }
+  .rv-btn--primary:hover .rv-btn-arrow  { color: #0a0a0a; }
+  .rv-btn--secondary:hover .rv-btn-arrow { color: #0a0a0a; }
+
+  .rv-btn--sm {
+    font-size: clamp(9px, 0.903vw, 13px);
+    min-width: clamp(130px, 12.5vw, 180px);
+  }
+
+  .rv-btn--md {
+    font-size: clamp(11px, 1.111vw, 16px);
+    min-width: clamp(160px, 15.28vw, 220px);
+  }
+
+  /* Fill wipe from bottom */
+  .rv-btn-fill {
+    position: absolute;
+    inset: 0;
+    z-index: 1;
+    transform: translateY(101%);
+    transition: transform 0.35s cubic-bezier(0.85, 0, 0.15, 1);
+  }
+  .rv-btn:hover .rv-btn-fill {
+    transform: translateY(0);
+  }
+
+  .rv-btn-label {
+    position: relative;
+    z-index: 2;
+    pointer-events: none;
+    transition: color 0.15s ease;
+    display: inline-block;
+    /* prevent layout shift during shuffle */
+  }
+
+  /* Primary — white border, wipes white */
+  .rv-btn--primary {
+    border: 1px solid rgba(255, 255, 255, 0.5);
+    color: #ffffff;
+  }
+  .rv-btn--primary .rv-btn-fill { background: #ffffff; }
+  .rv-btn--primary:hover .rv-btn-label { color: #0a0a0a; }
+  .rv-btn--primary:hover .rv-btn-dot   { background: #0a0a0a; }
+
+  /* Secondary — dim border, wipes white */
+  .rv-btn--secondary {
+    border: 1px solid rgba(255, 255, 255, 0.18);
+    color: #666666;
+  }
+  .rv-btn--secondary .rv-btn-fill { background: #ffffff; }
+  .rv-btn--secondary:hover .rv-btn-label { color: #0a0a0a; }
+  .rv-btn--secondary:hover .rv-btn-dot   { background: #0a0a0a; }
+</style>
+
+<script is:inline>
+(function () {
+  const CHARS = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789';
+  const STEPS = 6;      // random frames per character
+  const STEP_MS = 40;   // ms per frame
+
+  function shuffle(btn) {
+    const label = btn.querySelector('.rv-btn-label');
+    if (!label || btn._shuffling) return;
+    const original = label.textContent;
+    btn._shuffling = true;
+    // Lock width so random chars don't cause layout reflow
+    label.style.width = label.offsetWidth + 'px';
+
+    // Build per-char timers: each char starts slightly after the previous
+    const chars = original.split('');
+    let resolved = chars.map(() => false);
+    let result = chars.slice();
+
+    chars.forEach((ch, i) => {
+      const isSpace = ch === ' ';
+      let step = 0;
+      const delay = i * 35; // stagger: each char starts 35ms after previous
+
+      setTimeout(function tick() {
+        if (isSpace) { resolved[i] = true; }
+        else if (step < STEPS) {
+          result[i] = CHARS[Math.floor(Math.random() * CHARS.length)];
+          step++;
+          label.textContent = result.join('');
+          setTimeout(tick, STEP_MS);
+        } else {
+          result[i] = ch.toUpperCase();
+          resolved[i] = true;
+          label.textContent = result.join('');
+        }
+        if (resolved.every(Boolean)) {
+          label.textContent = original;
+          label.style.width = '';
+          btn._shuffling = false;
+        }
+      }, delay);
+    });
+  }
+
+  function init() {
+    document.querySelectorAll('.rv-btn').forEach(btn => {
+      btn.addEventListener('mouseenter', () => shuffle(btn));
+    });
+  }
+
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', init);
+  } else {
+    init();
+  }
+})();
+</script>

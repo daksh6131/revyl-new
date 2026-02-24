@@ -1,0 +1,24 @@
+{
+  "name": "@gtm/cms",
+  "version": "0.0.1",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "dev": "payload dev",
+    "build": "payload build",
+    "serve": "payload serve",
+    "deploy": "wrangler deploy",
+    "generate:types": "payload generate:types"
+  },
+  "dependencies": {
+    "@payloadcms/db-sqlite": "^3.0.0",
+    "@payloadcms/richtext-lexical": "^3.0.0",
+    "@payloadcms/storage-s3": "^3.0.0",
+    "payload": "^3.0.0"
+  },
+  "devDependencies": {
+    "@cloudflare/workers-types": "^4.0.0",
+    "typescript": "^5.3.3",
+    "wrangler": "^3.0.0"
+  }
+}

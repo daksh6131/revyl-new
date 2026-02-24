@@ -1,0 +1,22 @@
+<svg width="1576" height="1082" viewBox="0 0 1576 1082" fill="none" xmlns="http://www.w3.org/2000/svg">
+<g style="mix-blend-mode:plus-lighter" opacity="0.3" filter="url(#filter0_fg_2028_2492)">
+<path d="M450.246 541C714.05 541 861.954 541 1125.76 541" stroke="url(#paint0_linear_2028_2492)" stroke-width="182.493"/>
+</g>
+<defs>
+<filter id="filter0_fg_2028_2492" x="0.971191" y="0.478516" width="1574.06" height="1081.04" filterUnits="userSpaceOnUse" color-interpolation-filters="sRGB">
+<feFlood flood-opacity="0" result="BackgroundImageFix"/>
+<feBlend mode="normal" in="SourceGraphic" in2="BackgroundImageFix" result="shape"/>
+<feGaussianBlur stdDeviation="224.637" result="effect1_foregroundBlur_2028_2492"/>
+<feTurbulence type="fractalNoise" baseFrequency="0.013559939339756966 0.013559939339756966" numOctaves="3" seed="975" />
+<feDisplacementMap in="effect1_foregroundBlur_2028_2492" scale="199.85539245605469" xChannelSelector="R" yChannelSelector="G" result="displacedImage" width="100%" height="100%" />
+<feMerge result="effect2_texture_2028_2492">
+<feMergeNode in="displacedImage"/>
+</feMerge>
+</filter>
+<linearGradient id="paint0_linear_2028_2492" x1="413.378" y1="541.353" x2="413.602" y2="554.012" gradientUnits="userSpaceOnUse">
+<stop stop-color="#7752D5"/>
+<stop offset="0.444204" stop-color="#D5C452" stop-opacity="0.45"/>
+<stop offset="1" stop-color="#7752D5"/>
+</linearGradient>
+</defs>
+</svg>

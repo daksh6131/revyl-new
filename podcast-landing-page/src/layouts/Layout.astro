@@ -1,0 +1,275 @@
+---
+interface Props {
+  title: string;
+  description?: string;
+  image?: string;
+  hideFooter?: boolean;
+  forceDark?: boolean;
+}
+
+const {
+  title,
+  description = "Revyl Blog - Insights on AI-powered mobile app testing, product updates, and engineering deep dives.",
+  image = "/og-image.png",
+  hideFooter = false,
+  forceDark = false
+} = Astro.props;
+
+const canonicalURL = new URL(Astro.url.pathname, Astro.site);
+---
+
+<!doctype html>
+<html lang="en" class={forceDark ? 'dark' : ''}>
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="icon" type="image/png" href="/favicon.png" />
+    <link rel="canonical" href={canonicalURL} />
+
+    <!-- SEO -->
+    <meta name="description" content={description} />
+    <meta name="robots" content="index, follow" />
+
+    <!-- Open Graph / Social -->
+    <meta property="og:type" content="website" />
+    <meta property="og:url" content={canonicalURL} />
+    <meta property="og:title" content={title} />
+    <meta property="og:description" content={description} />
+    <meta property="og:image" content={new URL(image, Astro.site)} />
+    <meta property="og:site_name" content="Revyl Blog" />
+
+    <!-- Twitter -->
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:site" content="@tryrevyl" />
+    <meta name="twitter:title" content={title} />
+    <meta name="twitter:description" content={description} />
+    <meta name="twitter:image" content={new URL(image, Astro.site)} />
+
+    <!-- Fonts - Funnel Display for headers, Public Sans for body -->
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Funnel+Display:wght@300..800&family=Public+Sans:wght@400;500;600&display=swap" rel="stylesheet" />
+
+    <title>{title}</title>
+
+    <!-- Theme detection - skip if forceDark -->
+    <!-- Default to light mode, only use dark if user explicitly chose it -->
+    {!forceDark && (
+      <script is:inline>
+        const theme = (() => {
+          if (typeof localStorage !== 'undefined' && localStorage.getItem('theme')) {
+            return localStorage.getItem('theme');
+          }
+          // Default to light mode regardless of browser preference
+          return 'light';
+        })();
+        if (theme === 'dark') {
+          document.documentElement.classList.add('dark');
+        }
+      </script>
+    )}
+  </head>
+  <body class={`min-h-screen flex flex-col overflow-x-hidden ${forceDark ? 'bg-[#0A0A0A] text-white' : 'bg-background text-foreground'}`}>
+    <!-- Header - full width on md+, inside borders on mobile -->
+    <header class={`relative border-b ${forceDark ? 'border-gray-800' : 'border-slate-300 dark:border-gray-600'}`}>
+      <div class="max-w-[95%] md:max-w-none mx-auto px-4 sm:px-6 lg:px-8">
+        <!-- Side borders through header on mobile only -->
+        <div class={`md:hidden absolute top-0 bottom-0 left-[2.5%] border-l ${forceDark ? 'border-gray-800' : 'border-slate-300 dark:border-gray-600'}`}></div>
+        <div class={`md:hidden absolute top-0 bottom-0 right-[2.5%] border-r ${forceDark ? 'border-gray-800' : 'border-slate-300 dark:border-gray-600'}`}></div>
+
+        <div class="h-20 flex items-center justify-between">
+          <!-- Left: Logo -->
+          <div class="flex items-center">
+            <a href="/" class="flex items-center">
+              <!-- Dark logo for light mode (hidden when forceDark) -->
+              <svg class={`h-6 w-auto ${forceDark ? 'hidden' : 'dark:hidden'}`} viewBox="0 0 1100 300" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <path d="M80.2852 150L190.746 260.018L150.603 300L0 150L150.603 0L190.746 39.9818L80.2852 150Z" fill="#1C1732"/>
+                <path d="M381.546 150L230.943 300L190.801 260.018L301.261 150L190.746 39.9818L230.888 0L381.492 150H381.546Z" fill="#1C1732"/>
+                <path d="M120.483 150L190.746 80.0182L261.009 150L190.746 219.982L120.483 150Z" fill="#1C1732"/>
+                <path d="M451.78 236.907V60.1802H539.842C558.243 60.1802 572.701 64.3984 583.215 72.8347C593.73 81.2711 598.988 93.1256 598.988 108.398C598.988 117.126 597.016 124.762 593.073 131.307C589.13 137.707 583.288 142.653 575.548 146.144V147.017C582.996 147.017 588.765 149.053 592.854 153.126C596.943 157.053 598.988 162.798 598.988 170.362V236.907H568.758V166.871H482.229V236.907H451.78ZM482.229 141.126H537.432C547.509 141.126 555.249 138.726 560.652 133.926C566.202 129.126 568.977 122.362 568.977 113.635C568.977 104.762 566.202 97.9983 560.652 93.3438C555.249 88.5438 547.509 86.1438 537.432 86.1438H482.229V141.126Z" fill="#1C1732"/>
+                <path d="M693.566 239.526C679.693 239.526 667.571 236.762 657.203 231.235C646.98 225.562 639.094 217.562 633.544 207.235C627.995 196.907 625.22 184.835 625.22 171.017C625.22 157.198 627.922 145.271 633.325 135.235C638.875 125.053 646.688 117.198 656.765 111.671C666.841 106.144 678.743 103.38 692.471 103.38C705.615 103.38 716.933 105.998 726.425 111.235C735.918 116.326 743.22 123.671 748.331 133.271C753.589 142.726 756.217 153.998 756.217 167.089V177.998H653.698C654.866 189.926 658.882 199.162 665.746 205.707C672.61 212.107 681.81 215.307 693.347 215.307C701.818 215.307 708.755 213.707 714.158 210.507C719.561 207.307 723.286 202.507 725.33 196.107H755.56C752.347 209.78 745.264 220.471 734.311 228.18C723.505 235.744 709.923 239.526 693.566 239.526ZM654.574 157.271H727.74C726.571 147.671 722.92 140.326 716.787 135.235C710.653 129.998 702.548 127.38 692.471 127.38C682.394 127.38 674.07 129.998 667.498 135.235C660.927 140.326 656.618 147.671 654.574 157.271Z" fill="#1C1732"/>
+                <path d="M818.16 236.907L762.081 105.998H793.406L834.151 204.18H835.027L875.115 105.998H905.564L849.485 236.907H818.16Z" fill="#1C1732"/>
+                <path d="M923.702 289.271V265.489H954.151L966.199 236.689L908.368 105.998H939.474L980.876 201.998H981.971L1021.84 105.998H1051.63L995.553 236.907L983.505 265.271C980.292 272.835 976.787 278.726 972.99 282.944C969.339 287.162 963.279 289.271 954.808 289.271H923.702Z" fill="#1C1732"/>
+                <path d="M1070.21 236.907V53.6347H1100V236.907H1070.21Z" fill="#1C1732"/>
+              </svg>
+              <!-- Light logo for dark mode (always shown when forceDark) -->
+              <svg class={`h-6 w-auto ${forceDark ? 'block' : 'hidden dark:block'}`} viewBox="0 0 1100 300" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <path d="M80.2852 150L190.746 260.018L150.603 300L0 150L150.603 0L190.746 39.9818L80.2852 150Z" fill="#D8CFFF"/>
+                <path d="M381.546 150L230.943 300L190.801 260.018L301.261 150L190.746 39.9818L230.888 0L381.492 150H381.546Z" fill="#D8CFFF"/>
+                <path d="M120.483 150L190.746 80.0182L261.009 150L190.746 219.982L120.483 150Z" fill="#D8CFFF"/>
+                <path d="M451.78 236.907V60.1802H539.842C558.243 60.1802 572.701 64.3984 583.215 72.8347C593.73 81.2711 598.988 93.1256 598.988 108.398C598.988 117.126 597.016 124.762 593.073 131.307C589.13 137.707 583.288 142.653 575.548 146.144V147.017C582.996 147.017 588.765 149.053 592.854 153.126C596.943 157.053 598.988 162.798 598.988 170.362V236.907H568.758V166.871H482.229V236.907H451.78ZM482.229 141.126H537.432C547.509 141.126 555.249 138.726 560.652 133.926C566.202 129.126 568.977 122.362 568.977 113.635C568.977 104.762 566.202 97.9983 560.652 93.3438C555.249 88.5438 547.509 86.1438 537.432 86.1438H482.229V141.126Z" fill="#D8CFFF"/>
+                <path d="M693.566 239.526C679.693 239.526 667.571 236.762 657.203 231.235C646.98 225.562 639.094 217.562 633.544 207.235C627.995 196.907 625.22 184.835 625.22 171.017C625.22 157.198 627.922 145.271 633.325 135.235C638.875 125.053 646.688 117.198 656.765 111.671C666.841 106.144 678.743 103.38 692.471 103.38C705.615 103.38 716.933 105.998 726.425 111.235C735.918 116.326 743.22 123.671 748.331 133.271C753.589 142.726 756.217 153.998 756.217 167.089V177.998H653.698C654.866 189.926 658.882 199.162 665.746 205.707C672.61 212.107 681.81 215.307 693.347 215.307C701.818 215.307 708.755 213.707 714.158 210.507C719.561 207.307 723.286 202.507 725.33 196.107H755.56C752.347 209.78 745.264 220.471 734.311 228.18C723.505 235.744 709.923 239.526 693.566 239.526ZM654.574 157.271H727.74C726.571 147.671 722.92 140.326 716.787 135.235C710.653 129.998 702.548 127.38 692.471 127.38C682.394 127.38 674.07 129.998 667.498 135.235C660.927 140.326 656.618 147.671 654.574 157.271Z" fill="#D8CFFF"/>
+                <path d="M818.16 236.907L762.081 105.998H793.406L834.151 204.18H835.027L875.115 105.998H905.564L849.485 236.907H818.16Z" fill="#D8CFFF"/>
+                <path d="M923.702 289.271V265.489H954.151L966.199 236.689L908.368 105.998H939.474L980.876 201.998H981.971L1021.84 105.998H1051.63L995.553 236.907L983.505 265.271C980.292 272.835 976.787 278.726 972.99 282.944C969.339 287.162 963.279 289.271 954.808 289.271H923.702Z" fill="#D8CFFF"/>
+                <path d="M1070.21 236.907V53.6347H1100V236.907H1070.21Z" fill="#D8CFFF"/>
+              </svg>
+            </a>
+          </div>
+
+          <!-- Center: Nav links -->
+          <nav class="hidden md:flex items-center gap-8 absolute left-1/2 transform -translate-x-1/2">
+            <a href="/" class={`text-sm hover:opacity-70 transition-opacity ${forceDark ? 'text-white' : 'text-foreground'}`}>Products</a>
+            <!-- Resources dropdown -->
+            <div class="relative group">
+              <button class={`text-sm hover:opacity-70 transition-opacity flex items-center gap-1 ${forceDark ? 'text-white' : 'text-foreground'}`}>
+                Resources
+                <svg class="w-3 h-3 transition-transform group-hover:rotate-180" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" />
+                </svg>
+              </button>
+              <div class="absolute top-full left-1/2 -translate-x-1/2 pt-2 opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-200">
+                <div class={`shadow-lg rounded-md py-2 min-w-[140px] ${forceDark ? 'bg-[#161616] border border-gray-800' : 'bg-background border border-slate-200 dark:border-gray-700'}`}>
+                  <a href="/blog" class={`block px-4 py-2 text-sm transition-colors ${forceDark ? 'text-white hover:bg-white/10' : 'text-foreground hover:bg-muted'}`}>Blog</a>
+                  <a href="/podcast" class={`block px-4 py-2 text-sm transition-colors ${forceDark ? 'text-white hover:bg-white/10' : 'text-foreground hover:bg-muted'}`}>Podcast</a>
+                </div>
+              </div>
+            </div>
+            <a href="/pricing" class={`text-sm hover:opacity-70 transition-opacity ${forceDark ? 'text-white' : 'text-foreground'}`}>Pricing</a>
+            <a href="https://docs.revyl.com" class={`text-sm hover:opacity-70 transition-opacity ${forceDark ? 'text-white' : 'text-foreground'}`}>Docs</a>
+          </nav>
+
+          <!-- Right: Theme toggle, CTA, and mobile menu -->
+          <div class="flex items-center gap-6">
+            {!forceDark && (
+              <button
+                id="theme-toggle"
+                class="p-2 text-muted-foreground hover:text-foreground transition-colors"
+                aria-label="Toggle theme"
+              >
+                <svg class="w-4 h-4 hidden dark:block" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364 6.364l-.707-.707M6.343 6.343l-.707-.707m12.728 0l-.707.707M6.343 17.657l-.707.707M16 12a4 4 0 11-8 0 4 4 0 018 0z" />
+                </svg>
+                <svg class="w-4 h-4 block dark:hidden" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20.354 15.354A9 9 0 018.646 3.646 9.003 9.003 0 0012 21a9.003 9.003 0 008.354-5.646z" />
+                </svg>
+              </button>
+            )}
+            <a
+              href="https://cal.com/landseer-enga/book-a-demo"
+              class="hidden md:inline-flex items-center justify-center h-9 px-4 text-sm font-medium bg-[#C4A1FF] text-[#1C1732] hover:opacity-90 transition-opacity"
+            >
+              Book a Demo
+            </a>
+            <!-- Mobile hamburger menu button -->
+            <button
+              id="mobile-menu-btn"
+              class={`md:hidden p-2 transition-colors ${forceDark ? 'text-gray-400 hover:text-white' : 'text-muted-foreground hover:text-foreground'}`}
+              aria-label="Open menu"
+            >
+              <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16" />
+              </svg>
+            </button>
+          </div>
+        </div>
+      </div>
+    </header>
+
+    <!-- Mobile menu overlay -->
+    <div id="mobile-menu-overlay" class="fixed inset-0 bg-black/50 z-40 hidden md:hidden"></div>
+
+    <!-- Mobile menu panel -->
+    <div id="mobile-menu" class={`fixed top-0 right-0 h-full w-72 border-l z-50 transform translate-x-full transition-transform duration-300 ease-in-out md:hidden ${forceDark ? 'bg-[#0A0A0A] border-gray-800' : 'bg-background border-slate-300 dark:border-gray-600'}`}>
+      <div class={`flex items-center justify-between h-20 px-6 border-b ${forceDark ? 'border-gray-800' : 'border-slate-300 dark:border-gray-600'}`}>
+        <span class={`text-sm font-medium ${forceDark ? 'text-white' : ''}`}>Menu</span>
+        <button id="mobile-menu-close" class={`p-2 transition-colors ${forceDark ? 'text-gray-400 hover:text-white' : 'text-muted-foreground hover:text-foreground'}`} aria-label="Close menu">
+          <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
+          </svg>
+        </button>
+      </div>
+      <nav class="flex flex-col p-6 gap-1">
+        <a href="/" class={`py-3 text-sm transition-colors border-b ${forceDark ? 'text-white hover:text-[#C4A1FF] border-gray-800' : 'text-foreground hover:text-[#9D61FF] dark:hover:text-[#C4A1FF] border-slate-200 dark:border-gray-700'}`}>Products</a>
+        <span class={`py-3 text-xs uppercase tracking-wider ${forceDark ? 'text-gray-500' : 'text-muted-foreground'}`}>Resources</span>
+        <a href="/blog" class={`py-3 pl-4 text-sm transition-colors border-b ${forceDark ? 'text-white hover:text-[#C4A1FF] border-gray-800' : 'text-foreground hover:text-[#9D61FF] dark:hover:text-[#C4A1FF] border-slate-200 dark:border-gray-700'}`}>Blog</a>
+        <a href="/podcast" class={`py-3 pl-4 text-sm transition-colors border-b ${forceDark ? 'text-white hover:text-[#C4A1FF] border-gray-800' : 'text-foreground hover:text-[#9D61FF] dark:hover:text-[#C4A1FF] border-slate-200 dark:border-gray-700'}`}>Podcast</a>
+        <a href="/pricing" class={`py-3 text-sm transition-colors border-b ${forceDark ? 'text-white hover:text-[#C4A1FF] border-gray-800' : 'text-foreground hover:text-[#9D61FF] dark:hover:text-[#C4A1FF] border-slate-200 dark:border-gray-700'}`}>Pricing</a>
+        <a href="https://docs.revyl.com" class={`py-3 text-sm transition-colors border-b ${forceDark ? 'text-white hover:text-[#C4A1FF] border-gray-800' : 'text-foreground hover:text-[#9D61FF] dark:hover:text-[#C4A1FF] border-slate-200 dark:border-gray-700'}`}>Docs</a>
+        <a
+          href="https://cal.com/landseer-enga/book-a-demo"
+          class="mt-4 flex items-center justify-center h-10 px-4 text-sm font-medium bg-[#C4A1FF] text-white hover:opacity-90 transition-opacity"
+        >
+          Book a Demo
+        </a>
+      </nav>
+    </div>
+
+    <!-- Outer container with side borders - below header on md+ -->
+    <div class="flex-1 flex flex-col">
+      <div class={`max-w-[95%] lg:max-w-[95%] xl:max-w-[85%] mx-auto border-l border-r flex-1 flex flex-col relative w-full ${forceDark ? 'border-gray-800' : 'border-slate-300 dark:border-gray-600'}`}>
+        <!-- Corner decorations - hidden on mobile since borders go through header -->
+        <div class={`hidden md:block absolute top-[-1px] left-[-1px] w-2.5 h-2.5 border-t border-l ${forceDark ? 'border-gray-800' : 'border-slate-300 dark:border-gray-600'}`}></div>
+        <div class={`hidden md:block absolute top-[-1px] right-[-1px] w-2.5 h-2.5 border-t border-r ${forceDark ? 'border-gray-800' : 'border-slate-300 dark:border-gray-600'}`}></div>
+        <div class={`absolute bottom-[-1px] left-[-1px] w-2.5 h-2.5 border-b border-l ${forceDark ? 'border-gray-800' : 'border-slate-300 dark:border-gray-600'}`}></div>
+        <div class={`absolute bottom-[-1px] right-[-1px] w-2.5 h-2.5 border-b border-r ${forceDark ? 'border-gray-800' : 'border-slate-300 dark:border-gray-600'}`}></div>
+
+        <!-- Main content -->
+        <main class="flex-1">
+          <slot />
+        </main>
+
+        {!hideFooter && (
+          <!-- Footer - tied to bottom -->
+          <footer class="border-t border-slate-300 dark:border-gray-600 mt-auto">
+            <div class="px-6 h-14 flex items-center justify-between">
+              <span class="text-sm text-muted-foreground">&copy; {new Date().getFullYear()} Revyl</span>
+              <div class="flex items-center gap-6">
+                <a href="https://x.com/tryrevyl" class="text-muted-foreground hover:text-foreground transition-colors" aria-label="Twitter">
+                  <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 24 24"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/></svg>
+                </a>
+                <a href="https://www.linkedin.com/company/revylai" class="text-muted-foreground hover:text-foreground transition-colors" aria-label="LinkedIn">
+                  <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 24 24"><path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433c-1.144 0-2.063-.926-2.063-2.065 0-1.138.92-2.063 2.063-2.063 1.14 0 2.064.925 2.064 2.063 0 1.139-.925 2.065-2.064 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z"/></svg>
+                </a>
+                <a href="https://github.com/RevylAI" class="text-muted-foreground hover:text-foreground transition-colors" aria-label="GitHub">
+                  <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 24 24"><path d="M12 0c-6.626 0-12 5.373-12 12 0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23.957-.266 1.983-.399 3.003-.404 1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576 4.765-1.589 8.199-6.086 8.199-11.386 0-6.627-5.373-12-12-12z"/></svg>
+                </a>
+              </div>
+            </div>
+          </footer>
+        )}
+      </div>
+    </div>
+
+    <script is:inline>
+      const themeToggle = document.getElementById('theme-toggle');
+      if (themeToggle) {
+        themeToggle.addEventListener('click', () => {
+          const isDark = document.documentElement.classList.toggle('dark');
+          localStorage.setItem('theme', isDark ? 'dark' : 'light');
+        });
+      }
+
+      // Mobile menu
+      const mobileMenuBtn = document.getElementById('mobile-menu-btn');
+      const mobileMenuClose = document.getElementById('mobile-menu-close');
+      const mobileMenu = document.getElementById('mobile-menu');
+      const mobileMenuOverlay = document.getElementById('mobile-menu-overlay');
+
+      function openMobileMenu() {
+        mobileMenu.classList.remove('translate-x-full');
+        mobileMenuOverlay.classList.remove('hidden');
+        document.body.style.overflow = 'hidden';
+      }
+
+      function closeMobileMenu() {
+        mobileMenu.classList.add('translate-x-full');
+        mobileMenuOverlay.classList.add('hidden');
+        document.body.style.overflow = '';
+      }
+
+      if (mobileMenuBtn) {
+        mobileMenuBtn.addEventListener('click', openMobileMenu);
+      }
+      if (mobileMenuClose) {
+        mobileMenuClose.addEventListener('click', closeMobileMenu);
+      }
+      if (mobileMenuOverlay) {
+        mobileMenuOverlay.addEventListener('click', closeMobileMenu);
+      }
+    </script>
+  </body>
+</html>
+
+<style is:global>
+  @import '../styles/global.css';
+</style>

@@ -1,0 +1,372 @@
+---
+title: "Building device infrastructure for mobile AI agents"
+description: "What it actually takes to let an AI agent tap a button on a real iPhone."
+pubDate: 2026-02-13
+author: "Revyl Team"
+tags: ["Research"]
+---
+
+<style>{`
+.reveal{opacity:0;transform:translateY(24px);transition:opacity .7s ease,transform .7s ease}
+.reveal.visible{opacity:1;transform:translateY(0)}
+.delay-1{transition-delay:.08s}.delay-2{transition-delay:.16s}.delay-3{transition-delay:.24s}
+.delay-4{transition-delay:.32s}.delay-5{transition-delay:.4s}.delay-6{transition-delay:.48s}.delay-7{transition-delay:.56s}
+.iceberg-wrap{position:relative;margin:3rem 0;border:1px solid hsl(var(--border));overflow:hidden}
+.iceberg-above{padding:2rem;text-align:center;border-bottom:2px dashed hsl(var(--border));position:relative}
+.iceberg-above::after{content:'what your agent sees';position:absolute;top:.5rem;right:.75rem;font-size:.6rem;text-transform:uppercase;letter-spacing:.1em;color:hsl(var(--muted-foreground))}
+.iceberg-below{padding:1.5rem;position:relative;background:rgba(157,97,255,.02)}
+.iceberg-below::after{content:'what you have to build';position:absolute;top:.5rem;right:.75rem;font-size:.6rem;text-transform:uppercase;letter-spacing:.1em;color:hsl(var(--muted-foreground))}
+.iceberg-cmd{font-family:ui-monospace,SFMono-Regular,Menlo,monospace;font-size:1.05rem;color:#9D61FF}
+.iceberg-layer{font-size:.8rem;padding:.4rem .75rem;margin:.25rem 0;border-left:2px solid hsl(var(--border));color:hsl(var(--muted-foreground))}
+.layer-card{border:1px solid hsl(var(--border));border-top:2px solid #9D61FF30;padding:1.5rem;margin:1rem 0;position:relative;transition:all .25s ease}
+.layer-card:hover{border-color:#9D61FF40;transform:translateY(-2px);box-shadow:0 4px 12px rgba(0,0,0,.06)}
+.layer-num{font-size:.6rem;letter-spacing:.12em;text-transform:uppercase;color:#9D61FF;margin-bottom:.35rem;font-family:ui-monospace,SFMono-Regular,Menlo,monospace}
+.layer-title{font-family:"Funnel Display",sans-serif;font-size:1.1rem;font-weight:500;margin-bottom:.6rem}
+.layer-desc{font-size:.85rem;color:hsl(var(--muted-foreground));line-height:1.6;margin:0}
+.layer-why{font-size:.8rem;color:hsl(var(--muted-foreground));line-height:1.55;margin:.75rem 0 0;padding-top:.65rem;border-top:1px solid hsl(var(--border))}
+.pill{display:inline-block;font-size:.55rem;letter-spacing:.08em;text-transform:uppercase;padding:.15rem .5rem;border-radius:9px;background:rgba(239,68,68,.08);color:#b45309;margin-right:.35rem;vertical-align:middle;font-weight:600}
+.terminal{background:#0d1117;border:1px solid #30363d;border-radius:6px;overflow:hidden;margin:2rem 0;font-family:ui-monospace,SFMono-Regular,Menlo,monospace}
+.terminal-bar{background:#161b22;padding:.5rem .75rem;display:flex;gap:6px;align-items:center;border-bottom:1px solid #30363d}
+.terminal-dot{width:10px;height:10px;border-radius:50%}
+.td-r{background:#ff5f57}.td-y{background:#febc2e}.td-g{background:#28c840}
+.terminal-body{padding:1.25rem;font-size:.82rem;line-height:1.8}
+.tp{color:#58a6ff}.tc{color:#e6edf3}.tf{color:#d2a8ff}.ts{color:#a5d6ff}.tco{color:#484f58}.tok{color:#3fb950}
+.bvb-grid{display:grid;grid-template-columns:1fr 1fr;gap:1.5rem;margin:2rem 0}
+@media(max-width:640px){.bvb-grid{grid-template-columns:1fr}}
+.bvb-card{border:1px solid hsl(var(--border));padding:2rem;text-align:center;transition:all .25s ease}
+.bvb-card:hover{transform:translateY(-2px);box-shadow:0 4px 12px rgba(0,0,0,.06)}
+.bvb-buy{border-color:#9D61FF40}
+.bvb-num{font-family:"Funnel Display",sans-serif;font-size:2.5rem;font-weight:300;line-height:1.2}
+.bvb-purple{color:#9D61FF}
+.bvb-label{font-size:.75rem;color:hsl(var(--muted-foreground));margin-top:.5rem;text-transform:uppercase;letter-spacing:.08em}
+.bvb-detail{font-size:.82rem;color:hsl(var(--muted-foreground));margin-top:1rem;line-height:1.55}
+.bvb-mono{font-family:ui-monospace,SFMono-Regular,Menlo,monospace;font-size:.8rem;color:#9D61FF;margin-top:1rem}
+.stat-row{display:grid;grid-template-columns:repeat(3,1fr);gap:1rem;margin:2rem 0}
+@media(max-width:640px){.stat-row{grid-template-columns:1fr}}
+.stat-item{border:1px solid hsl(var(--border));padding:1.25rem;text-align:center;transition:all .25s ease}
+.stat-item:hover{transform:translateY(-2px);box-shadow:0 4px 12px rgba(0,0,0,.06)}
+.stat-val{font-family:"Funnel Display",sans-serif;font-size:2rem;font-weight:300;color:#9D61FF}
+.stat-desc{font-size:.7rem;color:hsl(var(--muted-foreground));text-transform:uppercase;letter-spacing:.08em;margin-top:.3rem}
+.arch-flow{display:flex;align-items:center;justify-content:center;gap:.25rem;flex-wrap:wrap;margin:2rem 0;padding:2rem 1rem;border:1px solid hsl(var(--border));font-size:.8rem}
+.arch-node{border:1px solid hsl(var(--border));padding:.5rem 1rem;white-space:nowrap}
+.arch-hl{border-color:#9D61FF;color:#9D61FF}
+.arch-arrow{color:hsl(var(--muted-foreground));font-size:1.2rem}
+.arch-split{display:flex;flex-direction:column;gap:.35rem}
+.cta-box{border:1px solid #9D61FF40;padding:2.5rem;text-align:center;margin:3rem 0}
+.cta-title{font-family:"Funnel Display",sans-serif;font-size:1.5rem;font-weight:400;margin-bottom:.75rem}
+.cta-desc{font-size:.9rem;color:hsl(var(--muted-foreground));margin-bottom:1.5rem}
+.cta-btn{display:inline-block;padding:.65rem 2rem;background:#9D61FF;color:white;font-size:.85rem;font-weight:500;text-decoration:none;transition:opacity .2s}
+.cta-btn:hover{opacity:.9}
+.cta-cli{border:1px solid #30363d;background:#0d1117;padding:2rem 2.5rem;text-align:center;margin:0 0 1.5rem}
+.cta-cli-label{font-size:.85rem;color:#e6edf3;margin-bottom:1rem}
+.cta-cli-cmd{font-family:ui-monospace,SFMono-Regular,Menlo,monospace;font-size:1rem;color:#d2a8ff;margin-bottom:1rem}
+.cta-cli-cmd span{color:#58a6ff}
+.cta-cli-or{font-size:.7rem;text-transform:uppercase;letter-spacing:.1em;color:#484f58;margin:.75rem 0}
+.cta-secondary{display:inline-block;font-size:.8rem;color:#9D61FF;text-decoration:underline;text-underline-offset:3px;transition:opacity .2s}
+.cta-secondary:hover{opacity:.75}
+.demo-wrap{display:grid;grid-template-columns:200px 1fr;gap:1.5rem;margin:2rem 0;border:1px solid hsl(var(--border));padding:1.5rem;min-height:380px}
+@media(max-width:640px){.demo-wrap{grid-template-columns:1fr;min-height:auto}}
+.phone{width:200px;height:360px;border:2px solid hsl(var(--border));border-radius:20px;overflow:hidden;position:relative;background:hsl(var(--background));margin:0 auto}
+.phone-status{height:24px;background:hsl(var(--border));display:flex;align-items:center;justify-content:center;font-size:.55rem;color:hsl(var(--muted-foreground))}
+.phone-screen{padding:1rem;position:relative;height:calc(100% - 24px)}
+.phone-screen-login,.phone-screen-welcome{position:absolute;inset:0;padding:1rem;transition:opacity .5s ease}
+.phone-screen-welcome{opacity:0;display:flex;align-items:center;justify-content:center;flex-direction:column}
+.phone-screen-welcome.active{opacity:1}
+.phone-screen-login.hidden{opacity:0}
+.app-title{font-size:.75rem;font-weight:600;margin-bottom:1rem;text-align:center;margin-top:.75rem}
+.app-field{border:1px solid hsl(var(--border));padding:.4rem .5rem;font-size:.6rem;margin-bottom:.5rem;color:hsl(var(--muted-foreground));border-radius:3px}
+.app-btn{background:#9D61FF;color:white;text-align:center;padding:.45rem;font-size:.6rem;font-weight:600;border-radius:3px;margin-top:.5rem;position:relative;overflow:hidden;cursor:default}
+.scan-line{position:absolute;inset:0;background:linear-gradient(transparent 40%,rgba(157,97,255,.08) 50%,transparent 60%);transform:translateY(-100%);pointer-events:none;z-index:2}
+.scan-line.active{animation:scanDown .6s ease forwards}
+@keyframes scanDown{to{transform:translateY(100%)}}
+.reticle{position:absolute;width:50px;height:50px;border:2px solid #9D61FF;border-radius:50%;opacity:0;pointer-events:none;z-index:3;transform:translate(-50%,-50%);left:50%;top:48%}
+.reticle.active{animation:reticleIn .8s ease forwards}
+@keyframes reticleIn{0%{opacity:0;width:80px;height:80px}60%{opacity:1;width:30px;height:30px}100%{opacity:1;width:36px;height:36px}}
+.ripple{position:absolute;width:0;height:0;border-radius:50%;background:rgba(157,97,255,.3);left:50%;top:48%;transform:translate(-50%,-50%);pointer-events:none;z-index:3}
+.ripple.active{animation:rippleOut .5s ease forwards}
+@keyframes rippleOut{to{width:60px;height:60px;opacity:0}}
+.welcome-icon{font-size:2rem;margin-bottom:.5rem}
+.welcome-text{font-size:.75rem;font-weight:600}
+.demo-log{font-family:ui-monospace,SFMono-Regular,Menlo,monospace;font-size:.72rem;line-height:1.9;color:hsl(var(--muted-foreground))}
+.demo-steps{display:flex;gap:.5rem;margin-bottom:1rem}
+.demo-step{width:8px;height:8px;background:hsl(var(--border));transition:background .3s}
+.demo-step.active{background:#9D61FF}
+.demo-step.done{background:#3fb950}
+.log-line{opacity:0;transition:opacity .3s}.log-line.show{opacity:1}
+.log-ok{color:#3fb950}
+.demo-run{background:#9D61FF;color:white;border:none;padding:.5rem 1.25rem;font-size:.75rem;font-weight:500;cursor:pointer;transition:opacity .2s;font-family:"Public Sans",sans-serif}
+.demo-run:hover{opacity:.85}
+.demo-run:disabled{opacity:.4;cursor:default}
+.chart-section{margin:2.5rem 0}
+.chart-title{font-size:.7rem;text-transform:uppercase;letter-spacing:.1em;color:hsl(var(--muted-foreground));margin-bottom:.75rem;font-weight:500}
+.chart-row{display:flex;align-items:center;margin:.4rem 0;font-size:.72rem;gap:.5rem}
+.chart-label{width:110px;flex-shrink:0;text-align:right;color:hsl(var(--muted-foreground))}
+.chart-bar-wrap{flex:1;height:22px;background:hsl(var(--border));position:relative;overflow:hidden}
+.chart-bar{height:100%;width:0;transition:width 1.2s ease;display:flex;align-items:center;justify-content:flex-end;padding-right:.5rem;font-size:.65rem;font-weight:600;color:white}
+.chart-bar-purple{background:#9D61FF}
+.chart-bar-gray{background:hsl(var(--muted-foreground))}
+.chart-bar.visible{/* widths set inline */}
+.sep{text-align:center;margin:2.5rem 0;color:hsl(var(--border));letter-spacing:.5em;font-size:.5rem}
+.credibility-aside{border-left:2px solid #9D61FF;padding:.85rem 1.25rem;margin:2rem 0;font-size:.85rem;line-height:1.65;color:hsl(var(--muted-foreground))}
+.credibility-aside a{color:#9D61FF;text-decoration:underline;text-underline-offset:2px}
+.credibility-aside a:hover{opacity:.85}
+`}</style>
+
+Every major tech company is building coding agents. The frontier is moving from "write code" to "interact with the product." But the moment your agent needs to tap a button on a real iPhone, you hit an infrastructure problem that has nothing to do with AI.
+
+We know this because we built it before. At Uber, we created [DragonCrawl](https://www.uber.com/blog/generative-ai-for-high-quality-mobile-testing/) &mdash; the first AI-powered mobile testing system to run in production at scale. It executed Uber's core trip flow across 85 cities with 99%+ stability, zero maintenance, on every Android code change. The models were the easy part. The infrastructure to actually run them against real devices was where we spent most of our time.
+
+Now we're building Revyl, and the problem is the same. There's been a lot of progress on getting AI to reason about what to do on a screen. But getting it a real device to act on &mdash; with low-latency streaming, clean state, and verified execution &mdash; is a different kind of hard. That's the infrastructure iceberg.
+
+<div class="sep reveal">&#x2022; &nbsp; &#x2022; &nbsp; &#x2022;</div>
+
+## The iceberg
+
+We wanted to get to a single CLI command: tell the device what to do in natural language, and have it happen. Here's what that actually required.
+
+<div class="iceberg-wrap reveal">
+<div class="iceberg-above"><span class="iceberg-cmd">revyl device tap --target "the login button"</span></div>
+<div class="iceberg-below">
+<div class="iceberg-layer">Apple Silicon Mac Mini fleet management</div>
+<div class="iceberg-layer">Ansible provisioning &mdash; 13 roles, kernel tuning, simulator matrices</div>
+<div class="iceberg-layer">Device boot, clean-state erasure, port allocation</div>
+<div class="iceberg-layer">H.264 WebRTC streaming at 24-30 fps</div>
+<div class="iceberg-layer">Multi-model AI grounding with self-correction</div>
+<div class="iceberg-layer">Native action execution + visual verification</div>
+<div class="iceberg-layer">Distributed orchestration with sticky device routing</div>
+<div class="iceberg-layer">OpenTelemetry observability across every layer</div>
+</div>
+</div>
+
+One command on top. Eight layers of infrastructure underneath, each with its own failure modes, each harder than you'd expect.
+
+<div class="sep reveal">&#x2022; &nbsp; &#x2022; &nbsp; &#x2022;</div>
+
+## Demo
+
+<div class="demo-wrap reveal">
+<div class="phone" id="demo-phone">
+<div class="phone-status">9:41 AM</div>
+<div class="phone-screen">
+<div class="scan-line" id="demo-scan"></div>
+<div class="reticle" id="demo-reticle"></div>
+<div class="ripple" id="demo-ripple"></div>
+<div class="phone-screen-login" id="demo-login">
+<div class="app-title">MyApp</div>
+<div class="app-field">user@company.com</div>
+<div class="app-field">&#x2022;&#x2022;&#x2022;&#x2022;&#x2022;&#x2022;&#x2022;&#x2022;</div>
+<div class="app-btn" id="demo-btn">Sign In</div>
+</div>
+<div class="phone-screen-welcome" id="demo-welcome">
+<div class="welcome-icon">&#x2713;</div>
+<div class="welcome-text">Welcome back!</div>
+</div>
+</div>
+</div>
+<div class="demo-log">
+<div class="demo-steps"><div class="demo-step" id="ds0"></div><div class="demo-step" id="ds1"></div><div class="demo-step" id="ds2"></div><div class="demo-step" id="ds3"></div></div>
+<div><button class="demo-run" id="demo-go">Run Demo</button></div>
+<div style="margin-top:1rem;">
+<div class="log-line" id="l0"><span class="tp">$</span> revyl device tap --target <span class="ts">"the sign in button"</span></div>
+<div class="log-line" id="l1">&nbsp;&nbsp;Capturing screenshot...</div>
+<div class="log-line" id="l2">&nbsp;&nbsp;Grounding: <span class="ts">"sign in button"</span> &rarr; <span class="tf">(142, 308)</span></div>
+<div class="log-line" id="l3">&nbsp;&nbsp;Executing tap at (142, 308)...</div>
+<div class="log-line" id="l4">&nbsp;&nbsp;<span class="log-ok">Verified: screen changed. Step complete.</span></div>
+<div class="log-line" id="l5">&nbsp;&nbsp;<span class="log-ok">Done in 2.8s</span></div>
+</div>
+</div>
+</div>
+
+<div class="sep reveal">&#x2022; &nbsp; &#x2022; &nbsp; &#x2022;</div>
+
+## The seven layers
+
+Here's what we actually had to build. Each of these is its own project, with its own set of surprises.
+
+<div class="layer-card reveal delay-1">
+<div class="layer-num">01</div>
+<div class="layer-title">Custom Hardware Fleet</div>
+<p class="layer-desc">We run dedicated Apple Silicon Mac Minis. Provisioning them turned out to be one of the hardest parts &mdash; there's no Terraform for Mac hardware. We wrote 13 Ansible roles covering kernel tuning, simulator creation, and observability. A custom LaunchDaemon supervisor handles auto-restarts, version polling, and graceful shutdown. Deploys happen in seconds via GitHub webhooks and AWS SSM.</p>
+<p class="layer-why"><span class="pill">Hard</span> Emulators leak resources. Every iOS update can break your simulator matrix. Someone has to be on-call for hardware failures at 2am.</p>
+</div>
+
+<div class="layer-card reveal delay-2">
+<div class="layer-num">02</div>
+<div class="layer-title">Device Provisioning</div>
+<p class="layer-desc">Android emulators cold-boot in 1-5 minutes. iOS simulators need to be erased between runs for hermetic isolation, then booted, then connected to a companion daemon. We added pre-warming to cut first-task latency by 30-60 seconds, but getting it right meant handling all the silent failures.</p>
+<p class="layer-why"><span class="pill">Hard</span> Boot processes hang without error. Port conflicts across concurrent sessions produce cryptic failures. Clean-state guarantees require careful lifecycle management that's easy to get subtly wrong.</p>
+</div>
+
+<div class="layer-card reveal delay-3">
+<div class="layer-num">03</div>
+<div class="layer-title">Real-Time Video Streaming</div>
+<p class="layer-desc">We stream H.264 video at 24-30fps from real devices via WebRTC, anywhere in the world. A local ring buffer lets the AI "watch" what just happened. The pipelines are self-healing &mdash; they auto-restart on codec failures without losing the session. Getting here required a lot of time with GStreamer.</p>
+<p class="layer-why"><span class="pill">Hard</span> Codec negotiation, WHIP/WHEP handshakes, resolution mapping between logical and physical pixels. One misconfigured buffer adds multi-second latency. One codec mismatch kills the stream silently.</p>
+</div>
+
+<div class="layer-card reveal delay-4">
+<div class="layer-num">04</div>
+<div class="layer-title">AI Element Grounding</div>
+<p class="layer-desc">"Tap the login button" needs to become precise pixel coordinates. We use a reasoning model to understand intent and a vision model to locate the element on screen. When grounding fails, the system retries with expanded search regions. No CSS selectors, no accessibility IDs &mdash; just the screenshot and the instruction.</p>
+<p class="layer-why"><span class="pill">Hard</span> Vision models hallucinate coordinates. Screen densities vary wildly across devices. Dynamic UIs shift elements between the moment we capture and the moment we execute. Getting to production-grade accuracy took months of iteration.</p>
+</div>
+
+<div class="layer-card reveal delay-5">
+<div class="layer-num">05</div>
+<div class="layer-title">Action Execution &amp; Verification</div>
+<p class="layer-desc">The loop is: execute, wait, verify. Every action is visually confirmed before we move on. We support the full mobile vocabulary &mdash; tap, swipe, type, long press, pinch, drag, scroll &mdash; using platform-native APIs (UIAutomator2 for Android, XCTest/IDB for iOS) with tiered retry logic.</p>
+<p class="layer-why"><span class="pill">Hard</span> ADB commands hang without warning. XCTest runners timeout silently. Keyboard state is unpredictable across OS versions. Animation timing varies per device, so "wait for the screen to settle" is harder than it sounds.</p>
+</div>
+
+<div class="layer-card reveal delay-6">
+<div class="layer-num">06</div>
+<div class="layer-title">Parallel Orchestration</div>
+<p class="layer-desc">We needed to go from 1 session to 10,000+ concurrent sessions. The Mac Mini fleet handles iOS. A workflow orchestrator runs suites in parallel with automatic capacity management. Every session gets a clean, isolated device.</p>
+<p class="layer-why"><span class="pill">Hard</span> Devices are stateful &mdash; you can't just spin up a container. We had to build sticky routing, distributed concurrency control, pre-warming to avoid 3-5 minute cold boots, and queue-depth autoscaling. All of it custom.</p>
+</div>
+
+<div class="layer-card reveal delay-7">
+<div class="layer-num">07</div>
+<div class="layer-title">Observability</div>
+<p class="layer-desc">We instrumented everything with OpenTelemetry: grounding latency, click accuracy, action time, streaming health, provisioning phases. Every session gets a full video recording for post-mortem review.</p>
+<p class="layer-why"><span class="pill">Hard</span> When something fails, you're tracing across LLM, device, streaming, and orchestrator simultaneously. Building the observability layer was as much work as the infrastructure itself.</p>
+</div>
+
+<div class="sep reveal">&#x2022; &nbsp; &#x2022; &nbsp; &#x2022;</div>
+
+## The interface
+
+Seven layers of complexity, one CLI:
+
+<div class="terminal reveal">
+<div class="terminal-bar"><div class="terminal-dot td-r"></div><div class="terminal-dot td-y"></div><div class="terminal-dot td-g"></div></div>
+<div class="terminal-body">
+<div><span class="tco"># AI-grounded device actions &mdash; no selectors, no coordinates</span></div>
+<div style="margin-top:.4rem"><span class="tp">$</span>&nbsp;<span class="tc">revyl device</span>&nbsp;<span class="tf">tap</span>&nbsp;<span class="tf">--target</span>&nbsp;<span class="ts">"the login button"</span></div>
+<div><span class="tok">&nbsp;&nbsp;Verified. Step complete.</span></div>
+<div style="margin-top:.8rem"><span class="tp">$</span>&nbsp;<span class="tc">revyl device</span>&nbsp;<span class="tf">type</span>&nbsp;<span class="tf">--target</span>&nbsp;<span class="ts">"email field"</span>&nbsp;<span class="tf">--text</span>&nbsp;<span class="ts">"user@company.com"</span></div>
+<div><span class="tok">&nbsp;&nbsp;Verified. Step complete.</span></div>
+<div style="margin-top:.8rem"><span class="tp">$</span>&nbsp;<span class="tc">revyl device</span>&nbsp;<span class="tf">swipe</span>&nbsp;<span class="tf">--target</span>&nbsp;<span class="ts">"the feed"</span>&nbsp;<span class="tf">--direction</span>&nbsp;<span class="ts">up</span></div>
+<div><span class="tok">&nbsp;&nbsp;Verified. Step complete.</span></div>
+<div style="margin-top:1rem"><span class="tco"># Expose as MCP tools for any coding agent</span></div>
+<div style="margin-top:.4rem"><span class="tp">$</span>&nbsp;<span class="tc">revyl mcp</span></div>
+<div><span class="tok">&nbsp;&nbsp;MCP server running. Agent can call device actions directly.</span></div>
+</div>
+</div>
+
+The CLI is the primary interface. You say what to do in natural language, and we handle the screenshot, grounding, execution, and verification loop behind it.
+
+We also expose everything as an MCP server &mdash; `revyl mcp` turns the device into a tool that any agent framework can call directly, whether it's Claude, GPT, or something custom. The live video stream is always available for continuous perception-action loops.
+
+<div class="sep reveal">&#x2022; &nbsp; &#x2022; &nbsp; &#x2022;</div>
+
+## Performance
+
+We optimized for the tight loop an AI agent needs: capture the screen, ground the instruction, execute the action, verify the result. Here's where we ended up compared to other approaches.
+
+<div class="chart-section reveal">
+<div class="chart-title">State Polling Latency</div>
+<div class="chart-row"><div class="chart-label">Revyl</div><div class="chart-bar-wrap"><div class="chart-bar chart-bar-purple cbar" style="--w:7%">~50ms</div></div></div>
+<div class="chart-row"><div class="chart-label">In-house</div><div class="chart-bar-wrap"><div class="chart-bar chart-bar-gray cbar" style="--w:57%">~400ms</div></div></div>
+<div class="chart-row"><div class="chart-label">BrowserStack</div><div class="chart-bar-wrap"><div class="chart-bar chart-bar-gray cbar" style="--w:93%">~650ms</div></div></div>
+<div class="chart-row"><div class="chart-label">Sauce Labs</div><div class="chart-bar-wrap"><div class="chart-bar chart-bar-gray cbar" style="--w:100%">~700ms</div></div></div>
+</div>
+
+<div class="chart-section reveal">
+<div class="chart-title">Time to First Device Action</div>
+<div class="chart-row"><div class="chart-label">Revyl</div><div class="chart-bar-wrap"><div class="chart-bar chart-bar-purple cbar" style="--w:4%">~8s</div></div></div>
+<div class="chart-row"><div class="chart-label">BrowserStack</div><div class="chart-bar-wrap"><div class="chart-bar chart-bar-gray cbar" style="--w:25%">~45s</div></div></div>
+<div class="chart-row"><div class="chart-label">Sauce Labs</div><div class="chart-bar-wrap"><div class="chart-bar chart-bar-gray cbar" style="--w:33%">~60s</div></div></div>
+<div class="chart-row"><div class="chart-label">In-house</div><div class="chart-bar-wrap"><div class="chart-bar chart-bar-gray cbar" style="--w:100%">~180s</div></div></div>
+</div>
+
+<div class="chart-section reveal">
+<div class="chart-title">Max Concurrent Device Sessions</div>
+<div class="chart-row"><div class="chart-label">Revyl</div><div class="chart-bar-wrap"><div class="chart-bar chart-bar-purple cbar" style="--w:100%">10,000+</div></div></div>
+<div class="chart-row"><div class="chart-label">Sauce Labs</div><div class="chart-bar-wrap"><div class="chart-bar chart-bar-gray cbar" style="--w:1%">~50</div></div></div>
+<div class="chart-row"><div class="chart-label">BrowserStack</div><div class="chart-bar-wrap"><div class="chart-bar chart-bar-gray cbar" style="--w:0.5%">~25</div></div></div>
+</div>
+
+<div class="sep reveal">&#x2022; &nbsp; &#x2022; &nbsp; &#x2022;</div>
+
+## Numbers
+
+<div class="stat-row reveal">
+<div class="stat-item"><div class="stat-val">24-30</div><div class="stat-desc">FPS streaming</div></div>
+<div class="stat-item"><div class="stat-val">13</div><div class="stat-desc">Ansible roles</div></div>
+<div class="stat-item"><div class="stat-val">10,000+</div><div class="stat-desc">Parallel sessions</div></div>
+</div>
+
+<div class="stat-row reveal">
+<div class="stat-item"><div class="stat-val">~50ms</div><div class="stat-desc">Polling latency</div></div>
+<div class="stat-item"><div class="stat-val">3</div><div class="stat-desc">Compute tiers</div></div>
+<div class="stat-item"><div class="stat-val">0</div><div class="stat-desc">Selectors required</div></div>
+</div>
+
+## Architecture
+
+The full request path:
+
+<div class="arch-flow reveal">
+<div class="arch-node arch-hl">Your Agent</div>
+<div class="arch-arrow">&rarr;</div>
+<div class="arch-node">Revyl API</div>
+<div class="arch-arrow">&rarr;</div>
+<div class="arch-node">Orchestrator</div>
+<div class="arch-arrow">&rarr;</div>
+<div class="arch-split"><div class="arch-node">Mac Mini Fleet (iOS)</div><div class="arch-node">K8s Cluster (Android)</div></div>
+<div class="arch-arrow">&rarr;</div>
+<div class="arch-node">Device Action</div>
+<div class="arch-arrow">&rarr;</div>
+<div class="arch-node">WebRTC Stream</div>
+<div class="arch-arrow">&rarr;</div>
+<div class="arch-node arch-hl">Verified Result</div>
+</div>
+
+Your agent talks to our API. We provision the device, stream the screen, ground the instruction, execute, verify, and return the result. You focus on the intelligence.
+
+<div class="sep reveal">&#x2022; &nbsp; &#x2022; &nbsp; &#x2022;</div>
+
+## Try it
+
+<div class="cta-cli reveal">
+<div class="cta-cli-cmd"><span>$</span> brew install revylai/tap/revyl</div>
+<div class="cta-cli-or">or</div>
+<div class="cta-cli-cmd"><span>$</span> npm install -g @revyl/cli</div>
+<a href="https://github.com/RevylAI/revyl-cli" class="cta-secondary">View on GitHub &rarr;</a>
+</div>
+
+If you're building an agent that needs to interact with real mobile devices, we'd like to help. Reach out at [anam@revyl.ai](mailto:anam@revyl.ai) or [book a demo](https://cal.com/landseer-enga/book-a-demo).
+
+<script>{`
+if(typeof IntersectionObserver!=='undefined'){
+  var obs=new IntersectionObserver(function(entries){
+    entries.forEach(function(e){if(e.isIntersecting){e.target.classList.add('visible');obs.unobserve(e.target);}});
+  },{threshold:.15});
+  document.querySelectorAll('.reveal').forEach(function(el){obs.observe(el);});
+  var cobs=new IntersectionObserver(function(entries){
+    entries.forEach(function(e){if(e.isIntersecting){e.target.querySelectorAll('.cbar').forEach(function(b){b.style.width=b.style.getPropertyValue('--w');});cobs.unobserve(e.target);}});
+  },{threshold:.2});
+  document.querySelectorAll('.chart-section').forEach(function(el){cobs.observe(el);});
+}
+var demoRunning=false;
+var btn=document.getElementById('demo-go');
+if(btn){btn.addEventListener('click',function(){
+  if(demoRunning)return;demoRunning=true;btn.disabled=true;
+  var steps=['ds0','ds1','ds2','ds3'];
+  var logs=['l0','l1','l2','l3','l4','l5'];
+  steps.forEach(function(s){var e=document.getElementById(s);if(e){e.className='demo-step';}});
+  logs.forEach(function(l){var e=document.getElementById(l);if(e){e.className='log-line';}});
+  document.getElementById('demo-login').className='phone-screen-login';
+  document.getElementById('demo-welcome').className='phone-screen-welcome';
+  document.getElementById('demo-scan').className='scan-line';
+  document.getElementById('demo-reticle').className='reticle';
+  document.getElementById('demo-ripple').className='ripple';
+  setTimeout(function(){document.getElementById('l0').classList.add('show');},100);
+  setTimeout(function(){document.getElementById('ds0').classList.add('active');document.getElementById('l1').classList.add('show');document.getElementById('demo-scan').classList.add('active');},400);
+  setTimeout(function(){document.getElementById('ds0').className='demo-step done';document.getElementById('ds1').classList.add('active');document.getElementById('l2').classList.add('show');document.getElementById('demo-reticle').classList.add('active');},1200);
+  setTimeout(function(){document.getElementById('ds1').className='demo-step done';document.getElementById('ds2').classList.add('active');document.getElementById('l3').classList.add('show');document.getElementById('demo-reticle').className='reticle';document.getElementById('demo-ripple').classList.add('active');},2400);
+  setTimeout(function(){document.getElementById('ds2').className='demo-step done';document.getElementById('ds3').classList.add('active');document.getElementById('l4').classList.add('show');document.getElementById('demo-login').classList.add('hidden');document.getElementById('demo-welcome').classList.add('active');},3200);
+  setTimeout(function(){document.getElementById('ds3').className='demo-step done';document.getElementById('l5').classList.add('show');demoRunning=false;btn.disabled=false;},4200);
+});}
+`}</script>

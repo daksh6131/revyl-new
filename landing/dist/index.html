@@ -1,0 +1,919 @@
+<!DOCTYPE html><html lang="en" class="dark" data-astro-cid-sckkx6r4> <head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><link rel="icon" type="image/png" href="/favicon.png"><link rel="canonical" href="https://blog.revyl.com/"><!-- SEO --><meta name="description" content="Revyl Blog - Insights on AI-powered mobile app testing, product updates, and engineering deep dives."><meta name="robots" content="index, follow"><!-- Open Graph / Social --><meta property="og:type" content="website"><meta property="og:url" content="https://blog.revyl.com/"><meta property="og:title" content="Revyl | The Mobile Reliability Platform"><meta property="og:description" content="Revyl Blog - Insights on AI-powered mobile app testing, product updates, and engineering deep dives."><meta property="og:image" content="https://blog.revyl.com/og-image.png"><meta property="og:site_name" content="Revyl Blog"><!-- Twitter --><meta name="twitter:card" content="summary_large_image"><meta name="twitter:site" content="@tryrevyl"><meta name="twitter:title" content="Revyl | The Mobile Reliability Platform"><meta name="twitter:description" content="Revyl Blog - Insights on AI-powered mobile app testing, product updates, and engineering deep dives."><meta name="twitter:image" content="https://blog.revyl.com/og-image.png"><!-- Fonts - Funnel Display for headers, Public Sans for body, JetBrains Mono for terminal/loader --><link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link href="https://fonts.googleapis.com/css2?family=Funnel+Display:wght@300..800&family=Public+Sans:wght@400;500;600&family=JetBrains+Mono:wght@300;400;500;600&family=Chakra+Petch:wght@400;500;600;700&display=swap" rel="stylesheet"><title>Revyl | The Mobile Reliability Platform</title><!-- Theme detection - skip if forceDark --><link rel="stylesheet" href="/_astro/_slug_.g8MLJr7u.css">
+<link rel="stylesheet" href="/_astro/index.DWX2zS_H.css"></head> <body class="min-h-screen flex flex-col overflow-x-hidden bg-[#151619] text-white" data-astro-cid-sckkx6r4> <!-- Header - full width on md+, inside borders on mobile --> <header class="relative z-50 border-b border-gray-700" data-astro-cid-sckkx6r4> <div class="max-w-[95%] md:max-w-none mx-auto px-4 sm:px-6 lg:px-8" data-astro-cid-sckkx6r4> <!-- Side borders through header on mobile only --> <div class="md:hidden absolute top-0 bottom-0 left-[2.5%] border-l border-gray-700" data-astro-cid-sckkx6r4></div> <div class="md:hidden absolute top-0 bottom-0 right-[2.5%] border-r border-gray-700" data-astro-cid-sckkx6r4></div> <div class="h-20 flex items-center justify-between" data-astro-cid-sckkx6r4> <!-- Left: Logo --> <div class="flex items-center" data-astro-cid-sckkx6r4> <a href="/" class="flex items-center" data-astro-cid-sckkx6r4> <!-- Dark logo for light mode (hidden when forceDark) --> <svg class="h-6 w-auto hidden" viewBox="0 0 1100 300" fill="none" xmlns="http://www.w3.org/2000/svg" data-astro-cid-sckkx6r4> <path d="M80.2852 150L190.746 260.018L150.603 300L0 150L150.603 0L190.746 39.9818L80.2852 150Z" fill="#1C1732" data-astro-cid-sckkx6r4></path> <path d="M381.546 150L230.943 300L190.801 260.018L301.261 150L190.746 39.9818L230.888 0L381.492 150H381.546Z" fill="#1C1732" data-astro-cid-sckkx6r4></path> <path d="M120.483 150L190.746 80.0182L261.009 150L190.746 219.982L120.483 150Z" fill="#1C1732" data-astro-cid-sckkx6r4></path> <path d="M451.78 236.907V60.1802H539.842C558.243 60.1802 572.701 64.3984 583.215 72.8347C593.73 81.2711 598.988 93.1256 598.988 108.398C598.988 117.126 597.016 124.762 593.073 131.307C589.13 137.707 583.288 142.653 575.548 146.144V147.017C582.996 147.017 588.765 149.053 592.854 153.126C596.943 157.053 598.988 162.798 598.988 170.362V236.907H568.758V166.871H482.229V236.907H451.78ZM482.229 141.126H537.432C547.509 141.126 555.249 138.726 560.652 133.926C566.202 129.126 568.977 122.362 568.977 113.635C568.977 104.762 566.202 97.9983 560.652 93.3438C555.249 88.5438 547.509 86.1438 537.432 86.1438H482.229V141.126Z" fill="#1C1732" data-astro-cid-sckkx6r4></path> <path d="M693.566 239.526C679.693 239.526 667.571 236.762 657.203 231.235C646.98 225.562 639.094 217.562 633.544 207.235C627.995 196.907 625.22 184.835 625.22 171.017C625.22 157.198 627.922 145.271 633.325 135.235C638.875 125.053 646.688 117.198 656.765 111.671C666.841 106.144 678.743 103.38 692.471 103.38C705.615 103.38 716.933 105.998 726.425 111.235C735.918 116.326 743.22 123.671 748.331 133.271C753.589 142.726 756.217 153.998 756.217 167.089V177.998H653.698C654.866 189.926 658.882 199.162 665.746 205.707C672.61 212.107 681.81 215.307 693.347 215.307C701.818 215.307 708.755 213.707 714.158 210.507C719.561 207.307 723.286 202.507 725.33 196.107H755.56C752.347 209.78 745.264 220.471 734.311 228.18C723.505 235.744 709.923 239.526 693.566 239.526ZM654.574 157.271H727.74C726.571 147.671 722.92 140.326 716.787 135.235C710.653 129.998 702.548 127.38 692.471 127.38C682.394 127.38 674.07 129.998 667.498 135.235C660.927 140.326 656.618 147.671 654.574 157.271Z" fill="#1C1732" data-astro-cid-sckkx6r4></path> <path d="M818.16 236.907L762.081 105.998H793.406L834.151 204.18H835.027L875.115 105.998H905.564L849.485 236.907H818.16Z" fill="#1C1732" data-astro-cid-sckkx6r4></path> <path d="M923.702 289.271V265.489H954.151L966.199 236.689L908.368 105.998H939.474L980.876 201.998H981.971L1021.84 105.998H1051.63L995.553 236.907L983.505 265.271C980.292 272.835 976.787 278.726 972.99 282.944C969.339 287.162 963.279 289.271 954.808 289.271H923.702Z" fill="#1C1732" data-astro-cid-sckkx6r4></path> <path d="M1070.21 236.907V53.6347H1100V236.907H1070.21Z" fill="#1C1732" data-astro-cid-sckkx6r4></path> </svg> <!-- Light logo for dark mode (always shown when forceDark) --> <svg class="h-6 w-auto block" viewBox="0 0 1100 300" fill="none" xmlns="http://www.w3.org/2000/svg" data-astro-cid-sckkx6r4> <path d="M80.2852 150L190.746 260.018L150.603 300L0 150L150.603 0L190.746 39.9818L80.2852 150Z" fill="#D8CFFF" data-astro-cid-sckkx6r4></path> <path d="M381.546 150L230.943 300L190.801 260.018L301.261 150L190.746 39.9818L230.888 0L381.492 150H381.546Z" fill="#D8CFFF" data-astro-cid-sckkx6r4></path> <path d="M120.483 150L190.746 80.0182L261.009 150L190.746 219.982L120.483 150Z" fill="#D8CFFF" data-astro-cid-sckkx6r4></path> <path d="M451.78 236.907V60.1802H539.842C558.243 60.1802 572.701 64.3984 583.215 72.8347C593.73 81.2711 598.988 93.1256 598.988 108.398C598.988 117.126 597.016 124.762 593.073 131.307C589.13 137.707 583.288 142.653 575.548 146.144V147.017C582.996 147.017 588.765 149.053 592.854 153.126C596.943 157.053 598.988 162.798 598.988 170.362V236.907H568.758V166.871H482.229V236.907H451.78ZM482.229 141.126H537.432C547.509 141.126 555.249 138.726 560.652 133.926C566.202 129.126 568.977 122.362 568.977 113.635C568.977 104.762 566.202 97.9983 560.652 93.3438C555.249 88.5438 547.509 86.1438 537.432 86.1438H482.229V141.126Z" fill="#D8CFFF" data-astro-cid-sckkx6r4></path> <path d="M693.566 239.526C679.693 239.526 667.571 236.762 657.203 231.235C646.98 225.562 639.094 217.562 633.544 207.235C627.995 196.907 625.22 184.835 625.22 171.017C625.22 157.198 627.922 145.271 633.325 135.235C638.875 125.053 646.688 117.198 656.765 111.671C666.841 106.144 678.743 103.38 692.471 103.38C705.615 103.38 716.933 105.998 726.425 111.235C735.918 116.326 743.22 123.671 748.331 133.271C753.589 142.726 756.217 153.998 756.217 167.089V177.998H653.698C654.866 189.926 658.882 199.162 665.746 205.707C672.61 212.107 681.81 215.307 693.347 215.307C701.818 215.307 708.755 213.707 714.158 210.507C719.561 207.307 723.286 202.507 725.33 196.107H755.56C752.347 209.78 745.264 220.471 734.311 228.18C723.505 235.744 709.923 239.526 693.566 239.526ZM654.574 157.271H727.74C726.571 147.671 722.92 140.326 716.787 135.235C710.653 129.998 702.548 127.38 692.471 127.38C682.394 127.38 674.07 129.998 667.498 135.235C660.927 140.326 656.618 147.671 654.574 157.271Z" fill="#D8CFFF" data-astro-cid-sckkx6r4></path> <path d="M818.16 236.907L762.081 105.998H793.406L834.151 204.18H835.027L875.115 105.998H905.564L849.485 236.907H818.16Z" fill="#D8CFFF" data-astro-cid-sckkx6r4></path> <path d="M923.702 289.271V265.489H954.151L966.199 236.689L908.368 105.998H939.474L980.876 201.998H981.971L1021.84 105.998H1051.63L995.553 236.907L983.505 265.271C980.292 272.835 976.787 278.726 972.99 282.944C969.339 287.162 963.279 289.271 954.808 289.271H923.702Z" fill="#D8CFFF" data-astro-cid-sckkx6r4></path> <path d="M1070.21 236.907V53.6347H1100V236.907H1070.21Z" fill="#D8CFFF" data-astro-cid-sckkx6r4></path> </svg> </a> </div> <!-- Center: Nav links --> <nav class="hidden md:flex items-center gap-8 absolute left-1/2 transform -translate-x-1/2" data-astro-cid-sckkx6r4> <!-- Products dropdown --> <div class="relative group" data-astro-cid-sckkx6r4> <button class="text-sm hover:opacity-70 transition-opacity flex items-center gap-1 text-white" data-astro-cid-sckkx6r4>
+Products
+<svg class="w-3 h-3 transition-transform group-hover:rotate-180" fill="none" stroke="currentColor" viewBox="0 0 24 24" data-astro-cid-sckkx6r4> <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" data-astro-cid-sckkx6r4></path> </svg> </button> <div class="absolute top-full left-1/2 -translate-x-1/2 pt-2 opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-200" data-astro-cid-sckkx6r4> <div class="shadow-lg rounded-none py-4 min-w-[480px] grid grid-cols-2 gap-0 bg-[#1a1a1e] border border-gray-700" data-astro-cid-sckkx6r4> <!-- Products column --> <div class="px-2 border-r border-gray-700" data-astro-cid-sckkx6r4> <span class="block px-3 pb-2 text-xs font-medium uppercase tracking-wider text-gray-500" data-astro-cid-sckkx6r4>Products</span> <a href="/products/ios-testing" class="flex items-start gap-3 px-3 py-2.5 rounded-none transition-colors hover:bg-white/5" data-astro-cid-sckkx6r4> <svg class="w-5 h-5 mt-0.5 flex-shrink-0 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24" data-astro-cid-sckkx6r4><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M12 18h.01M8 21h8a2 2 0 002-2V5a2 2 0 00-2-2H8a2 2 0 00-2 2v14a2 2 0 002 2z" data-astro-cid-sckkx6r4></path></svg> <div data-astro-cid-sckkx6r4> <span class="block text-sm font-medium text-white" data-astro-cid-sckkx6r4>iOS Testing</span> <span class="block text-xs mt-0.5 text-gray-400" data-astro-cid-sckkx6r4>Automated iOS app testing</span> </div> </a> <a href="/products/android-testing" class="flex items-start gap-3 px-3 py-2.5 rounded-none transition-colors hover:bg-white/5" data-astro-cid-sckkx6r4> <svg class="w-5 h-5 mt-0.5 flex-shrink-0 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24" data-astro-cid-sckkx6r4><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M12 18h.01M8 21h8a2 2 0 002-2V5a2 2 0 00-2-2H8a2 2 0 00-2 2v14a2 2 0 002 2z" data-astro-cid-sckkx6r4></path></svg> <div data-astro-cid-sckkx6r4> <span class="block text-sm font-medium text-white" data-astro-cid-sckkx6r4>Android Testing</span> <span class="block text-xs mt-0.5 text-gray-400" data-astro-cid-sckkx6r4>Automated Android app testing</span> </div> </a> <a href="/products/mobile-infrastructure" class="flex items-start gap-3 px-3 py-2.5 rounded-none transition-colors hover:bg-white/5" data-astro-cid-sckkx6r4> <svg class="w-5 h-5 mt-0.5 flex-shrink-0 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24" data-astro-cid-sckkx6r4><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 012-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10" data-astro-cid-sckkx6r4></path></svg> <div data-astro-cid-sckkx6r4> <span class="block text-sm font-medium text-white" data-astro-cid-sckkx6r4>Scalable Mobile Infrastructure</span> <span class="block text-xs mt-0.5 text-gray-400" data-astro-cid-sckkx6r4>Device farms that scale with you</span> </div> </a> </div> <!-- Features column --> <div class="px-2" data-astro-cid-sckkx6r4> <span class="block px-3 pb-2 text-xs font-medium uppercase tracking-wider text-gray-500" data-astro-cid-sckkx6r4>Features</span> <a href="/features/cli" class="flex items-start gap-3 px-3 py-2.5 rounded-none transition-colors hover:bg-white/5" data-astro-cid-sckkx6r4> <svg class="w-5 h-5 mt-0.5 flex-shrink-0 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24" data-astro-cid-sckkx6r4><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M8 9l3 3-3 3m5 0h3M5 20h14a2 2 0 002-2V6a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" data-astro-cid-sckkx6r4></path></svg> <div data-astro-cid-sckkx6r4> <span class="block text-sm font-medium text-white" data-astro-cid-sckkx6r4>CLI</span> <span class="block text-xs mt-0.5 text-gray-400" data-astro-cid-sckkx6r4>Run tests from your terminal</span> </div> </a> <a href="/features/mcp" class="flex items-start gap-3 px-3 py-2.5 rounded-none transition-colors hover:bg-white/5" data-astro-cid-sckkx6r4> <svg class="w-5 h-5 mt-0.5 flex-shrink-0 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24" data-astro-cid-sckkx6r4><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M13 10V3L4 14h7v7l9-11h-7z" data-astro-cid-sckkx6r4></path></svg> <div data-astro-cid-sckkx6r4> <span class="block text-sm font-medium text-white" data-astro-cid-sckkx6r4>MCP</span> <span class="block text-xs mt-0.5 text-gray-400" data-astro-cid-sckkx6r4>Model Context Protocol server</span> </div> </a> <a href="/features/crash-reporting" class="flex items-start gap-3 px-3 py-2.5 rounded-none transition-colors hover:bg-white/5" data-astro-cid-sckkx6r4> <svg class="w-5 h-5 mt-0.5 flex-shrink-0 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24" data-astro-cid-sckkx6r4><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z" data-astro-cid-sckkx6r4></path></svg> <div data-astro-cid-sckkx6r4> <span class="block text-sm font-medium text-white" data-astro-cid-sckkx6r4>Comprehensive Reporting</span> <span class="block text-xs mt-0.5 text-gray-400" data-astro-cid-sckkx6r4>Rich test reports and insights</span> </div> </a> </div> </div> </div> </div> <!-- Resources dropdown --> <div class="relative group" data-astro-cid-sckkx6r4> <button class="text-sm hover:opacity-70 transition-opacity flex items-center gap-1 text-white" data-astro-cid-sckkx6r4>
+Resources
+<svg class="w-3 h-3 transition-transform group-hover:rotate-180" fill="none" stroke="currentColor" viewBox="0 0 24 24" data-astro-cid-sckkx6r4> <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" data-astro-cid-sckkx6r4></path> </svg> </button> <div class="absolute top-full left-1/2 -translate-x-1/2 pt-2 opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-200" data-astro-cid-sckkx6r4> <div class="shadow-lg rounded-none py-2 min-w-[140px] bg-[#1a1a1e] border border-gray-700" data-astro-cid-sckkx6r4> <a href="/blog" class="block px-4 py-2 text-sm transition-colors text-white hover:bg-white/10" data-astro-cid-sckkx6r4>Blog</a> <a href="https://mobilereliability.com/" class="block px-4 py-2 text-sm transition-colors text-white hover:bg-white/10" data-astro-cid-sckkx6r4>Podcast</a> </div> </div> </div> <a href="/pricing" class="text-sm hover:opacity-70 transition-opacity text-white" data-astro-cid-sckkx6r4>Pricing</a> <a href="https://docs.revyl.com" class="text-sm hover:opacity-70 transition-opacity text-white" data-astro-cid-sckkx6r4>Docs</a> </nav> <!-- Right: Theme toggle, CTAs, and mobile menu --> <div class="flex items-center gap-4" data-astro-cid-sckkx6r4>  <a href="https://app.revyl.ai/login" class="hidden md:inline-flex text-sm hover:opacity-70 transition-opacity text-white" data-astro-cid-sckkx6r4>
+Log in
+</a> <div class="hidden md:flex items-center gap-2" data-astro-cid-sckkx6r4> <a href="https://app.revyl.ai/signup" class="rv-btn rv-btn--primary rv-btn--sm "> <span class="rv-btn-fill" aria-hidden="true"></span> <span class="rv-btn-left"> <span class="rv-btn-dot" aria-hidden="true"></span> <span class="rv-btn-label">Sign Up</span> </span> <svg class="rv-btn-arrow" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M13.1717 12.0007L8.22192 7.05093L9.63614 5.63672L16.0001 12.0007L9.63614 18.3646L8.22192 16.9504L13.1717 12.0007Z"></path></svg> </a>  <script>
+(function () {
+  const CHARS = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789';
+  const STEPS = 6;      // random frames per character
+  const STEP_MS = 40;   // ms per frame
+
+  function shuffle(btn) {
+    const label = btn.querySelector('.rv-btn-label');
+    if (!label || btn._shuffling) return;
+    const original = label.textContent;
+    btn._shuffling = true;
+    // Lock width so random chars don't cause layout reflow
+    label.style.width = label.offsetWidth + 'px';
+
+    // Build per-char timers: each char starts slightly after the previous
+    const chars = original.split('');
+    let resolved = chars.map(() => false);
+    let result = chars.slice();
+
+    chars.forEach((ch, i) => {
+      const isSpace = ch === ' ';
+      let step = 0;
+      const delay = i * 35; // stagger: each char starts 35ms after previous
+
+      setTimeout(function tick() {
+        if (isSpace) { resolved[i] = true; }
+        else if (step < STEPS) {
+          result[i] = CHARS[Math.floor(Math.random() * CHARS.length)];
+          step++;
+          label.textContent = result.join('');
+          setTimeout(tick, STEP_MS);
+        } else {
+          result[i] = ch.toUpperCase();
+          resolved[i] = true;
+          label.textContent = result.join('');
+        }
+        if (resolved.every(Boolean)) {
+          label.textContent = original;
+          label.style.width = '';
+          btn._shuffling = false;
+        }
+      }, delay);
+    });
+  }
+
+  function init() {
+    document.querySelectorAll('.rv-btn').forEach(btn => {
+      btn.addEventListener('mouseenter', () => shuffle(btn));
+    });
+  }
+
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', init);
+  } else {
+    init();
+  }
+})();
+</script> <a href="https://cal.com/landseer-enga/book-a-demo" class="rv-btn rv-btn--secondary rv-btn--sm "> <span class="rv-btn-fill" aria-hidden="true"></span> <span class="rv-btn-left"> <span class="rv-btn-dot" aria-hidden="true"></span> <span class="rv-btn-label">Book a Demo</span> </span> <svg class="rv-btn-arrow" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M13.1717 12.0007L8.22192 7.05093L9.63614 5.63672L16.0001 12.0007L9.63614 18.3646L8.22192 16.9504L13.1717 12.0007Z"></path></svg> </a>  <script>
+(function () {
+  const CHARS = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789';
+  const STEPS = 6;      // random frames per character
+  const STEP_MS = 40;   // ms per frame
+
+  function shuffle(btn) {
+    const label = btn.querySelector('.rv-btn-label');
+    if (!label || btn._shuffling) return;
+    const original = label.textContent;
+    btn._shuffling = true;
+    // Lock width so random chars don't cause layout reflow
+    label.style.width = label.offsetWidth + 'px';
+
+    // Build per-char timers: each char starts slightly after the previous
+    const chars = original.split('');
+    let resolved = chars.map(() => false);
+    let result = chars.slice();
+
+    chars.forEach((ch, i) => {
+      const isSpace = ch === ' ';
+      let step = 0;
+      const delay = i * 35; // stagger: each char starts 35ms after previous
+
+      setTimeout(function tick() {
+        if (isSpace) { resolved[i] = true; }
+        else if (step < STEPS) {
+          result[i] = CHARS[Math.floor(Math.random() * CHARS.length)];
+          step++;
+          label.textContent = result.join('');
+          setTimeout(tick, STEP_MS);
+        } else {
+          result[i] = ch.toUpperCase();
+          resolved[i] = true;
+          label.textContent = result.join('');
+        }
+        if (resolved.every(Boolean)) {
+          label.textContent = original;
+          label.style.width = '';
+          btn._shuffling = false;
+        }
+      }, delay);
+    });
+  }
+
+  function init() {
+    document.querySelectorAll('.rv-btn').forEach(btn => {
+      btn.addEventListener('mouseenter', () => shuffle(btn));
+    });
+  }
+
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', init);
+  } else {
+    init();
+  }
+})();
+</script> </div> <!-- Mobile hamburger menu button --> <button id="mobile-menu-btn" class="md:hidden p-2 transition-colors text-gray-400 hover:text-white" aria-label="Open menu" data-astro-cid-sckkx6r4> <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24" data-astro-cid-sckkx6r4> <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16" data-astro-cid-sckkx6r4></path> </svg> </button> </div> </div> </div> </header> <!-- Mobile menu overlay --> <div id="mobile-menu-overlay" class="fixed inset-0 bg-black/50 z-40 hidden md:hidden" data-astro-cid-sckkx6r4></div> <!-- Mobile menu panel --> <div id="mobile-menu" class="fixed top-0 right-0 h-full w-72 border-l z-50 transform translate-x-full transition-transform duration-300 ease-in-out md:hidden bg-[#151619] border-gray-700" data-astro-cid-sckkx6r4> <div class="flex items-center justify-between h-20 px-6 border-b border-gray-700" data-astro-cid-sckkx6r4> <span class="text-sm font-medium text-white" data-astro-cid-sckkx6r4>Menu</span> <button id="mobile-menu-close" class="p-2 transition-colors text-gray-400 hover:text-white" aria-label="Close menu" data-astro-cid-sckkx6r4> <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24" data-astro-cid-sckkx6r4> <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" data-astro-cid-sckkx6r4></path> </svg> </button> </div> <nav class="flex flex-col p-6 gap-1" data-astro-cid-sckkx6r4> <span class="py-3 text-xs uppercase tracking-wider text-gray-500" data-astro-cid-sckkx6r4>Products</span> <a href="/products/ios-testing" class="py-3 pl-4 text-sm transition-colors border-b text-white hover:text-[#C4A1FF] border-gray-700" data-astro-cid-sckkx6r4>iOS Testing</a> <a href="/products/android-testing" class="py-3 pl-4 text-sm transition-colors border-b text-white hover:text-[#C4A1FF] border-gray-700" data-astro-cid-sckkx6r4>Android Testing</a> <a href="/products/mobile-infrastructure" class="py-3 pl-4 text-sm transition-colors border-b text-white hover:text-[#C4A1FF] border-gray-700" data-astro-cid-sckkx6r4>Scalable Mobile Infrastructure</a> <span class="py-3 text-xs uppercase tracking-wider text-gray-500" data-astro-cid-sckkx6r4>Features</span> <a href="/features/cli" class="py-3 pl-4 text-sm transition-colors border-b text-white hover:text-[#C4A1FF] border-gray-700" data-astro-cid-sckkx6r4>CLI</a> <a href="/features/mcp" class="py-3 pl-4 text-sm transition-colors border-b text-white hover:text-[#C4A1FF] border-gray-700" data-astro-cid-sckkx6r4>MCP</a> <a href="/features/crash-reporting" class="py-3 pl-4 text-sm transition-colors border-b text-white hover:text-[#C4A1FF] border-gray-700" data-astro-cid-sckkx6r4>Comprehensive Reporting</a> <span class="py-3 text-xs uppercase tracking-wider text-gray-500" data-astro-cid-sckkx6r4>Resources</span> <a href="/blog" class="py-3 pl-4 text-sm transition-colors border-b text-white hover:text-[#C4A1FF] border-gray-700" data-astro-cid-sckkx6r4>Blog</a> <a href="https://mobilereliability.com/" class="py-3 pl-4 text-sm transition-colors border-b text-white hover:text-[#C4A1FF] border-gray-700" data-astro-cid-sckkx6r4>Podcast</a> <a href="/pricing" class="py-3 text-sm transition-colors border-b text-white hover:text-[#C4A1FF] border-gray-700" data-astro-cid-sckkx6r4>Pricing</a> <a href="https://docs.revyl.com" class="py-3 text-sm transition-colors border-b text-white hover:text-[#C4A1FF] border-gray-700" data-astro-cid-sckkx6r4>Docs</a> <a href="https://app.revyl.ai/login" class="mt-4 flex items-center justify-center h-10 px-4 text-sm font-medium transition-colors text-white hover:text-[#C4A1FF]" data-astro-cid-sckkx6r4>
+Log in
+</a> <div class="flex flex-col gap-2 mt-2" data-astro-cid-sckkx6r4> <a href="https://app.revyl.ai/signup" class="rv-btn rv-btn--primary rv-btn--md "> <span class="rv-btn-fill" aria-hidden="true"></span> <span class="rv-btn-left"> <span class="rv-btn-dot" aria-hidden="true"></span> <span class="rv-btn-label">Sign Up</span> </span> <svg class="rv-btn-arrow" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M13.1717 12.0007L8.22192 7.05093L9.63614 5.63672L16.0001 12.0007L9.63614 18.3646L8.22192 16.9504L13.1717 12.0007Z"></path></svg> </a>  <script>
+(function () {
+  const CHARS = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789';
+  const STEPS = 6;      // random frames per character
+  const STEP_MS = 40;   // ms per frame
+
+  function shuffle(btn) {
+    const label = btn.querySelector('.rv-btn-label');
+    if (!label || btn._shuffling) return;
+    const original = label.textContent;
+    btn._shuffling = true;
+    // Lock width so random chars don't cause layout reflow
+    label.style.width = label.offsetWidth + 'px';
+
+    // Build per-char timers: each char starts slightly after the previous
+    const chars = original.split('');
+    let resolved = chars.map(() => false);
+    let result = chars.slice();
+
+    chars.forEach((ch, i) => {
+      const isSpace = ch === ' ';
+      let step = 0;
+      const delay = i * 35; // stagger: each char starts 35ms after previous
+
+      setTimeout(function tick() {
+        if (isSpace) { resolved[i] = true; }
+        else if (step < STEPS) {
+          result[i] = CHARS[Math.floor(Math.random() * CHARS.length)];
+          step++;
+          label.textContent = result.join('');
+          setTimeout(tick, STEP_MS);
+        } else {
+          result[i] = ch.toUpperCase();
+          resolved[i] = true;
+          label.textContent = result.join('');
+        }
+        if (resolved.every(Boolean)) {
+          label.textContent = original;
+          label.style.width = '';
+          btn._shuffling = false;
+        }
+      }, delay);
+    });
+  }
+
+  function init() {
+    document.querySelectorAll('.rv-btn').forEach(btn => {
+      btn.addEventListener('mouseenter', () => shuffle(btn));
+    });
+  }
+
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', init);
+  } else {
+    init();
+  }
+})();
+</script> <a href="https://cal.com/landseer-enga/book-a-demo" class="rv-btn rv-btn--secondary rv-btn--md "> <span class="rv-btn-fill" aria-hidden="true"></span> <span class="rv-btn-left"> <span class="rv-btn-dot" aria-hidden="true"></span> <span class="rv-btn-label">Book a Demo</span> </span> <svg class="rv-btn-arrow" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M13.1717 12.0007L8.22192 7.05093L9.63614 5.63672L16.0001 12.0007L9.63614 18.3646L8.22192 16.9504L13.1717 12.0007Z"></path></svg> </a>  <script>
+(function () {
+  const CHARS = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789';
+  const STEPS = 6;      // random frames per character
+  const STEP_MS = 40;   // ms per frame
+
+  function shuffle(btn) {
+    const label = btn.querySelector('.rv-btn-label');
+    if (!label || btn._shuffling) return;
+    const original = label.textContent;
+    btn._shuffling = true;
+    // Lock width so random chars don't cause layout reflow
+    label.style.width = label.offsetWidth + 'px';
+
+    // Build per-char timers: each char starts slightly after the previous
+    const chars = original.split('');
+    let resolved = chars.map(() => false);
+    let result = chars.slice();
+
+    chars.forEach((ch, i) => {
+      const isSpace = ch === ' ';
+      let step = 0;
+      const delay = i * 35; // stagger: each char starts 35ms after previous
+
+      setTimeout(function tick() {
+        if (isSpace) { resolved[i] = true; }
+        else if (step < STEPS) {
+          result[i] = CHARS[Math.floor(Math.random() * CHARS.length)];
+          step++;
+          label.textContent = result.join('');
+          setTimeout(tick, STEP_MS);
+        } else {
+          result[i] = ch.toUpperCase();
+          resolved[i] = true;
+          label.textContent = result.join('');
+        }
+        if (resolved.every(Boolean)) {
+          label.textContent = original;
+          label.style.width = '';
+          btn._shuffling = false;
+        }
+      }, delay);
+    });
+  }
+
+  function init() {
+    document.querySelectorAll('.rv-btn').forEach(btn => {
+      btn.addEventListener('mouseenter', () => shuffle(btn));
+    });
+  }
+
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', init);
+  } else {
+    init();
+  }
+})();
+</script> </div> </nav> </div> <!-- Outer container with side borders - below header on md+ --> <div class="flex-1 flex flex-col" data-astro-cid-sckkx6r4> <div class="max-w-[95%] lg:max-w-[95%] xl:max-w-[85%] mx-auto border-l border-r flex-1 flex flex-col relative w-full border-gray-700" data-astro-cid-sckkx6r4> <!-- Corner decorations - hidden on mobile since borders go through header --> <div class="hidden md:block absolute top-[-1px] left-[-1px] w-2.5 h-2.5 border-t border-l border-gray-700" data-astro-cid-sckkx6r4></div> <div class="hidden md:block absolute top-[-1px] right-[-1px] w-2.5 h-2.5 border-t border-r border-gray-700" data-astro-cid-sckkx6r4></div> <div class="absolute bottom-[-1px] left-[-1px] w-2.5 h-2.5 border-b border-l border-gray-700" data-astro-cid-sckkx6r4></div> <div class="absolute bottom-[-1px] right-[-1px] w-2.5 h-2.5 border-b border-r border-gray-700" data-astro-cid-sckkx6r4></div> <!-- Main content --> <main class="flex-1" data-astro-cid-sckkx6r4>     <div id="revyl-loader" style="
+  position: fixed;
+  inset: 0;
+  width: 100vw;
+  height: 100vh;
+  z-index: 9999;
+  background: #08000f;
+  display: flex;
+  flex-direction: column;
+  font-family: 'JetBrains Mono', monospace;
+  color: #c4a1ff;
+  opacity: 1;
+  transform: scale(1);
+  filter: blur(0px);
+  transform-origin: center center;
+  transition: opacity 0.9s cubic-bezier(0.4, 0, 0.2, 1),
+              transform 0.9s cubic-bezier(0.4, 0, 0.2, 1),
+              filter 0.9s cubic-bezier(0.4, 0, 0.2, 1);
+" data-astro-cid-j7pv25f6> <!-- Terminal title bar --> <div class="rl-titlebar" data-astro-cid-j7pv25f6> <div class="rl-titlebar-dots" data-astro-cid-j7pv25f6> <div class="rl-titlebar-dot" data-astro-cid-j7pv25f6></div> <div class="rl-titlebar-dot" data-astro-cid-j7pv25f6></div> <div class="rl-titlebar-dot" data-astro-cid-j7pv25f6></div> </div> <span data-astro-cid-j7pv25f6>revyl@boot-terminal — /sys/init</span> </div> <!-- Main split --> <div class="rl-main" data-astro-cid-j7pv25f6> <!-- Left: scrolling boot log --> <div class="rl-logs" id="rl-log-container" data-astro-cid-j7pv25f6> <div class="rl-prompt-line" data-astro-cid-j7pv25f6>root@revyl-kernel:~$ ./boot --init-sequence</div> </div> <!-- Right: static terminal session --> <div class="rl-right" data-astro-cid-j7pv25f6> <div class="rl-right-header" data-astro-cid-j7pv25f6>SESSION // revyl@node-01 — tty0</div> <div class="rl-term-body" data-astro-cid-j7pv25f6> <pre class="rl-ascii" data-astro-cid-j7pv25f6> ██████╗ ███████╗██╗   ██╗██╗   ██╗██╗
+ ██╔══██╗██╔════╝██║   ██║╚██╗ ██╔╝██║
+ ██████╔╝█████╗  ██║   ██║ ╚████╔╝ ██║
+ ██╔══██╗██╔══╝  ╚██╗ ██╔╝  ╚██╔╝  ██║
+ ██║  ██║███████╗ ╚████╔╝    ██║   ███████╗
+ ╚═╝  ╚═╝╚══════╝  ╚═══╝     ╚═╝   ╚══════╝</pre> <div class="rl-stat-row" data-astro-cid-j7pv25f6><span class="rl-key" data-astro-cid-j7pv25f6>hostname</span><span style="color:#3d2b6e" data-astro-cid-j7pv25f6>............</span><span class="rl-val" data-astro-cid-j7pv25f6>revyl-node-01</span></div> <div class="rl-stat-row" data-astro-cid-j7pv25f6><span class="rl-key" data-astro-cid-j7pv25f6>kernel </span><span style="color:#3d2b6e" data-astro-cid-j7pv25f6>............</span><span class="rl-val" data-astro-cid-j7pv25f6>rvl-1.0.0-release</span></div> <div class="rl-stat-row" data-astro-cid-j7pv25f6><span class="rl-key" data-astro-cid-j7pv25f6>uptime </span><span style="color:#3d2b6e" data-astro-cid-j7pv25f6>............</span><span class="rl-val" data-astro-cid-j7pv25f6>0d 0h 0m 3s</span></div> <div class="rl-stat-row" data-astro-cid-j7pv25f6><span class="rl-key" data-astro-cid-j7pv25f6>devices </span><span style="color:#3d2b6e" data-astro-cid-j7pv25f6>............</span><span class="rl-val" data-astro-cid-j7pv25f6>10,000+ online</span></div> <div class="rl-stat-row" data-astro-cid-j7pv25f6><span class="rl-key" data-astro-cid-j7pv25f6>platform</span><span style="color:#3d2b6e" data-astro-cid-j7pv25f6>............</span><span class="rl-val" data-astro-cid-j7pv25f6>iOS + Android</span></div> <div class="rl-stat-row" data-astro-cid-j7pv25f6><span class="rl-key" data-astro-cid-j7pv25f6>latency </span><span style="color:#3d2b6e" data-astro-cid-j7pv25f6>............</span><span class="rl-val" data-astro-cid-j7pv25f6>&lt; 50ms</span></div> <div class="rl-stat-row" data-astro-cid-j7pv25f6><span class="rl-key" data-astro-cid-j7pv25f6>status </span><span style="color:#3d2b6e" data-astro-cid-j7pv25f6>............</span><span class="rl-val" id="rl-status" data-astro-cid-j7pv25f6>INITIALIZING</span></div> </div> <div class="rl-bar-section" data-astro-cid-j7pv25f6> <div class="rl-bar-meta" data-astro-cid-j7pv25f6> <span data-astro-cid-j7pv25f6>INIT PROGRESS</span> <span id="rl-pct" data-astro-cid-j7pv25f6>0%</span> </div> <div class="rl-bar-track" data-astro-cid-j7pv25f6> <div class="rl-bar-fill" id="rl-bar" data-astro-cid-j7pv25f6></div> </div> </div> </div> </div> <!-- Status bar --> <div class="rl-statusbar" data-astro-cid-j7pv25f6> <span data-astro-cid-j7pv25f6><span class="rl-status-dot" data-astro-cid-j7pv25f6></span>ACTIVE</span> <span data-astro-cid-j7pv25f6>KERNEL: 1.0.0</span> <span data-astro-cid-j7pv25f6>CLUSTERS: 128</span> <span data-astro-cid-j7pv25f6>TTY: /dev/tty0</span> <span style="margin-left:auto" data-astro-cid-j7pv25f6>© 2024 REVYL TECHNOLOGIES</span> </div> </div> <script>
+  (function() {
+    var LOADER_KEY = 'revyl_loader_v2';
+    // ?replay in URL forces the loader to show again and resets the flag
+    if (location.search.indexOf('replay') !== -1) {
+      sessionStorage.removeItem(LOADER_KEY);
+    }
+    if (sessionStorage.getItem(LOADER_KEY)) {
+      var el = document.getElementById('revyl-loader');
+      if (el) { el.style.display = 'none'; el.remove(); }
+      window.__loaderSkip = true;
+    }
+    window.__LOADER_KEY = LOADER_KEY;
+  })();
+</script> <script type="module">(function(){const t=document.getElementById("hud-grid");if(!t)return;const s=t.getContext("2d"),i=8,c=1.2,a=.13;let l=-9999,r=-9999,d=-9999,f=-9999,h=!1;const o=t.closest("section");o.addEventListener("mousemove",e=>{const n=o.getBoundingClientRect();d=e.clientX-n.left,f=e.clientY-n.top,h=!0},{passive:!0}),o.addEventListener("mouseleave",()=>{h=!1,d=-9999,f=-9999});function x(){t.width=o.offsetWidth,t.height=o.offsetHeight}x(),window.addEventListener("resize",x,{passive:!0});function v(){h?(l+=(d-l)*.08,r+=(f-r)*.08):(l=-9999,r=-9999);const e=t.width,n=t.height;s.clearRect(0,0,e,n);const b=Math.ceil(e/i)+1,E=Math.ceil(n/i)+1,L=Math.hypot(e,n);for(let u=0;u<E;u++)for(let m=0;m<b;m++){const M=m*i,g=u*i,R=Math.hypot(M,g),A=Math.max(0,1-R/L*1.35),C=a+(c-a)*Math.pow(A,1.4);let y=0;if(h){const q=Math.hypot(M-l,g-r),w=Math.max(0,1-q/80);y=c*2.5*w*w}const p=Math.min(c*2,C+y);if(p<.08)continue;const I=.06+.28*((p-a)/(c-a));s.beginPath(),s.arc(M,g,p,0,Math.PI*2),s.fillStyle="rgba(196,161,255,"+I+")",s.fill()}requestAnimationFrame(v)}requestAnimationFrame(v)})();</script> <div style="position: relative; background: var(--void); color: var(--fg); min-height: 100vh;" data-astro-cid-j7pv25f6> <!-- Dot grid background --> <div aria-hidden="true" style="
+    position: fixed; inset: 0; z-index: 0; pointer-events: none;
+    background-image: radial-gradient(circle, rgba(196,161,255,0.22) 1px, transparent 1px);
+    background-size: 8px 8px;
+    opacity: 0.25;
+  " data-astro-cid-j7pv25f6></div> <!-- HUD HEADER --> <div class="hud-header" data-astro-cid-j7pv25f6> <!-- Col 1: Logo --> <div class="hud-col-logo" data-astro-cid-j7pv25f6> <a href="/" class="hud-logo" aria-label="Revyl" data-astro-cid-j7pv25f6> <svg height="16" viewBox="0 0 88 25" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true" data-astro-cid-j7pv25f6> <path d="M6.42281 12.5L15.2597 21.3015L12.0483 24.5L0 12.5L12.0483 0.5L15.2597 3.69855L6.42281 12.5Z" fill="white" data-astro-cid-j7pv25f6></path> <path d="M30.5237 12.5L18.4755 24.5L15.264 21.3015L24.1009 12.5L15.2597 3.69855L18.4711 0.5L30.5193 12.5H30.5237Z" fill="white" data-astro-cid-j7pv25f6></path> <path d="M9.6386 12.5L15.2597 6.90145L20.8807 12.5L15.2597 18.0985L9.6386 12.5Z" fill="white" data-astro-cid-j7pv25f6></path> <path d="M36.1424 19.4526V5.31441H43.1873C44.6594 5.31441 45.816 5.65187 46.6572 6.32678C47.4984 7.00169 47.919 7.95005 47.919 9.17187C47.919 9.87005 47.7613 10.481 47.4459 11.0046C47.1304 11.5166 46.6631 11.9122 46.0439 12.1915V12.2613C46.6397 12.2613 47.1012 12.4242 47.4283 12.7501C47.7555 13.0642 47.919 13.5239 47.919 14.129V19.4526H45.5006V13.8497H38.5783V19.4526H36.1424ZM38.5783 11.7901H42.9946C43.8007 11.7901 44.4199 11.5981 44.8522 11.2141C45.2962 10.8301 45.5181 10.289 45.5181 9.59078C45.5181 8.88096 45.2962 8.33987 44.8522 7.9675C44.4199 7.5835 43.8007 7.39151 42.9946 7.39151H38.5783V11.7901Z" fill="white" data-astro-cid-j7pv25f6></path> <path d="M55.4853 19.6621C54.3754 19.6621 53.4057 19.441 52.5762 18.9988C51.7584 18.545 51.1275 17.905 50.6835 17.0788C50.2396 16.2526 50.0176 15.2868 50.0176 14.1813C50.0176 13.0759 50.2337 12.1217 50.666 11.3188C51.11 10.5042 51.735 9.87587 52.5412 9.43369C53.3473 8.9915 54.2995 8.77041 55.3977 8.77041C56.4492 8.77041 57.3546 8.97987 58.114 9.39878C58.8734 9.80605 59.4576 10.3937 59.8665 11.1617C60.2871 11.9181 60.4974 12.8199 60.4974 13.8671V14.7399H52.2958C52.3893 15.694 52.7106 16.433 53.2597 16.9566C53.8088 17.4686 54.5448 17.7246 55.4678 17.7246C56.1454 17.7246 56.7004 17.5966 57.1326 17.3406C57.5649 17.0846 57.8628 16.7006 58.0264 16.1886H60.4448C60.1878 17.2824 59.6212 18.1377 58.7449 18.7544C57.8804 19.3595 56.7938 19.6621 55.4853 19.6621ZM52.3659 13.0817H58.2192C58.1257 12.3137 57.8336 11.726 57.3429 11.3188C56.8523 10.8999 56.2038 10.6904 55.3977 10.6904C54.5916 10.6904 53.9256 10.8999 53.3999 11.3188C52.8741 11.726 52.5295 12.3137 52.3659 13.0817Z" fill="white" data-astro-cid-j7pv25f6></path> <path d="M65.4528 19.4526L60.9665 8.97987H63.4725L66.7321 16.8344H66.8022L70.0092 8.97987H72.4452L67.9588 19.4526H65.4528Z" fill="white" data-astro-cid-j7pv25f6></path> <path d="M73.8962 23.6417V21.7391H76.3321L77.296 19.4351L72.6694 8.97987H75.1579L78.4701 16.6599H78.5577L81.7472 8.97987H84.1306L79.6443 19.4526L78.6804 21.7217C78.4234 22.3268 78.143 22.7981 77.8392 23.1355C77.5471 23.473 77.0623 23.6417 76.3847 23.6417H73.8962Z" fill="white" data-astro-cid-j7pv25f6></path> <path d="M85.6166 19.4526V4.79078H88V19.4526H85.6166Z" fill="white" data-astro-cid-j7pv25f6></path> </svg> </a> <span class="status-dot" data-astro-cid-j7pv25f6></span> </div> <!-- Col 2: MENU = centered --> <div class="hud-col-menu" data-astro-cid-j7pv25f6> <button class="hud-menu-btn" id="hud-menu-btn" aria-label="Open menu" data-astro-cid-j7pv25f6>
+MENU
+<div class="hud-menu-lines" aria-hidden="true" data-astro-cid-j7pv25f6> <span data-astro-cid-j7pv25f6></span> <span data-astro-cid-j7pv25f6></span> </div> </button> </div> <!-- Col 3: CTAs --> <div class="hud-col-ctas" data-astro-cid-j7pv25f6> <a href="https://cal.com/landseer-enga/book-a-demo" class="rv-btn rv-btn--secondary rv-btn--md "> <span class="rv-btn-fill" aria-hidden="true"></span> <span class="rv-btn-left"> <span class="rv-btn-dot" aria-hidden="true"></span> <span class="rv-btn-label">Book a demo</span> </span> <svg class="rv-btn-arrow" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M13.1717 12.0007L8.22192 7.05093L9.63614 5.63672L16.0001 12.0007L9.63614 18.3646L8.22192 16.9504L13.1717 12.0007Z"></path></svg> </a>  <script>
+(function () {
+  const CHARS = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789';
+  const STEPS = 6;      // random frames per character
+  const STEP_MS = 40;   // ms per frame
+
+  function shuffle(btn) {
+    const label = btn.querySelector('.rv-btn-label');
+    if (!label || btn._shuffling) return;
+    const original = label.textContent;
+    btn._shuffling = true;
+    // Lock width so random chars don't cause layout reflow
+    label.style.width = label.offsetWidth + 'px';
+
+    // Build per-char timers: each char starts slightly after the previous
+    const chars = original.split('');
+    let resolved = chars.map(() => false);
+    let result = chars.slice();
+
+    chars.forEach((ch, i) => {
+      const isSpace = ch === ' ';
+      let step = 0;
+      const delay = i * 35; // stagger: each char starts 35ms after previous
+
+      setTimeout(function tick() {
+        if (isSpace) { resolved[i] = true; }
+        else if (step < STEPS) {
+          result[i] = CHARS[Math.floor(Math.random() * CHARS.length)];
+          step++;
+          label.textContent = result.join('');
+          setTimeout(tick, STEP_MS);
+        } else {
+          result[i] = ch.toUpperCase();
+          resolved[i] = true;
+          label.textContent = result.join('');
+        }
+        if (resolved.every(Boolean)) {
+          label.textContent = original;
+          label.style.width = '';
+          btn._shuffling = false;
+        }
+      }, delay);
+    });
+  }
+
+  function init() {
+    document.querySelectorAll('.rv-btn').forEach(btn => {
+      btn.addEventListener('mouseenter', () => shuffle(btn));
+    });
+  }
+
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', init);
+  } else {
+    init();
+  }
+})();
+</script> <a href="https://app.revyl.ai/signup" class="rv-btn rv-btn--primary rv-btn--md "> <span class="rv-btn-fill" aria-hidden="true"></span> <span class="rv-btn-left"> <span class="rv-btn-dot" aria-hidden="true"></span> <span class="rv-btn-label">Get started free</span> </span> <svg class="rv-btn-arrow" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M13.1717 12.0007L8.22192 7.05093L9.63614 5.63672L16.0001 12.0007L9.63614 18.3646L8.22192 16.9504L13.1717 12.0007Z"></path></svg> </a>  <script>
+(function () {
+  const CHARS = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789';
+  const STEPS = 6;      // random frames per character
+  const STEP_MS = 40;   // ms per frame
+
+  function shuffle(btn) {
+    const label = btn.querySelector('.rv-btn-label');
+    if (!label || btn._shuffling) return;
+    const original = label.textContent;
+    btn._shuffling = true;
+    // Lock width so random chars don't cause layout reflow
+    label.style.width = label.offsetWidth + 'px';
+
+    // Build per-char timers: each char starts slightly after the previous
+    const chars = original.split('');
+    let resolved = chars.map(() => false);
+    let result = chars.slice();
+
+    chars.forEach((ch, i) => {
+      const isSpace = ch === ' ';
+      let step = 0;
+      const delay = i * 35; // stagger: each char starts 35ms after previous
+
+      setTimeout(function tick() {
+        if (isSpace) { resolved[i] = true; }
+        else if (step < STEPS) {
+          result[i] = CHARS[Math.floor(Math.random() * CHARS.length)];
+          step++;
+          label.textContent = result.join('');
+          setTimeout(tick, STEP_MS);
+        } else {
+          result[i] = ch.toUpperCase();
+          resolved[i] = true;
+          label.textContent = result.join('');
+        }
+        if (resolved.every(Boolean)) {
+          label.textContent = original;
+          label.style.width = '';
+          btn._shuffling = false;
+        }
+      }, delay);
+    });
+  }
+
+  function init() {
+    document.querySelectorAll('.rv-btn').forEach(btn => {
+      btn.addEventListener('mouseenter', () => shuffle(btn));
+    });
+  }
+
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', init);
+  } else {
+    init();
+  }
+})();
+</script> </div> </div> <!-- Fullscreen nav overlay --> <div id="hud-nav" style="position: fixed; inset: 0; z-index: 50; background: var(--void); visibility: hidden; opacity: 0; transition: opacity 0.26s ease, visibility 0.26s ease;" data-astro-cid-j7pv25f6> <!-- dot matrix bg --> <div class="dot-matrix" style="position: absolute; inset: 0; opacity: 0.12; pointer-events: none;" data-astro-cid-j7pv25f6></div> <!-- Top bar: logo | NAV | close --> <div class="fnav-topbar" data-astro-cid-j7pv25f6> <div class="fnav-topbar-logo" data-astro-cid-j7pv25f6> <a href="/" class="hud-logo" aria-label="Revyl" data-astro-cid-j7pv25f6> <svg height="16" viewBox="0 0 88 25" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true" data-astro-cid-j7pv25f6> <path d="M6.42281 12.5L15.2597 21.3015L12.0483 24.5L0 12.5L12.0483 0.5L15.2597 3.69855L6.42281 12.5Z" fill="white" data-astro-cid-j7pv25f6></path> <path d="M30.5237 12.5L18.4755 24.5L15.264 21.3015L24.1009 12.5L15.2597 3.69855L18.4711 0.5L30.5193 12.5H30.5237Z" fill="white" data-astro-cid-j7pv25f6></path> <path d="M9.6386 12.5L15.2597 6.90145L20.8807 12.5L15.2597 18.0985L9.6386 12.5Z" fill="white" data-astro-cid-j7pv25f6></path> <path d="M36.1424 19.4526V5.31441H43.1873C44.6594 5.31441 45.816 5.65187 46.6572 6.32678C47.4984 7.00169 47.919 7.95005 47.919 9.17187C47.919 9.87005 47.7613 10.481 47.4459 11.0046C47.1304 11.5166 46.6631 11.9122 46.0439 12.1915V12.2613C46.6397 12.2613 47.1012 12.4242 47.4283 12.7501C47.7555 13.0642 47.919 13.5239 47.919 14.129V19.4526H45.5006V13.8497H38.5783V19.4526H36.1424ZM38.5783 11.7901H42.9946C43.8007 11.7901 44.4199 11.5981 44.8522 11.2141C45.2962 10.8301 45.5181 10.289 45.5181 9.59078C45.5181 8.88096 45.2962 8.33987 44.8522 7.9675C44.4199 7.5835 43.8007 7.39151 42.9946 7.39151H38.5783V11.7901Z" fill="white" data-astro-cid-j7pv25f6></path> <path d="M55.4853 19.6621C54.3754 19.6621 53.4057 19.441 52.5762 18.9988C51.7584 18.545 51.1275 17.905 50.6835 17.0788C50.2396 16.2526 50.0176 15.2868 50.0176 14.1813C50.0176 13.0759 50.2337 12.1217 50.666 11.3188C51.11 10.5042 51.735 9.87587 52.5412 9.43369C53.3473 8.9915 54.2995 8.77041 55.3977 8.77041C56.4492 8.77041 57.3546 8.97987 58.114 9.39878C58.8734 9.80605 59.4576 10.3937 59.8665 11.1617C60.2871 11.9181 60.4974 12.8199 60.4974 13.8671V14.7399H52.2958C52.3893 15.694 52.7106 16.433 53.2597 16.9566C53.8088 17.4686 54.5448 17.7246 55.4678 17.7246C56.1454 17.7246 56.7004 17.5966 57.1326 17.3406C57.5649 17.0846 57.8628 16.7006 58.0264 16.1886H60.4448C60.1878 17.2824 59.6212 18.1377 58.7449 18.7544C57.8804 19.3595 56.7938 19.6621 55.4853 19.6621ZM52.3659 13.0817H58.2192C58.1257 12.3137 57.8336 11.726 57.3429 11.3188C56.8523 10.8999 56.2038 10.6904 55.3977 10.6904C54.5916 10.6904 53.9256 10.8999 53.3999 11.3188C52.8741 11.726 52.5295 12.3137 52.3659 13.0817Z" fill="white" data-astro-cid-j7pv25f6></path> <path d="M65.4528 19.4526L60.9665 8.97987H63.4725L66.7321 16.8344H66.8022L70.0092 8.97987H72.4452L67.9588 19.4526H65.4528Z" fill="white" data-astro-cid-j7pv25f6></path> <path d="M73.8962 23.6417V21.7391H76.3321L77.296 19.4351L72.6694 8.97987H75.1579L78.4701 16.6599H78.5577L81.7472 8.97987H84.1306L79.6443 19.4526L78.6804 21.7217C78.4234 22.3268 78.143 22.7981 77.8392 23.1355C77.5471 23.473 77.0623 23.6417 76.3847 23.6417H73.8962Z" fill="white" data-astro-cid-j7pv25f6></path> <path d="M85.6166 19.4526V4.79078H88V19.4526H85.6166Z" fill="white" data-astro-cid-j7pv25f6></path> </svg> </a> </div> <div class="fnav-topbar-center" data-astro-cid-j7pv25f6>Navigation</div> <div class="fnav-topbar-close" data-astro-cid-j7pv25f6> <button id="hud-nav-close" data-astro-cid-j7pv25f6>CLOSE ×</button> </div> </div> <!-- Main links — 3 columns, full height --> <div class="fnav-body" data-astro-cid-j7pv25f6> <!-- Col 1: Products --> <div class="fnav-col" data-astro-cid-j7pv25f6> <span class="fnav-section-label" data-astro-cid-j7pv25f6>Products</span> <a href="/products/ios-testing" class="fnav-link" data-astro-cid-j7pv25f6>iOS Testing</a> <a href="/products/android-testing" class="fnav-link" data-astro-cid-j7pv25f6>Android Testing</a> <a href="/products/mobile-infrastructure" class="fnav-link" data-astro-cid-j7pv25f6>Infrastructure</a> </div> <!-- Col 2: Features --> <div class="fnav-col" data-astro-cid-j7pv25f6> <span class="fnav-section-label" data-astro-cid-j7pv25f6>Features</span> <a href="/features/cli" class="fnav-link" data-astro-cid-j7pv25f6>CLI</a> <a href="/features/mcp" class="fnav-link" data-astro-cid-j7pv25f6>MCP</a> <a href="/features/crash-reporting" class="fnav-link" data-astro-cid-j7pv25f6>Reporting</a> </div> <!-- Col 3: Company --> <div class="fnav-col" data-astro-cid-j7pv25f6> <span class="fnav-section-label" data-astro-cid-j7pv25f6>Company</span> <a href="/pricing" class="fnav-link" data-astro-cid-j7pv25f6>Pricing</a> <a href="https://docs.revyl.com" class="fnav-link" data-astro-cid-j7pv25f6>Docs</a> <a href="/blog" class="fnav-link" data-astro-cid-j7pv25f6>Blog</a> </div> </div> <!-- Bottom bar: CTAs + links --> <div class="fnav-bottom" data-astro-cid-j7pv25f6> <div class="fnav-bottom-ctas" data-astro-cid-j7pv25f6> <a href="https://app.revyl.ai/signup" class="rv-btn rv-btn--primary rv-btn--md "> <span class="rv-btn-fill" aria-hidden="true"></span> <span class="rv-btn-left"> <span class="rv-btn-dot" aria-hidden="true"></span> <span class="rv-btn-label">Get started free</span> </span> <svg class="rv-btn-arrow" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M13.1717 12.0007L8.22192 7.05093L9.63614 5.63672L16.0001 12.0007L9.63614 18.3646L8.22192 16.9504L13.1717 12.0007Z"></path></svg> </a>  <script>
+(function () {
+  const CHARS = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789';
+  const STEPS = 6;      // random frames per character
+  const STEP_MS = 40;   // ms per frame
+
+  function shuffle(btn) {
+    const label = btn.querySelector('.rv-btn-label');
+    if (!label || btn._shuffling) return;
+    const original = label.textContent;
+    btn._shuffling = true;
+    // Lock width so random chars don't cause layout reflow
+    label.style.width = label.offsetWidth + 'px';
+
+    // Build per-char timers: each char starts slightly after the previous
+    const chars = original.split('');
+    let resolved = chars.map(() => false);
+    let result = chars.slice();
+
+    chars.forEach((ch, i) => {
+      const isSpace = ch === ' ';
+      let step = 0;
+      const delay = i * 35; // stagger: each char starts 35ms after previous
+
+      setTimeout(function tick() {
+        if (isSpace) { resolved[i] = true; }
+        else if (step < STEPS) {
+          result[i] = CHARS[Math.floor(Math.random() * CHARS.length)];
+          step++;
+          label.textContent = result.join('');
+          setTimeout(tick, STEP_MS);
+        } else {
+          result[i] = ch.toUpperCase();
+          resolved[i] = true;
+          label.textContent = result.join('');
+        }
+        if (resolved.every(Boolean)) {
+          label.textContent = original;
+          label.style.width = '';
+          btn._shuffling = false;
+        }
+      }, delay);
+    });
+  }
+
+  function init() {
+    document.querySelectorAll('.rv-btn').forEach(btn => {
+      btn.addEventListener('mouseenter', () => shuffle(btn));
+    });
+  }
+
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', init);
+  } else {
+    init();
+  }
+})();
+</script> <a href="https://cal.com/landseer-enga/book-a-demo" class="rv-btn rv-btn--secondary rv-btn--md "> <span class="rv-btn-fill" aria-hidden="true"></span> <span class="rv-btn-left"> <span class="rv-btn-dot" aria-hidden="true"></span> <span class="rv-btn-label">Book a demo</span> </span> <svg class="rv-btn-arrow" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M13.1717 12.0007L8.22192 7.05093L9.63614 5.63672L16.0001 12.0007L9.63614 18.3646L8.22192 16.9504L13.1717 12.0007Z"></path></svg> </a>  <script>
+(function () {
+  const CHARS = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789';
+  const STEPS = 6;      // random frames per character
+  const STEP_MS = 40;   // ms per frame
+
+  function shuffle(btn) {
+    const label = btn.querySelector('.rv-btn-label');
+    if (!label || btn._shuffling) return;
+    const original = label.textContent;
+    btn._shuffling = true;
+    // Lock width so random chars don't cause layout reflow
+    label.style.width = label.offsetWidth + 'px';
+
+    // Build per-char timers: each char starts slightly after the previous
+    const chars = original.split('');
+    let resolved = chars.map(() => false);
+    let result = chars.slice();
+
+    chars.forEach((ch, i) => {
+      const isSpace = ch === ' ';
+      let step = 0;
+      const delay = i * 35; // stagger: each char starts 35ms after previous
+
+      setTimeout(function tick() {
+        if (isSpace) { resolved[i] = true; }
+        else if (step < STEPS) {
+          result[i] = CHARS[Math.floor(Math.random() * CHARS.length)];
+          step++;
+          label.textContent = result.join('');
+          setTimeout(tick, STEP_MS);
+        } else {
+          result[i] = ch.toUpperCase();
+          resolved[i] = true;
+          label.textContent = result.join('');
+        }
+        if (resolved.every(Boolean)) {
+          label.textContent = original;
+          label.style.width = '';
+          btn._shuffling = false;
+        }
+      }, delay);
+    });
+  }
+
+  function init() {
+    document.querySelectorAll('.rv-btn').forEach(btn => {
+      btn.addEventListener('mouseenter', () => shuffle(btn));
+    });
+  }
+
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', init);
+  } else {
+    init();
+  }
+})();
+</script> </div> <div class="fnav-bottom-links" data-astro-cid-j7pv25f6> <a href="https://x.com/tryrevyl" class="fnav-bottom-link" data-astro-cid-j7pv25f6>Twitter</a> <a href="https://www.linkedin.com/company/revylai" class="fnav-bottom-link" data-astro-cid-j7pv25f6>LinkedIn</a> <a href="https://github.com/RevylAI" class="fnav-bottom-link" data-astro-cid-j7pv25f6>GitHub</a> </div> </div> </div> <!-- HERO --> <div class="hero-grid" data-astro-cid-j7pv25f6> <!-- LEFT: text content --> <div class="hero-left" data-astro-cid-j7pv25f6> <div class="crosshair ch-br" data-astro-cid-j7pv25f6></div> <div style="padding: 8vh 4vw; flex-grow: 1; display: flex; flex-direction: column; justify-content: center;" data-astro-cid-j7pv25f6> <span class="hero-label" data-astro-cid-j7pv25f6>Mobile Reliability Platform</span> <h1 class="hero-title" data-astro-cid-j7pv25f6>The<br data-astro-cid-j7pv25f6>Mobile<br data-astro-cid-j7pv25f6>Reliability<br data-astro-cid-j7pv25f6>Platform.</h1> <p class="hero-desc" data-astro-cid-j7pv25f6>
+AI-native testing for iOS and Android.<br data-astro-cid-j7pv25f6>
+Ship faster. Break nothing.
+</p> <div style="display: flex; gap: 12px; margin-top: 40px; flex-wrap: wrap;" data-astro-cid-j7pv25f6> <a href="https://cal.com/landseer-enga/book-a-demo" class="rv-btn rv-btn--primary rv-btn--md "> <span class="rv-btn-fill" aria-hidden="true"></span> <span class="rv-btn-left"> <span class="rv-btn-dot" aria-hidden="true"></span> <span class="rv-btn-label">Book a demo</span> </span> <svg class="rv-btn-arrow" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M13.1717 12.0007L8.22192 7.05093L9.63614 5.63672L16.0001 12.0007L9.63614 18.3646L8.22192 16.9504L13.1717 12.0007Z"></path></svg> </a>  <script>
+(function () {
+  const CHARS = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789';
+  const STEPS = 6;      // random frames per character
+  const STEP_MS = 40;   // ms per frame
+
+  function shuffle(btn) {
+    const label = btn.querySelector('.rv-btn-label');
+    if (!label || btn._shuffling) return;
+    const original = label.textContent;
+    btn._shuffling = true;
+    // Lock width so random chars don't cause layout reflow
+    label.style.width = label.offsetWidth + 'px';
+
+    // Build per-char timers: each char starts slightly after the previous
+    const chars = original.split('');
+    let resolved = chars.map(() => false);
+    let result = chars.slice();
+
+    chars.forEach((ch, i) => {
+      const isSpace = ch === ' ';
+      let step = 0;
+      const delay = i * 35; // stagger: each char starts 35ms after previous
+
+      setTimeout(function tick() {
+        if (isSpace) { resolved[i] = true; }
+        else if (step < STEPS) {
+          result[i] = CHARS[Math.floor(Math.random() * CHARS.length)];
+          step++;
+          label.textContent = result.join('');
+          setTimeout(tick, STEP_MS);
+        } else {
+          result[i] = ch.toUpperCase();
+          resolved[i] = true;
+          label.textContent = result.join('');
+        }
+        if (resolved.every(Boolean)) {
+          label.textContent = original;
+          label.style.width = '';
+          btn._shuffling = false;
+        }
+      }, delay);
+    });
+  }
+
+  function init() {
+    document.querySelectorAll('.rv-btn').forEach(btn => {
+      btn.addEventListener('mouseenter', () => shuffle(btn));
+    });
+  }
+
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', init);
+  } else {
+    init();
+  }
+})();
+</script> <a href="https://app.revyl.ai/signup" class="rv-btn rv-btn--secondary rv-btn--md "> <span class="rv-btn-fill" aria-hidden="true"></span> <span class="rv-btn-left"> <span class="rv-btn-dot" aria-hidden="true"></span> <span class="rv-btn-label">Get started free</span> </span> <svg class="rv-btn-arrow" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M13.1717 12.0007L8.22192 7.05093L9.63614 5.63672L16.0001 12.0007L9.63614 18.3646L8.22192 16.9504L13.1717 12.0007Z"></path></svg> </a>  <script>
+(function () {
+  const CHARS = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789';
+  const STEPS = 6;      // random frames per character
+  const STEP_MS = 40;   // ms per frame
+
+  function shuffle(btn) {
+    const label = btn.querySelector('.rv-btn-label');
+    if (!label || btn._shuffling) return;
+    const original = label.textContent;
+    btn._shuffling = true;
+    // Lock width so random chars don't cause layout reflow
+    label.style.width = label.offsetWidth + 'px';
+
+    // Build per-char timers: each char starts slightly after the previous
+    const chars = original.split('');
+    let resolved = chars.map(() => false);
+    let result = chars.slice();
+
+    chars.forEach((ch, i) => {
+      const isSpace = ch === ' ';
+      let step = 0;
+      const delay = i * 35; // stagger: each char starts 35ms after previous
+
+      setTimeout(function tick() {
+        if (isSpace) { resolved[i] = true; }
+        else if (step < STEPS) {
+          result[i] = CHARS[Math.floor(Math.random() * CHARS.length)];
+          step++;
+          label.textContent = result.join('');
+          setTimeout(tick, STEP_MS);
+        } else {
+          result[i] = ch.toUpperCase();
+          resolved[i] = true;
+          label.textContent = result.join('');
+        }
+        if (resolved.every(Boolean)) {
+          label.textContent = original;
+          label.style.width = '';
+          btn._shuffling = false;
+        }
+      }, delay);
+    });
+  }
+
+  function init() {
+    document.querySelectorAll('.rv-btn').forEach(btn => {
+      btn.addEventListener('mouseenter', () => shuffle(btn));
+    });
+  }
+
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', init);
+  } else {
+    init();
+  }
+})();
+</script> </div> </div> <!-- Specs strip --> <div class="specs-strip" data-astro-cid-j7pv25f6> <div class="spec-cell" data-astro-cid-j7pv25f6> <span class="spec-label" data-astro-cid-j7pv25f6>Parallel Sessions</span> <span class="spec-value" data-astro-cid-j7pv25f6>10,000+</span> </div> <div class="spec-cell" data-astro-cid-j7pv25f6> <span class="spec-label" data-astro-cid-j7pv25f6>Polling Latency</span> <span class="spec-value" data-astro-cid-j7pv25f6>&lt; 50ms</span> </div> <div class="spec-cell" data-astro-cid-j7pv25f6> <span class="spec-label" data-astro-cid-j7pv25f6>Platforms</span> <span class="spec-value" data-astro-cid-j7pv25f6>iOS + Android</span> </div> </div> </div> <!-- RIGHT: PhoneShader panel --> <div class="hero-right" data-astro-cid-j7pv25f6> <div class="scan-lines" data-astro-cid-j7pv25f6></div> <div class="crosshair ch-bl" data-astro-cid-j7pv25f6></div> <div style="position: absolute; inset: 0; z-index: 1; display: flex; align-items: center; justify-content: center; padding: 40px;" data-astro-cid-j7pv25f6> <style>astro-island,astro-slot,astro-static-slot{display:contents}</style><script>(()=>{var e=async t=>{await(await t())()};(self.Astro||(self.Astro={})).load=e;window.dispatchEvent(new Event("astro:load"));})();</script><script>(()=>{var A=Object.defineProperty;var g=(i,o,a)=>o in i?A(i,o,{enumerable:!0,configurable:!0,writable:!0,value:a}):i[o]=a;var d=(i,o,a)=>g(i,typeof o!="symbol"?o+"":o,a);{let i={0:t=>m(t),1:t=>a(t),2:t=>new RegExp(t),3:t=>new Date(t),4:t=>new Map(a(t)),5:t=>new Set(a(t)),6:t=>BigInt(t),7:t=>new URL(t),8:t=>new Uint8Array(t),9:t=>new Uint16Array(t),10:t=>new Uint32Array(t),11:t=>1/0*t},o=t=>{let[l,e]=t;return l in i?i[l](e):void 0},a=t=>t.map(o),m=t=>typeof t!="object"||t===null?t:Object.fromEntries(Object.entries(t).map(([l,e])=>[l,o(e)]));class y extends HTMLElement{constructor(){super(...arguments);d(this,"Component");d(this,"hydrator");d(this,"hydrate",async()=>{var b;if(!this.hydrator||!this.isConnected)return;let e=(b=this.parentElement)==null?void 0:b.closest("astro-island[ssr]");if(e){e.addEventListener("astro:hydrate",this.hydrate,{once:!0});return}let c=this.querySelectorAll("astro-slot"),n={},h=this.querySelectorAll("template[data-astro-template]");for(let r of h){let s=r.closest(this.tagName);s!=null&&s.isSameNode(this)&&(n[r.getAttribute("data-astro-template")||"default"]=r.innerHTML,r.remove())}for(let r of c){let s=r.closest(this.tagName);s!=null&&s.isSameNode(this)&&(n[r.getAttribute("name")||"default"]=r.innerHTML)}let p;try{p=this.hasAttribute("props")?m(JSON.parse(this.getAttribute("props"))):{}}catch(r){let s=this.getAttribute("component-url")||"<unknown>",v=this.getAttribute("component-export");throw v&&(s+=` (export ${v})`),console.error(`[hydrate] Error parsing props for component ${s}`,this.getAttribute("props"),r),r}let u;await this.hydrator(this)(this.Component,p,n,{client:this.getAttribute("client")}),this.removeAttribute("ssr"),this.dispatchEvent(new CustomEvent("astro:hydrate"))});d(this,"unmount",()=>{this.isConnected||this.dispatchEvent(new CustomEvent("astro:unmount"))})}disconnectedCallback(){document.removeEventListener("astro:after-swap",this.unmount),document.addEventListener("astro:after-swap",this.unmount,{once:!0})}connectedCallback(){if(!this.hasAttribute("await-children")||document.readyState==="interactive"||document.readyState==="complete")this.childrenConnectedCallback();else{let e=()=>{document.removeEventListener("DOMContentLoaded",e),c.disconnect(),this.childrenConnectedCallback()},c=new MutationObserver(()=>{var n;((n=this.lastChild)==null?void 0:n.nodeType)===Node.COMMENT_NODE&&this.lastChild.nodeValue==="astro:end"&&(this.lastChild.remove(),e())});c.observe(this,{childList:!0}),document.addEventListener("DOMContentLoaded",e)}}async childrenConnectedCallback(){let e=this.getAttribute("before-hydration-url");e&&await import(e),this.start()}async start(){let e=JSON.parse(this.getAttribute("opts")),c=this.getAttribute("client");if(Astro[c]===void 0){window.addEventListener(`astro:${c}`,()=>this.start(),{once:!0});return}try{await Astro[c](async()=>{let n=this.getAttribute("renderer-url"),[h,{default:p}]=await Promise.all([import(this.getAttribute("component-url")),n?import(n):()=>()=>{}]),u=this.getAttribute("component-export")||"default";if(!u.includes("."))this.Component=h[u];else{this.Component=h;for(let f of u.split("."))this.Component=this.Component[f]}return this.hydrator=p,this.hydrate},e,this)}catch(n){console.error(`[astro-island] Error hydrating ${this.getAttribute("component-url")}`,n)}}attributeChangedCallback(){this.hydrate()}}d(y,"observedAttributes",["props"]),customElements.get("astro-island")||customElements.define("astro-island",y)}})();</script><astro-island uid="Z17JQ17" prefix="r1" component-url="/_astro/PhoneShader.C3TYDnSl.js" component-export="default" renderer-url="/_astro/client.Dc9Vh3na.js" props="{&quot;data-astro-cid-j7pv25f6&quot;:[0,true]}" ssr client="load" opts="{&quot;name&quot;:&quot;PhoneShader&quot;,&quot;value&quot;:true}" await-children><link rel="preload" as="image" href="/devices/apple-iphone-16-black-portrait.png"/><div class="relative w-full overflow-hidden" style="max-height:560px"><div class="relative w-full" style="aspect-ratio:1359/2736"><div class="absolute overflow-hidden z-10" style="left:6.622516556291391%;top:3.289473684210526%;width:86.75496688741721%;height:93.42105263157895%;border-radius:8px"><div style="background-color:#301C2A;position:absolute;inset:0;width:100%;height:100%"></div></div><img src="/devices/apple-iphone-16-black-portrait.png" alt="iPhone" class="relative z-20 w-full h-auto" loading="eager"/></div><div class="absolute bottom-0 left-0 right-0 z-30 pointer-events-none" style="height:40%;background:linear-gradient(to bottom, transparent 0%, #050505 100%)"></div></div><!--astro:end--></astro-island> </div> <div class="overlay-ui" data-astro-cid-j7pv25f6> <span class="ui-badge" data-astro-cid-j7pv25f6>RENDER: LIVE</span> <div class="ui-coords" data-astro-cid-j7pv25f6>
+iOS 18.2 · iPhone 16<br data-astro-cid-j7pv25f6>
+DEVICE: ONLINE
+</div> </div> </div> </div> <!-- FEATURES — sticky left nav + scrollable right panels --> <div class="features-split" data-astro-cid-j7pv25f6> <!-- LEFT: sticky nav --> <div class="features-nav-col" data-astro-cid-j7pv25f6> <div class="features-nav" data-astro-cid-j7pv25f6> <div class="features-nav-list" data-astro-cid-j7pv25f6> <a href="#feature-tests" class="features-nav-item is-active" data-target="feature-tests" data-astro-cid-j7pv25f6> <span class="nav-indicator" data-astro-cid-j7pv25f6></span> <span data-astro-cid-j7pv25f6>Plain English</span> <svg class="nav-arrow" viewBox="0 0 24 24" fill="currentColor" width="16" height="16" data-astro-cid-j7pv25f6><path d="M13.1717 12.0007L8.22192 7.05093L9.63614 5.63672L16.0001 12.0007L9.63614 18.3646L8.22192 16.9504L13.1717 12.0007Z" data-astro-cid-j7pv25f6></path></svg> </a> <a href="#feature-stream" class="features-nav-item" data-target="feature-stream" data-astro-cid-j7pv25f6> <span class="nav-indicator" data-astro-cid-j7pv25f6></span> <span data-astro-cid-j7pv25f6>Live Streaming</span> <svg class="nav-arrow" viewBox="0 0 24 24" fill="currentColor" width="16" height="16" data-astro-cid-j7pv25f6><path d="M13.1717 12.0007L8.22192 7.05093L9.63614 5.63672L16.0001 12.0007L9.63614 18.3646L8.22192 16.9504L13.1717 12.0007Z" data-astro-cid-j7pv25f6></path></svg> </a> <a href="#feature-traces" class="features-nav-item" data-target="feature-traces" data-astro-cid-j7pv25f6> <span class="nav-indicator" data-astro-cid-j7pv25f6></span> <span data-astro-cid-j7pv25f6>Exec Traces</span> <svg class="nav-arrow" viewBox="0 0 24 24" fill="currentColor" width="16" height="16" data-astro-cid-j7pv25f6><path d="M13.1717 12.0007L8.22192 7.05093L9.63614 5.63672L16.0001 12.0007L9.63614 18.3646L8.22192 16.9504L13.1717 12.0007Z" data-astro-cid-j7pv25f6></path></svg> </a> </div> </div> </div><!-- /features-nav-col --> <!-- RIGHT: scrollable content --> <div class="features-content" data-astro-cid-j7pv25f6> <!-- Panel 01: Write tests in plain English --> <div class="feature-panel" id="feature-tests" data-astro-cid-j7pv25f6> <div class="feature-panel-top" data-astro-cid-j7pv25f6> <span class="feature-panel-index" data-astro-cid-j7pv25f6>01 — Plain Language</span> <h3 class="feature-panel-title" data-astro-cid-j7pv25f6>Write tests in<br data-astro-cid-j7pv25f6>plain English</h3> <p class="feature-panel-desc" data-astro-cid-j7pv25f6>No page objects. No selectors. Describe what you want to test and the AI agent figures out the rest — tap targets, scroll positions, assertions.</p> </div> <div class="feature-panel-illustration" data-astro-cid-j7pv25f6> <svg width="100%" height="100%" viewBox="0 0 560 340" fill="none" xmlns="http://www.w3.org/2000/svg" style="max-width:560px; opacity:0.9;" data-astro-cid-j7pv25f6> <!-- Editor frame --> <rect x="0" y="0" width="560" height="340" rx="2" stroke="rgba(255,255,255,0.08)" stroke-width="1" fill="rgba(255,255,255,0.02)" data-astro-cid-j7pv25f6></rect> <!-- Title bar --> <rect x="0" y="0" width="560" height="36" fill="rgba(255,255,255,0.03)" data-astro-cid-j7pv25f6></rect> <circle cx="20" cy="18" r="5" fill="rgba(255,255,255,0.08)" data-astro-cid-j7pv25f6></circle> <circle cx="38" cy="18" r="5" fill="rgba(255,255,255,0.08)" data-astro-cid-j7pv25f6></circle> <circle cx="56" cy="18" r="5" fill="rgba(255,255,255,0.08)" data-astro-cid-j7pv25f6></circle> <text x="80" y="22" font-family="monospace" font-size="10" fill="rgba(255,255,255,0.2)" letter-spacing="1" data-astro-cid-j7pv25f6>test_login.rvl — Revyl</text> <!-- Line numbers bg --> <rect x="0" y="36" width="48" height="304" fill="rgba(255,255,255,0.015)" data-astro-cid-j7pv25f6></rect> <!-- Line numbers --> <text x="18" y="70" font-family="monospace" font-size="11" fill="rgba(255,255,255,0.12)" data-astro-cid-j7pv25f6>1</text> <text x="18" y="96" font-family="monospace" font-size="11" fill="rgba(255,255,255,0.12)" data-astro-cid-j7pv25f6>2</text> <text x="18" y="122" font-family="monospace" font-size="11" fill="rgba(255,255,255,0.12)" data-astro-cid-j7pv25f6>3</text> <text x="18" y="148" font-family="monospace" font-size="11" fill="rgba(255,255,255,0.12)" data-astro-cid-j7pv25f6>4</text> <text x="18" y="174" font-family="monospace" font-size="11" fill="rgba(255,255,255,0.12)" data-astro-cid-j7pv25f6>5</text> <text x="18" y="200" font-family="monospace" font-size="11" fill="rgba(255,255,255,0.12)" data-astro-cid-j7pv25f6>6</text> <text x="18" y="226" font-family="monospace" font-size="11" fill="rgba(255,255,255,0.12)" data-astro-cid-j7pv25f6>7</text> <text x="18" y="252" font-family="monospace" font-size="11" fill="rgba(255,255,255,0.12)" data-astro-cid-j7pv25f6>8</text> <!-- Active line highlight --> <rect x="48" y="136" width="512" height="22" fill="rgba(196,161,255,0.06)" data-astro-cid-j7pv25f6></rect> <!-- Code --> <text x="64" y="70" font-family="monospace" font-size="11" fill="#C4A1FF" data-astro-cid-j7pv25f6>test</text> <text x="104" y="70" font-family="monospace" font-size="11" fill="rgba(255,255,255,0.5)" data-astro-cid-j7pv25f6>"User login flow"</text> <text x="64" y="96" font-family="monospace" font-size="11" fill="rgba(255,255,255,0.25)" data-astro-cid-j7pv25f6> // open app</text> <text x="64" y="122" font-family="monospace" font-size="11" fill="rgba(255,255,255,0.4)" data-astro-cid-j7pv25f6> launch</text> <text x="132" y="122" font-family="monospace" font-size="11" fill="rgba(255,255,255,0.6)" data-astro-cid-j7pv25f6>MyApp</text> <text x="64" y="148" font-family="monospace" font-size="11" fill="rgba(255,255,255,0.4)" data-astro-cid-j7pv25f6> tap</text> <text x="100" y="148" font-family="monospace" font-size="11" fill="#e0c9ff" data-astro-cid-j7pv25f6>"Login button"</text> <text x="64" y="174" font-family="monospace" font-size="11" fill="rgba(255,255,255,0.4)" data-astro-cid-j7pv25f6> enter</text> <text x="116" y="174" font-family="monospace" font-size="11" fill="#e0c9ff" data-astro-cid-j7pv25f6>"user@acme.com"</text> <text x="64" y="200" font-family="monospace" font-size="11" fill="rgba(255,255,255,0.4)" data-astro-cid-j7pv25f6> enter</text> <text x="116" y="200" font-family="monospace" font-size="11" fill="#e0c9ff" data-astro-cid-j7pv25f6>"my_password"</text> <text x="64" y="226" font-family="monospace" font-size="11" fill="rgba(255,255,255,0.4)" data-astro-cid-j7pv25f6> assert</text> <text x="124" y="226" font-family="monospace" font-size="11" fill="#4ade80" data-astro-cid-j7pv25f6>"Dashboard visible"</text> <!-- Status bar --> <rect x="0" y="304" width="560" height="36" fill="rgba(196,161,255,0.04)" stroke="rgba(196,161,255,0.1)" stroke-width="0" data-astro-cid-j7pv25f6></rect> <line x1="0" y1="304" x2="560" y2="304" stroke="rgba(255,255,255,0.06)" stroke-width="1" data-astro-cid-j7pv25f6></line> <circle cx="20" cy="322" r="5" fill="#4ade80" data-astro-cid-j7pv25f6></circle> <text x="34" y="326" font-family="monospace" font-size="10" fill="rgba(255,255,255,0.35)" letter-spacing="1" data-astro-cid-j7pv25f6>PASSED · 1.2s · 4 steps · iOS 18.2 iPhone 16 Pro</text> </svg> </div> <div class="feature-panel-footer" data-astro-cid-j7pv25f6> <a href="https://docs.revyl.com" class="feature-panel-link" data-astro-cid-j7pv25f6>Read the docs <span data-astro-cid-j7pv25f6>↗</span></a> <a href="https://app.revyl.ai/signup" class="feature-panel-link" data-astro-cid-j7pv25f6>Try it free <span data-astro-cid-j7pv25f6>→</span></a> </div> </div> <!-- Panel 02: Live device streaming --> <div class="feature-panel" id="feature-stream" data-astro-cid-j7pv25f6> <div class="feature-panel-top" data-astro-cid-j7pv25f6> <span class="feature-panel-index" data-astro-cid-j7pv25f6>02 — Live Streaming</span> <h3 class="feature-panel-title" data-astro-cid-j7pv25f6>Watch devices<br data-astro-cid-j7pv25f6>run live</h3> <p class="feature-panel-desc" data-astro-cid-j7pv25f6>WebRTC-powered device streaming at 24–30fps. See every tap, scroll, and assertion play out in real time — from anywhere in the world.</p> </div> <div class="feature-panel-illustration" data-astro-cid-j7pv25f6> <svg width="100%" height="100%" viewBox="0 0 560 340" fill="none" xmlns="http://www.w3.org/2000/svg" style="max-width:560px;" data-astro-cid-j7pv25f6> <!-- Grid background --> <defs data-astro-cid-j7pv25f6> <pattern id="grid" width="24" height="24" patternUnits="userSpaceOnUse" data-astro-cid-j7pv25f6> <path d="M 24 0 L 0 0 0 24" fill="none" stroke="rgba(255,255,255,0.04)" stroke-width="0.5" data-astro-cid-j7pv25f6></path> </pattern> </defs> <rect width="560" height="340" fill="url(#grid)" rx="2" data-astro-cid-j7pv25f6></rect> <!-- 3 phones side by side --> <!-- Phone 1 (active) --> <rect x="60" y="30" width="110" height="190" rx="10" stroke="rgba(196,161,255,0.6)" stroke-width="1.5" fill="rgba(196,161,255,0.04)" data-astro-cid-j7pv25f6></rect> <rect x="68" y="44" width="94" height="164" fill="rgba(0,0,0,0.5)" data-astro-cid-j7pv25f6></rect> <circle cx="115" cy="38" r="3" fill="rgba(196,161,255,0.4)" data-astro-cid-j7pv25f6></circle> <!-- REC indicator --> <circle cx="148" cy="38" r="4" fill="#ef4444" data-astro-cid-j7pv25f6></circle> <text x="155" y="41" font-family="monospace" font-size="7" fill="rgba(255,255,255,0.5)" data-astro-cid-j7pv25f6>REC</text> <!-- Phone 1 screen content --> <rect x="76" y="54" width="78" height="10" rx="1" fill="rgba(255,255,255,0.12)" data-astro-cid-j7pv25f6></rect> <rect x="76" y="70" width="54" height="8" rx="1" fill="rgba(255,255,255,0.06)" data-astro-cid-j7pv25f6></rect> <rect x="76" y="92" width="78" height="24" rx="2" fill="rgba(196,161,255,0.2)" stroke="rgba(196,161,255,0.4)" stroke-width="0.5" data-astro-cid-j7pv25f6></rect> <text x="99" y="108" font-family="monospace" font-size="8" fill="rgba(196,161,255,0.9)" data-astro-cid-j7pv25f6>Log In</text> <!-- Touch indicator --> <circle cx="115" cy="104" r="12" stroke="rgba(196,161,255,0.5)" stroke-width="1" fill="none" data-astro-cid-j7pv25f6></circle> <circle cx="115" cy="104" r="4" fill="rgba(196,161,255,0.4)" data-astro-cid-j7pv25f6></circle> <!-- Phone 1 label --> <text x="70" y="234" font-family="monospace" font-size="8" fill="rgba(196,161,255,0.7)" letter-spacing="0.5" data-astro-cid-j7pv25f6>iOS 18.2</text> <text x="70" y="246" font-family="monospace" font-size="8" fill="rgba(255,255,255,0.25)" data-astro-cid-j7pv25f6>iPhone 16 Pro</text> <!-- Phone 2 --> <rect x="225" y="30" width="110" height="190" rx="10" stroke="rgba(255,255,255,0.12)" stroke-width="1" fill="rgba(255,255,255,0.02)" data-astro-cid-j7pv25f6></rect> <rect x="233" y="44" width="94" height="164" fill="rgba(0,0,0,0.5)" data-astro-cid-j7pv25f6></rect> <circle cx="280" cy="38" r="3" fill="rgba(255,255,255,0.15)" data-astro-cid-j7pv25f6></circle> <rect x="241" y="54" width="78" height="10" rx="1" fill="rgba(255,255,255,0.08)" data-astro-cid-j7pv25f6></rect> <rect x="241" y="70" width="54" height="8" rx="1" fill="rgba(255,255,255,0.04)" data-astro-cid-j7pv25f6></rect> <rect x="241" y="92" width="78" height="24" rx="2" fill="rgba(255,255,255,0.06)" stroke="rgba(255,255,255,0.12)" stroke-width="0.5" data-astro-cid-j7pv25f6></rect> <text x="264" y="108" font-family="monospace" font-size="8" fill="rgba(255,255,255,0.5)" data-astro-cid-j7pv25f6>Log In</text> <text x="235" y="234" font-family="monospace" font-size="8" fill="rgba(255,255,255,0.3)" letter-spacing="0.5" data-astro-cid-j7pv25f6>Android 15</text> <text x="235" y="246" font-family="monospace" font-size="8" fill="rgba(255,255,255,0.15)" data-astro-cid-j7pv25f6>Pixel 9 Pro</text> <!-- Phone 3 --> <rect x="390" y="30" width="110" height="190" rx="10" stroke="rgba(255,255,255,0.12)" stroke-width="1" fill="rgba(255,255,255,0.02)" data-astro-cid-j7pv25f6></rect> <rect x="398" y="44" width="94" height="164" fill="rgba(0,0,0,0.5)" data-astro-cid-j7pv25f6></rect> <circle cx="445" cy="38" r="3" fill="rgba(255,255,255,0.15)" data-astro-cid-j7pv25f6></circle> <rect x="406" y="54" width="78" height="10" rx="1" fill="rgba(255,255,255,0.08)" data-astro-cid-j7pv25f6></rect> <rect x="406" y="70" width="54" height="8" rx="1" fill="rgba(255,255,255,0.04)" data-astro-cid-j7pv25f6></rect> <rect x="406" y="92" width="78" height="24" rx="2" fill="rgba(255,255,255,0.06)" stroke="rgba(255,255,255,0.12)" stroke-width="0.5" data-astro-cid-j7pv25f6></rect> <text x="429" y="108" font-family="monospace" font-size="8" fill="rgba(255,255,255,0.5)" data-astro-cid-j7pv25f6>Log In</text> <text x="400" y="234" font-family="monospace" font-size="8" fill="rgba(255,255,255,0.3)" letter-spacing="0.5" data-astro-cid-j7pv25f6>iOS 17.6</text> <text x="400" y="246" font-family="monospace" font-size="8" fill="rgba(255,255,255,0.15)" data-astro-cid-j7pv25f6>iPhone 15</text> <!-- Stream stats bar --> <rect x="0" y="278" width="560" height="62" fill="rgba(0,0,0,0.4)" stroke="rgba(255,255,255,0.06)" stroke-width="0" data-astro-cid-j7pv25f6></rect> <line x1="0" y1="278" x2="560" y2="278" stroke="rgba(255,255,255,0.08)" stroke-width="1" data-astro-cid-j7pv25f6></line> <text x="20" y="298" font-family="monospace" font-size="9" fill="rgba(255,255,255,0.2)" letter-spacing="1" data-astro-cid-j7pv25f6>STREAM STATS</text> <!-- Stats --> <text x="20" y="322" font-family="monospace" font-size="10" fill="#C4A1FF" data-astro-cid-j7pv25f6>24fps</text> <text x="20" y="334" font-family="monospace" font-size="8" fill="rgba(255,255,255,0.2)" data-astro-cid-j7pv25f6>framerate</text> <text x="120" y="322" font-family="monospace" font-size="10" fill="#C4A1FF" data-astro-cid-j7pv25f6>48ms</text> <text x="120" y="334" font-family="monospace" font-size="8" fill="rgba(255,255,255,0.2)" data-astro-cid-j7pv25f6>latency</text> <text x="210" y="322" font-family="monospace" font-size="10" fill="#C4A1FF" data-astro-cid-j7pv25f6>WebRTC</text> <text x="210" y="334" font-family="monospace" font-size="8" fill="rgba(255,255,255,0.2)" data-astro-cid-j7pv25f6>protocol</text> <text x="310" y="322" font-family="monospace" font-size="10" fill="#4ade80" data-astro-cid-j7pv25f6>● LIVE</text> <text x="310" y="334" font-family="monospace" font-size="8" fill="rgba(255,255,255,0.2)" data-astro-cid-j7pv25f6>3 devices</text> </svg> </div> <div class="feature-panel-footer" data-astro-cid-j7pv25f6> <a href="https://docs.revyl.com" class="feature-panel-link" data-astro-cid-j7pv25f6>Start streaming <span data-astro-cid-j7pv25f6>↗</span></a> <a href="https://app.revyl.ai/signup" class="feature-panel-link" data-astro-cid-j7pv25f6>Try it free <span data-astro-cid-j7pv25f6>→</span></a> </div> </div> <!-- Panel 03: Execution traces --> <div class="feature-panel" id="feature-traces" data-astro-cid-j7pv25f6> <div class="feature-panel-top" data-astro-cid-j7pv25f6> <span class="feature-panel-index" data-astro-cid-j7pv25f6>03 — Execution Traces</span> <h3 class="feature-panel-title" data-astro-cid-j7pv25f6>Know exactly<br data-astro-cid-j7pv25f6>what went wrong</h3> <p class="feature-panel-desc" data-astro-cid-j7pv25f6>Video clips of every action. Step-by-step traces with timestamps, screenshots at each step, and one-click shareable failure reports.</p> </div> <div class="feature-panel-illustration" data-astro-cid-j7pv25f6> <svg width="100%" height="100%" viewBox="0 0 560 340" fill="none" xmlns="http://www.w3.org/2000/svg" style="max-width:560px; opacity:0.9;" data-astro-cid-j7pv25f6> <!-- Report card bg --> <rect x="0" y="0" width="560" height="340" rx="2" stroke="rgba(255,255,255,0.08)" stroke-width="1" fill="rgba(255,255,255,0.02)" data-astro-cid-j7pv25f6></rect> <!-- Header --> <rect x="0" y="0" width="560" height="48" fill="rgba(255,255,255,0.025)" data-astro-cid-j7pv25f6></rect> <line x1="0" y1="48" x2="560" y2="48" stroke="rgba(255,255,255,0.08)" stroke-width="1" data-astro-cid-j7pv25f6></line> <text x="24" y="28" font-family="monospace" font-size="10" fill="rgba(255,255,255,0.3)" letter-spacing="1" data-astro-cid-j7pv25f6>EXECUTION TRACE</text> <text x="24" y="42" font-family="monospace" font-size="9" fill="rgba(255,255,255,0.15)" data-astro-cid-j7pv25f6>test_login.rvl · run #4821 · 2024-01-15 09:41:22</text> <!-- PASS badge --> <rect x="480" y="12" width="60" height="22" rx="1" fill="rgba(74,222,128,0.1)" stroke="rgba(74,222,128,0.3)" stroke-width="1" data-astro-cid-j7pv25f6></rect> <text x="493" y="27" font-family="monospace" font-size="9" fill="#4ade80" letter-spacing="1" data-astro-cid-j7pv25f6>PASS</text> <!-- Trace steps --> <!-- Step 1 --> <line x1="40" y1="72" x2="40" y2="108" stroke="rgba(196,161,255,0.2)" stroke-width="1" stroke-dasharray="2,2" data-astro-cid-j7pv25f6></line> <circle cx="40" cy="72" r="6" fill="rgba(196,161,255,0.15)" stroke="#C4A1FF" stroke-width="1" data-astro-cid-j7pv25f6></circle> <text x="40" y="75" font-family="monospace" font-size="7" fill="#C4A1FF" text-anchor="middle" data-astro-cid-j7pv25f6>1</text> <text x="60" y="68" font-family="monospace" font-size="11" fill="rgba(255,255,255,0.7)" data-astro-cid-j7pv25f6>launch(MyApp)</text> <text x="60" y="82" font-family="monospace" font-size="9" fill="rgba(255,255,255,0.25)" data-astro-cid-j7pv25f6>app_launched · cold_start</text> <rect x="420" y="60" width="48" height="18" rx="1" fill="rgba(255,255,255,0.03)" stroke="rgba(255,255,255,0.08)" stroke-width="0.5" data-astro-cid-j7pv25f6></rect> <text x="434" y="73" font-family="monospace" font-size="9" fill="rgba(255,255,255,0.25)" data-astro-cid-j7pv25f6>0.3s</text> <!-- Step 2 --> <line x1="40" y1="110" x2="40" y2="148" stroke="rgba(196,161,255,0.2)" stroke-width="1" stroke-dasharray="2,2" data-astro-cid-j7pv25f6></line> <circle cx="40" cy="110" r="6" fill="rgba(196,161,255,0.15)" stroke="#C4A1FF" stroke-width="1" data-astro-cid-j7pv25f6></circle> <text x="40" y="113" font-family="monospace" font-size="7" fill="#C4A1FF" text-anchor="middle" data-astro-cid-j7pv25f6>2</text> <text x="60" y="106" font-family="monospace" font-size="11" fill="rgba(255,255,255,0.7)" data-astro-cid-j7pv25f6>tap("Login button")</text> <text x="60" y="120" font-family="monospace" font-size="9" fill="rgba(255,255,255,0.25)" data-astro-cid-j7pv25f6>element_found · coords (187, 412)</text> <rect x="420" y="98" width="48" height="18" rx="1" fill="rgba(255,255,255,0.03)" stroke="rgba(255,255,255,0.08)" stroke-width="0.5" data-astro-cid-j7pv25f6></rect> <text x="434" y="111" font-family="monospace" font-size="9" fill="rgba(255,255,255,0.25)" data-astro-cid-j7pv25f6>0.1s</text> <!-- Step 3 --> <line x1="40" y1="150" x2="40" y2="188" stroke="rgba(196,161,255,0.2)" stroke-width="1" stroke-dasharray="2,2" data-astro-cid-j7pv25f6></line> <circle cx="40" cy="150" r="6" fill="rgba(196,161,255,0.15)" stroke="#C4A1FF" stroke-width="1" data-astro-cid-j7pv25f6></circle> <text x="40" y="153" font-family="monospace" font-size="7" fill="#C4A1FF" text-anchor="middle" data-astro-cid-j7pv25f6>3</text> <text x="60" y="146" font-family="monospace" font-size="11" fill="rgba(255,255,255,0.7)" data-astro-cid-j7pv25f6>enter("user@acme.com")</text> <text x="60" y="160" font-family="monospace" font-size="9" fill="rgba(255,255,255,0.25)" data-astro-cid-j7pv25f6>keyboard_input · 13 chars</text> <rect x="420" y="138" width="48" height="18" rx="1" fill="rgba(255,255,255,0.03)" stroke="rgba(255,255,255,0.08)" stroke-width="0.5" data-astro-cid-j7pv25f6></rect> <text x="434" y="151" font-family="monospace" font-size="9" fill="rgba(255,255,255,0.25)" data-astro-cid-j7pv25f6>0.8s</text> <!-- Step 4 --> <line x1="40" y1="190" x2="40" y2="228" stroke="rgba(74,222,128,0.2)" stroke-width="1" stroke-dasharray="2,2" data-astro-cid-j7pv25f6></line> <circle cx="40" cy="190" r="6" fill="rgba(74,222,128,0.12)" stroke="#4ade80" stroke-width="1" data-astro-cid-j7pv25f6></circle> <text x="40" y="193" font-family="monospace" font-size="7" fill="#4ade80" text-anchor="middle" data-astro-cid-j7pv25f6>4</text> <text x="60" y="186" font-family="monospace" font-size="11" fill="rgba(255,255,255,0.7)" data-astro-cid-j7pv25f6>assert("Dashboard visible")</text> <text x="60" y="200" font-family="monospace" font-size="9" fill="#4ade80" data-astro-cid-j7pv25f6>✓ element_found · visible · in_viewport</text> <rect x="420" y="178" width="48" height="18" rx="1" fill="rgba(74,222,128,0.05)" stroke="rgba(74,222,128,0.25)" stroke-width="0.5" data-astro-cid-j7pv25f6></rect> <text x="434" y="191" font-family="monospace" font-size="9" fill="#4ade80" data-astro-cid-j7pv25f6>PASS</text> <!-- Summary bar --> <line x1="0" y1="278" x2="560" y2="278" stroke="rgba(255,255,255,0.06)" stroke-width="1" data-astro-cid-j7pv25f6></line> <rect x="0" y="278" width="560" height="62" fill="rgba(74,222,128,0.03)" data-astro-cid-j7pv25f6></rect> <circle cx="24" cy="309" r="5" fill="#4ade80" data-astro-cid-j7pv25f6></circle> <text x="38" y="313" font-family="monospace" font-size="10" fill="rgba(255,255,255,0.4)" data-astro-cid-j7pv25f6>All 4 steps passed · total 1.2s · iOS 18.2 · iPhone 16 Pro</text> <text x="38" y="328" font-family="monospace" font-size="9" fill="rgba(255,255,255,0.2)" data-astro-cid-j7pv25f6>Share report → revyl.ai/r/4821</text> </svg> </div> <div class="feature-panel-footer" data-astro-cid-j7pv25f6> <a href="https://docs.revyl.com" class="feature-panel-link" data-astro-cid-j7pv25f6>View sample report <span data-astro-cid-j7pv25f6>↗</span></a> <a href="https://app.revyl.ai/signup" class="feature-panel-link" data-astro-cid-j7pv25f6>Try it free <span data-astro-cid-j7pv25f6>→</span></a> </div> </div> </div><!-- /features-content --> </div><!-- /features-split --> <script type="module">(function(){const n=document.querySelectorAll(".features-nav-item[data-target]"),o=document.querySelectorAll(".feature-panel[id]");if(!n.length||!o.length)return;function r(){let e=o[0].id;o.forEach(t=>{t.getBoundingClientRect().top<=window.innerHeight*.4&&(e=t.id)}),n.forEach(t=>{t.classList.toggle("is-active",t.dataset.target===e)})}window.addEventListener("scroll",r,{passive:!0}),r(),n.forEach(e=>{e.addEventListener("click",t=>{t.preventDefault();const a=document.getElementById(e.dataset.target);a&&a.scrollIntoView({behavior:"smooth",block:"start"})})})})();</script> <!-- PERFORMANCE --> <section style="padding: 80px 48px; border-bottom: 1px solid var(--border);" data-astro-cid-j7pv25f6> <span class="section-label" data-astro-cid-j7pv25f6>Performance</span> <h2 style="font-family: var(--display); font-size: clamp(2rem, 5vw, 4rem); font-weight: 300; letter-spacing: -0.04em; text-transform: uppercase; margin-bottom: 16px;" data-astro-cid-j7pv25f6>Built for speed and scale</h2> <p style="font-family: var(--sans); font-size: 14px; color: var(--fg2); max-width: 560px; line-height: 1.7; margin-bottom: 64px;" data-astro-cid-j7pv25f6>
+Optimized for the tight loop an AI agent needs: capture the screen, ground the instruction, execute the action, verify the result.
+</p> <!-- Vertical dot-pattern bar charts --> <div class="perf-grid" style="display: grid; grid-template-columns: 1fr 1fr; margin-bottom: 64px; border: 1px solid var(--border);" data-astro-cid-j7pv25f6> <!-- Chart 1: State Polling Latency --> <div class="vbar-chart-wrap" data-astro-cid-j7pv25f6> <div class="vbar-chart-title" data-astro-cid-j7pv25f6>FIG 1 — State Polling Latency</div> <div class="vbar-chart-body" data-astro-cid-j7pv25f6> <!-- Y-axis --> <div class="vbar-yaxis" data-astro-cid-j7pv25f6> <div class="vbar-ylabel" data-astro-cid-j7pv25f6>80%</div> <div class="vbar-ylabel" data-astro-cid-j7pv25f6>60%</div> <div class="vbar-ylabel" data-astro-cid-j7pv25f6>40%</div> <div class="vbar-ylabel" data-astro-cid-j7pv25f6>20%</div> <div class="vbar-ylabel" data-astro-cid-j7pv25f6>&nbsp;</div> </div> <!-- Plot area --> <div class="vbar-plot" data-astro-cid-j7pv25f6> <!-- Gridlines at 20/40/60/80% from bottom --> <div class="vbar-gridlines" data-astro-cid-j7pv25f6> <div class="vbar-gridline" style="bottom: calc(20% + 24px);" data-astro-cid-j7pv25f6></div> <div class="vbar-gridline" style="bottom: calc(40% + 24px);" data-astro-cid-j7pv25f6></div> <div class="vbar-gridline" style="bottom: calc(60% + 24px);" data-astro-cid-j7pv25f6></div> <div class="vbar-gridline" style="bottom: calc(80% + 24px);" data-astro-cid-j7pv25f6></div> </div> <!-- Bars --> <div class="vbar-bars" data-astro-cid-j7pv25f6> <div class="vbar-col is-revyl" data-astro-cid-j7pv25f6> <div class="vbar is-revyl" style="height: 7%;" data-astro-cid-j7pv25f6> <span class="vbar-badge" data-astro-cid-j7pv25f6>~50ms</span> </div> <div class="vbar-xlabel" data-astro-cid-j7pv25f6>Revyl</div> </div> <div class="vbar-col" data-astro-cid-j7pv25f6> <div class="vbar" style="height: 57%;" data-astro-cid-j7pv25f6> <span class="vbar-badge" data-astro-cid-j7pv25f6>~400ms</span> </div> <div class="vbar-xlabel" data-astro-cid-j7pv25f6>In-house</div> </div> <div class="vbar-col" data-astro-cid-j7pv25f6> <div class="vbar" style="height: 86%;" data-astro-cid-j7pv25f6> <span class="vbar-badge" data-astro-cid-j7pv25f6>~650ms</span> </div> <div class="vbar-xlabel" data-astro-cid-j7pv25f6>Browser­Stack</div> </div> <div class="vbar-col" data-astro-cid-j7pv25f6> <div class="vbar" style="height: 93%;" data-astro-cid-j7pv25f6> <span class="vbar-badge" data-astro-cid-j7pv25f6>~700ms</span> </div> <div class="vbar-xlabel" data-astro-cid-j7pv25f6>Sauce Labs</div> </div> </div> </div> </div> <p style="font-family: var(--mono); font-size: 11px; color: var(--fg3); margin-top: 12px; line-height: 1.5;" data-astro-cid-j7pv25f6>Latency based on internal benchmarks vs leading device farm providers.</p> </div> <!-- Chart 2: Time to First Device Action --> <div class="vbar-chart-wrap" data-astro-cid-j7pv25f6> <div class="vbar-chart-title" data-astro-cid-j7pv25f6>FIG 2 — Time to First Device Action</div> <div class="vbar-chart-body" data-astro-cid-j7pv25f6> <!-- Y-axis --> <div class="vbar-yaxis" data-astro-cid-j7pv25f6> <div class="vbar-ylabel" data-astro-cid-j7pv25f6>80%</div> <div class="vbar-ylabel" data-astro-cid-j7pv25f6>60%</div> <div class="vbar-ylabel" data-astro-cid-j7pv25f6>40%</div> <div class="vbar-ylabel" data-astro-cid-j7pv25f6>20%</div> <div class="vbar-ylabel" data-astro-cid-j7pv25f6>&nbsp;</div> </div> <!-- Plot area --> <div class="vbar-plot" data-astro-cid-j7pv25f6> <!-- Gridlines --> <div class="vbar-gridlines" data-astro-cid-j7pv25f6> <div class="vbar-gridline" style="bottom: calc(20% + 24px);" data-astro-cid-j7pv25f6></div> <div class="vbar-gridline" style="bottom: calc(40% + 24px);" data-astro-cid-j7pv25f6></div> <div class="vbar-gridline" style="bottom: calc(60% + 24px);" data-astro-cid-j7pv25f6></div> <div class="vbar-gridline" style="bottom: calc(80% + 24px);" data-astro-cid-j7pv25f6></div> </div> <!-- Bars --> <div class="vbar-bars" data-astro-cid-j7pv25f6> <div class="vbar-col is-revyl" data-astro-cid-j7pv25f6> <div class="vbar is-revyl" style="height: 4%;" data-astro-cid-j7pv25f6> <span class="vbar-badge" data-astro-cid-j7pv25f6>~8s</span> </div> <div class="vbar-xlabel" data-astro-cid-j7pv25f6>Revyl</div> </div> <div class="vbar-col" data-astro-cid-j7pv25f6> <div class="vbar" style="height: 25%;" data-astro-cid-j7pv25f6> <span class="vbar-badge" data-astro-cid-j7pv25f6>~45s</span> </div> <div class="vbar-xlabel" data-astro-cid-j7pv25f6>Browser­Stack</div> </div> <div class="vbar-col" data-astro-cid-j7pv25f6> <div class="vbar" style="height: 33%;" data-astro-cid-j7pv25f6> <span class="vbar-badge" data-astro-cid-j7pv25f6>~60s</span> </div> <div class="vbar-xlabel" data-astro-cid-j7pv25f6>Sauce Labs</div> </div> <div class="vbar-col" data-astro-cid-j7pv25f6> <div class="vbar" style="height: 100%;" data-astro-cid-j7pv25f6> <span class="vbar-badge" data-astro-cid-j7pv25f6>~180s</span> </div> <div class="vbar-xlabel" data-astro-cid-j7pv25f6>In-house</div> </div> </div> </div> </div> <p style="font-family: var(--mono); font-size: 11px; color: var(--fg3); margin-top: 12px; line-height: 1.5;" data-astro-cid-j7pv25f6>Time from test trigger to first action on a real device, across 100 runs.</p> </div> </div> <!-- Numbers grid --> <div class="numbers-grid" data-astro-cid-j7pv25f6> <div class="number-cell" data-astro-cid-j7pv25f6> <div class="number-value" data-astro-cid-j7pv25f6>10,000+</div> <div class="number-label" data-astro-cid-j7pv25f6>Parallel Sessions</div> </div> <div class="number-cell" data-astro-cid-j7pv25f6> <div class="number-value" data-astro-cid-j7pv25f6>24–30</div> <div class="number-label" data-astro-cid-j7pv25f6>FPS Streaming</div> </div> <div class="number-cell" data-astro-cid-j7pv25f6> <div class="number-value" data-astro-cid-j7pv25f6>~50ms</div> <div class="number-label" data-astro-cid-j7pv25f6>Polling Latency</div> </div> <div class="number-cell" style="border-right: none;" data-astro-cid-j7pv25f6> <div class="number-value" data-astro-cid-j7pv25f6>3</div> <div class="number-label" data-astro-cid-j7pv25f6>Compute Tiers</div> </div> </div> </section> <!-- SCALE --> <section style="padding: 80px 48px; border-bottom: 1px solid var(--border);" data-astro-cid-j7pv25f6> <span class="section-label" data-astro-cid-j7pv25f6>Scale</span> <h2 style="font-family: var(--display); font-size: clamp(2rem, 5vw, 4rem); font-weight: 300; letter-spacing: -0.04em; text-transform: uppercase; margin-bottom: 16px;" data-astro-cid-j7pv25f6>Every build. Every PR. Every time.</h2> <p style="font-family: var(--sans); font-size: 14px; color: var(--fg2); max-width: 560px; line-height: 1.7; margin-bottom: 48px;" data-astro-cid-j7pv25f6>
+Massively parallel execution across iOS and Android. Cut your test suite from hours to minutes.
+</p> <div class="scale-grid" data-astro-cid-j7pv25f6> <div class="scale-card" data-astro-cid-j7pv25f6> <div class="scale-card-title" data-astro-cid-j7pv25f6>Parallel Test Runs</div> <img src="/images/2.svg" alt="Parallel test execution" style="width: 100%; height: auto;" data-astro-cid-j7pv25f6> </div> <div class="scale-card" data-astro-cid-j7pv25f6> <div class="scale-card-title" data-astro-cid-j7pv25f6>Reporting</div> <img src="/images/1.svg" alt="Test reporting dashboard" style="width: 100%; height: auto;" data-astro-cid-j7pv25f6> </div> <div class="scale-card" data-astro-cid-j7pv25f6> <div class="scale-card-title" data-astro-cid-j7pv25f6>Drag and Drop .zip / .apk / .app to get started</div> <img src="/images/3.svg" alt="Drag and drop app upload" style="width: 100%; height: auto;" data-astro-cid-j7pv25f6> </div> <div class="scale-card" data-astro-cid-j7pv25f6> <div class="scale-card-title" data-astro-cid-j7pv25f6>Call from CI/CD</div> <img src="/images/5.svg" alt="CI/CD integrations" style="width: 100%; height: auto;" data-astro-cid-j7pv25f6> </div> </div> </section> <!-- HUD GRID CTA --> <section class="ascii-cta" data-astro-cid-j7pv25f6> <canvas id="hud-grid" aria-hidden="true" style="position:absolute;inset:0;width:100%;height:100%;pointer-events:none;" data-astro-cid-j7pv25f6></canvas> <div class="ascii-cta-content" data-astro-cid-j7pv25f6> <h2 class="ascii-cta-title" data-astro-cid-j7pv25f6>
+Ship mobile.<br data-astro-cid-j7pv25f6>
+Ship with <em data-astro-cid-j7pv25f6>confidence.</em> </h2> <div class="ascii-cta-actions" data-astro-cid-j7pv25f6> <a href="https://app.revyl.ai/signup" class="rv-btn rv-btn--primary rv-btn--md "> <span class="rv-btn-fill" aria-hidden="true"></span> <span class="rv-btn-left"> <span class="rv-btn-dot" aria-hidden="true"></span> <span class="rv-btn-label">Get started free</span> </span> <svg class="rv-btn-arrow" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M13.1717 12.0007L8.22192 7.05093L9.63614 5.63672L16.0001 12.0007L9.63614 18.3646L8.22192 16.9504L13.1717 12.0007Z"></path></svg> </a>  <script>
+(function () {
+  const CHARS = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789';
+  const STEPS = 6;      // random frames per character
+  const STEP_MS = 40;   // ms per frame
+
+  function shuffle(btn) {
+    const label = btn.querySelector('.rv-btn-label');
+    if (!label || btn._shuffling) return;
+    const original = label.textContent;
+    btn._shuffling = true;
+    // Lock width so random chars don't cause layout reflow
+    label.style.width = label.offsetWidth + 'px';
+
+    // Build per-char timers: each char starts slightly after the previous
+    const chars = original.split('');
+    let resolved = chars.map(() => false);
+    let result = chars.slice();
+
+    chars.forEach((ch, i) => {
+      const isSpace = ch === ' ';
+      let step = 0;
+      const delay = i * 35; // stagger: each char starts 35ms after previous
+
+      setTimeout(function tick() {
+        if (isSpace) { resolved[i] = true; }
+        else if (step < STEPS) {
+          result[i] = CHARS[Math.floor(Math.random() * CHARS.length)];
+          step++;
+          label.textContent = result.join('');
+          setTimeout(tick, STEP_MS);
+        } else {
+          result[i] = ch.toUpperCase();
+          resolved[i] = true;
+          label.textContent = result.join('');
+        }
+        if (resolved.every(Boolean)) {
+          label.textContent = original;
+          label.style.width = '';
+          btn._shuffling = false;
+        }
+      }, delay);
+    });
+  }
+
+  function init() {
+    document.querySelectorAll('.rv-btn').forEach(btn => {
+      btn.addEventListener('mouseenter', () => shuffle(btn));
+    });
+  }
+
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', init);
+  } else {
+    init();
+  }
+})();
+</script> <a href="https://cal.com/landseer-enga/book-a-demo" class="rv-btn rv-btn--secondary rv-btn--md "> <span class="rv-btn-fill" aria-hidden="true"></span> <span class="rv-btn-left"> <span class="rv-btn-dot" aria-hidden="true"></span> <span class="rv-btn-label">Book a demo</span> </span> <svg class="rv-btn-arrow" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M13.1717 12.0007L8.22192 7.05093L9.63614 5.63672L16.0001 12.0007L9.63614 18.3646L8.22192 16.9504L13.1717 12.0007Z"></path></svg> </a>  <script>
+(function () {
+  const CHARS = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789';
+  const STEPS = 6;      // random frames per character
+  const STEP_MS = 40;   // ms per frame
+
+  function shuffle(btn) {
+    const label = btn.querySelector('.rv-btn-label');
+    if (!label || btn._shuffling) return;
+    const original = label.textContent;
+    btn._shuffling = true;
+    // Lock width so random chars don't cause layout reflow
+    label.style.width = label.offsetWidth + 'px';
+
+    // Build per-char timers: each char starts slightly after the previous
+    const chars = original.split('');
+    let resolved = chars.map(() => false);
+    let result = chars.slice();
+
+    chars.forEach((ch, i) => {
+      const isSpace = ch === ' ';
+      let step = 0;
+      const delay = i * 35; // stagger: each char starts 35ms after previous
+
+      setTimeout(function tick() {
+        if (isSpace) { resolved[i] = true; }
+        else if (step < STEPS) {
+          result[i] = CHARS[Math.floor(Math.random() * CHARS.length)];
+          step++;
+          label.textContent = result.join('');
+          setTimeout(tick, STEP_MS);
+        } else {
+          result[i] = ch.toUpperCase();
+          resolved[i] = true;
+          label.textContent = result.join('');
+        }
+        if (resolved.every(Boolean)) {
+          label.textContent = original;
+          label.style.width = '';
+          btn._shuffling = false;
+        }
+      }, delay);
+    });
+  }
+
+  function init() {
+    document.querySelectorAll('.rv-btn').forEach(btn => {
+      btn.addEventListener('mouseenter', () => shuffle(btn));
+    });
+  }
+
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', init);
+  } else {
+    init();
+  }
+})();
+</script> </div> </div> <svg class="ascii-cta-logo" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 88 25" fill="none" data-astro-cid-j7pv25f6> <path d="M6.42281 12.5L15.2597 21.3015L12.0483 24.5L0 12.5L12.0483 0.5L15.2597 3.69855L6.42281 12.5Z" fill="currentColor" data-astro-cid-j7pv25f6></path> <path d="M30.5237 12.5L18.4755 24.5L15.264 21.3015L24.1009 12.5L15.2597 3.69855L18.4711 0.5L30.5193 12.5H30.5237Z" fill="currentColor" data-astro-cid-j7pv25f6></path> <path d="M9.6386 12.5L15.2597 6.90145L20.8807 12.5L15.2597 18.0985L9.6386 12.5Z" fill="currentColor" data-astro-cid-j7pv25f6></path> <path d="M36.1424 19.4526V5.31441H43.1873C44.6594 5.31441 45.816 5.65187 46.6572 6.32678C47.4984 7.00169 47.919 7.95005 47.919 9.17187C47.919 9.87005 47.7613 10.481 47.4459 11.0046C47.1304 11.5166 46.6631 11.9122 46.0439 12.1915V12.2613C46.6397 12.2613 47.1012 12.4242 47.4283 12.7501C47.7555 13.0642 47.919 13.5239 47.919 14.129V19.4526H45.5006V13.8497H38.5783V19.4526H36.1424ZM38.5783 11.7901H42.9946C43.8007 11.7901 44.4199 11.5981 44.8522 11.2141C45.2962 10.8301 45.5181 10.289 45.5181 9.59078C45.5181 8.88096 45.2962 8.33987 44.8522 7.9675C44.4199 7.5835 43.8007 7.39151 42.9946 7.39151H38.5783V11.7901Z" fill="currentColor" data-astro-cid-j7pv25f6></path> <path d="M55.4853 19.6621C54.3754 19.6621 53.4057 19.441 52.5762 18.9988C51.7584 18.545 51.1275 17.905 50.6835 17.0788C50.2396 16.2526 50.0176 15.2868 50.0176 14.1813C50.0176 13.0759 50.2337 12.1217 50.666 11.3188C51.11 10.5042 51.735 9.87587 52.5412 9.43369C53.3473 8.9915 54.2995 8.77041 55.3977 8.77041C56.4492 8.77041 57.3546 8.97987 58.114 9.39878C58.8734 9.80605 59.4576 10.3937 59.8665 11.1617C60.2871 11.9181 60.4974 12.8199 60.4974 13.8671V14.7399H52.2958C52.3893 15.694 52.7106 16.433 53.2597 16.9566C53.8088 17.4686 54.5448 17.7246 55.4678 17.7246C56.1454 17.7246 56.7004 17.5966 57.1326 17.3406C57.5649 17.0846 57.8628 16.7006 58.0264 16.1886H60.4448C60.1878 17.2824 59.6212 18.1377 58.7449 18.7544C57.8804 19.3595 56.7938 19.6621 55.4853 19.6621ZM52.3659 13.0817H58.2192C58.1257 12.3137 57.8336 11.726 57.3429 11.3188C56.8523 10.8999 56.2038 10.6904 55.3977 10.6904C54.5916 10.6904 53.9256 10.8999 53.3999 11.3188C52.8741 11.726 52.5295 12.3137 52.3659 13.0817Z" fill="currentColor" data-astro-cid-j7pv25f6></path> <path d="M65.4528 19.4526L60.9665 8.97987H63.4725L66.7321 16.8344H66.8022L70.0092 8.97987H72.4452L67.9588 19.4526H65.4528Z" fill="currentColor" data-astro-cid-j7pv25f6></path> <path d="M73.8962 23.6417V21.7391H76.3321L77.296 19.4351L72.6694 8.97987H75.1579L78.4701 16.6599H78.5577L81.7472 8.97987H84.1306L79.6443 19.4526L78.6804 21.7217C78.4234 22.3268 78.143 22.7981 77.8392 23.1355C77.5471 23.473 77.0623 23.6417 76.3847 23.6417H73.8962Z" fill="currentColor" data-astro-cid-j7pv25f6></path> <path d="M85.6166 19.4526V4.79078H88V19.4526H85.6166Z" fill="currentColor" data-astro-cid-j7pv25f6></path> </svg> </section> <script type="module">(function(){if(window.__loaderSkip)return;const t=[{t:"dim",m:"> dmesg | head -20"},{t:"",m:"[  0.000] Initializing kernel subsystems..."},{t:"",m:"[  0.142] cpu0: Neural Core x128 @ 4.2GHz"},{t:"",m:"[  0.285] mem: 1024GB LPDDR6 OK"},{t:"",m:"[  0.410] Loading device mesh pipeline..."},{t:"",m:"[  0.612] Initializing WebRTC bridge..."},{t:"ok",m:"[  0.890] ok: streaming context established"},{t:"",m:"[  1.204] Loading AI test orchestrator..."},{t:"",m:"[  1.550] Syncing device farm: 10,000 nodes"},{t:"",m:"[  1.821] net: latency 48ms [STABLE]"},{t:"warn",m:"[  2.100] warn: parity mismatch node-04"},{t:"",m:"[  2.250] Correcting topology structures..."},{t:"ok",m:"[  2.410] ok: parity restored"},{t:"",m:"[  2.700] Loading iOS 18.2 runtime..."},{t:"",m:"[  3.000] Loading Android 15 runtime..."},{t:"ok",m:"[  3.200] ok: runtimes mounted"},{t:"",m:"[  3.400] CI/CD bridge loaded"},{t:"",m:"[  3.550] Verifying system entropy..."},{t:"ok",m:"[  3.700] ok: entropy verified"},{t:"ok",m:"[  3.850] REVYL ENGINE ONLINE — ready."}],n=document.getElementById("rl-log-container"),d=document.getElementById("rl-bar"),a=document.getElementById("rl-pct"),o=document.getElementById("rl-status"),r=document.getElementById("revyl-loader");if(!n||!d||!a||!r)return;const m=document.createElement("span");m.className="rl-cursor";const c=2600/t.length;let e=0;function l(){if(e>=t.length){o&&(o.textContent="ONLINE");return}m.remove();const s=t[e],i=document.createElement("div");i.className="rl-entry"+(s.t?" "+s.t:""),i.textContent=s.m,i.appendChild(m),n.appendChild(i),n.scrollTop=n.scrollHeight;const u=Math.min(100,Math.floor(e/(t.length-1)*100));if(d.style.width=u+"%",a.textContent=u+"%",e++,e<t.length){const g=(Math.random()-.5)*c*.4;setTimeout(l,c+g)}else o&&(o.textContent="ONLINE")}setTimeout(l,150),setTimeout(function(){r.classList.add("fade-out"),r.addEventListener("transitionend",function(){r.remove(),sessionStorage.setItem(window.__LOADER_KEY||"revyl_loader_v2","1")},{once:!0})},3500)})();</script> <!-- FOOTER --> <footer style="overflow: hidden;" data-astro-cid-j7pv25f6> <!-- Inversa-style: full-width accent top line --> <!-- Inset bordered container --> <div style="margin: 10px; border: 1px solid var(--border);" data-astro-cid-j7pv25f6> <!-- 3-column info grid --> <div style="display: grid; grid-template-columns: 1fr 1fr 1fr; border-bottom: 1px solid var(--border);" data-astro-cid-j7pv25f6> <!-- CONTACT --> <div style="padding: 36px 36px 44px; border-right: 1px solid var(--border);" data-astro-cid-j7pv25f6> <span style="font-family: var(--mono); font-size: 9px; text-transform: uppercase; letter-spacing: 0.2em; color: var(--fg3); display: block; margin-bottom: 28px;" data-astro-cid-j7pv25f6>Contact</span> <div style="display: flex; flex-direction: column; gap: 4px; margin-bottom: 36px;" data-astro-cid-j7pv25f6> <a href="mailto:hello@revyl.ai" class="footer-link" data-astro-cid-j7pv25f6>hello@revyl.ai</a> <a href="https://app.revyl.ai/signup" class="footer-link" data-astro-cid-j7pv25f6>Get in touch</a> </div> <div style="display: flex; flex-direction: column; gap: 4px;" data-astro-cid-j7pv25f6> <a href="https://mobilereliability.com/" class="footer-link" data-astro-cid-j7pv25f6>Mobile Reliability Podcast</a> <a href="/blog" class="footer-link" data-astro-cid-j7pv25f6>Blog</a> <a href="https://docs.revyl.com" class="footer-link" data-astro-cid-j7pv25f6>Learn more ↗</a> </div> </div> <!-- CONNECT --> <div style="padding: 36px 36px 44px; border-right: 1px solid var(--border);" data-astro-cid-j7pv25f6> <span style="font-family: var(--mono); font-size: 9px; text-transform: uppercase; letter-spacing: 0.2em; color: var(--fg3); display: block; margin-bottom: 28px;" data-astro-cid-j7pv25f6>Connect</span> <div style="display: flex; flex-direction: column; gap: 4px;" data-astro-cid-j7pv25f6> <a href="https://x.com/tryrevyl" class="footer-link" data-astro-cid-j7pv25f6>Twitter / X</a> <a href="https://www.linkedin.com/company/revylai" class="footer-link" data-astro-cid-j7pv25f6>LinkedIn</a> <a href="https://github.com/RevylAI" class="footer-link" data-astro-cid-j7pv25f6>GitHub</a> </div> </div> <!-- SUBSCRIBE --> <div style="padding: 36px 36px 44px;" data-astro-cid-j7pv25f6> <span style="font-family: var(--mono); font-size: 9px; text-transform: uppercase; letter-spacing: 0.2em; color: var(--fg3); display: block; margin-bottom: 28px;" data-astro-cid-j7pv25f6>Subscribe</span> <form style="display: flex; align-items: center; border-bottom: 1px solid rgba(255,255,255,0.15);" onsubmit="return false;" data-astro-cid-j7pv25f6> <input type="email" placeholder="Email" style="flex: 1; background: none; border: none; outline: none; font-family: var(--mono); font-size: 12px; color: var(--fg); padding: 8px 0; caret-color: var(--accent);" data-astro-cid-j7pv25f6> <button type="submit" style="background: none; border: none; padding: 8px 0 8px 12px; font-family: var(--mono); font-size: 14px; color: var(--fg2); transition: color 0.2s;" onmouseover="this.style.color='var(--fg)'" onmouseout="this.style.color='var(--fg2)'" data-astro-cid-j7pv25f6>→</button> </form> <div style="display: flex; align-items: center; gap: 16px; margin-top: 36px;" data-astro-cid-j7pv25f6> <img src="https://badges.oneleet.com/badge/68a9c8ed-1bbe-458e-be18-636fc5361a98?dark=true" alt="SOC 2 Type II" style="height: 64px;" data-astro-cid-j7pv25f6> <img src="https://badges.oneleet.com/badge/5a728019-58b6-4661-ae92-46d2eec05db8?dark=true" alt="HIPAA Compliant" style="height: 64px;" data-astro-cid-j7pv25f6> </div> </div> </div> <!-- Giant accent wordmark — Inversa style, fills full width --> <div style="overflow: hidden; line-height: 0.82; padding: 8px 0 0;" data-astro-cid-j7pv25f6> <div style="font-family: var(--display); font-size: clamp(5rem, 23vw, 15rem); font-weight: 800; letter-spacing: -0.04em; text-transform: uppercase; color: var(--accent); white-space: nowrap; padding: 0 28px; user-select: none;" data-astro-cid-j7pv25f6>
+REVYL
+</div> </div> <!-- Bottom bar inside the inset container --> <div style="display: flex; align-items: center; justify-content: space-between; padding: 14px 28px; border-top: 1px solid var(--border);" data-astro-cid-j7pv25f6> <span style="font-family: var(--mono); font-size: 9px; color: var(--fg3);" data-astro-cid-j7pv25f6>&copy;2026 REVYL</span> <a href="/privacy" class="footer-link" style="font-size: 9px;" data-astro-cid-j7pv25f6>Privacy Policy</a> <a href="/terms" class="footer-link" style="font-size: 9px;" data-astro-cid-j7pv25f6>Terms of Service</a> </div> </div><!-- /inset container --> </footer> </div> <script>
+  /* ── Scout-style heading reveal ── */
+  (function() {
+    function splitHeading(el) {
+      // Collect segments split on <br> elements
+      var segments = [];
+      var current = '';
+      el.childNodes.forEach(function(node) {
+        if (node.nodeType === Node.TEXT_NODE) {
+          current += node.textContent;
+        } else if (node.nodeName === 'BR') {
+          segments.push({ text: current, isHtml: false });
+          current = '';
+        } else {
+          // preserve inline elements like <em>
+          var tmp = document.createElement('span');
+          tmp.appendChild(node.cloneNode(true));
+          current += tmp.innerHTML;
+        }
+      });
+      if (current.trim()) segments.push({ text: current, isHtml: true });
+
+      // Replace heading content with masked lines
+      el.innerHTML = '';
+      segments.forEach(function(seg, i) {
+        var mask = document.createElement('span');
+        mask.className = 'rv-line-mask';
+        var inner = document.createElement('span');
+        inner.className = 'rv-line-inner';
+        inner.innerHTML = seg.text;
+        mask.appendChild(inner);
+        el.appendChild(mask);
+      });
+    }
+
+    function animateHeading(el, delay) {
+      var inners = el.querySelectorAll('.rv-line-inner');
+      inners.forEach(function(inner, i) {
+        inner.style.animationDelay = (delay + i * 0.09) + 's';
+        inner.classList.add('is-visible');
+      });
+    }
+
+    document.addEventListener('DOMContentLoaded', function() {
+      var headings = document.querySelectorAll('h1, h2, h3, h4, h5, h6');
+      headings.forEach(function(h) {
+        // Skip headings inside the nav overlay or loader
+        if (h.closest('#hud-nav') || h.closest('#revyl-loader')) return;
+        splitHeading(h);
+      });
+
+      // Hero headings fire immediately (already in viewport)
+      var heroHeadings = document.querySelectorAll('.hero-grid h1, .hero-grid h2');
+      heroHeadings.forEach(function(h) { animateHeading(h, 0); });
+
+      // All others fire on scroll via IntersectionObserver
+      var obs = new IntersectionObserver(function(entries) {
+        entries.forEach(function(entry) {
+          if (entry.isIntersecting) {
+            animateHeading(entry.target, 0);
+            obs.unobserve(entry.target);
+          }
+        });
+      }, { threshold: 0.15 });
+
+      headings.forEach(function(h) {
+        if (h.closest('#hud-nav') || h.closest('#revyl-loader')) return;
+        if (!h.closest('.hero-grid')) obs.observe(h);
+      });
+    });
+  })();
+</script> <script>
+  document.addEventListener('DOMContentLoaded', function() {
+    var hudMenuBtn = document.getElementById('hud-menu-btn');
+    var hudNavClose = document.getElementById('hud-nav-close');
+    var hudNav = document.getElementById('hud-nav');
+    function openNav() {
+      if (!hudNav) return;
+      hudNav.style.visibility = 'visible';
+      requestAnimationFrame(function() { hudNav.style.opacity = '1'; });
+    }
+    function closeNav() {
+      if (!hudNav) return;
+      hudNav.style.opacity = '0';
+      hudNav.style.visibility = 'hidden';
+    }
+    if (hudMenuBtn) hudMenuBtn.addEventListener('click', openNav);
+    if (hudNavClose) hudNavClose.addEventListener('click', closeNav);
+    document.addEventListener('keydown', function(e) { if (e.key === 'Escape') closeNav(); });
+  });
+</script>  </main>  </div> </div> <!-- Custom crosshair cursor --> <div id="rv-cursor" aria-hidden="true" data-astro-cid-sckkx6r4> <div class="rv-corner rv-tl" data-astro-cid-sckkx6r4></div> <div class="rv-corner rv-tr" data-astro-cid-sckkx6r4></div> <div class="rv-corner rv-bl" data-astro-cid-sckkx6r4></div> <div class="rv-corner rv-br" data-astro-cid-sckkx6r4></div> <div class="rv-dot" data-astro-cid-sckkx6r4></div> </div>  <script>
+      (function() {
+        const el = document.getElementById('rv-cursor');
+        if (!el) return;
+
+        let mx = -100, my = -100;
+        let raf;
+
+        function move(e) {
+          mx = e.clientX;
+          my = e.clientY;
+          if (!raf) raf = requestAnimationFrame(render);
+        }
+        function render() {
+          raf = null;
+          el.style.transform = `translate(calc(${mx}px - 50%), calc(${my}px - 50%))`;
+        }
+
+        document.addEventListener('mousemove', move, { passive: true });
+
+        document.addEventListener('mousedown', () => el.classList.add('clicking'));
+        document.addEventListener('mouseup',   () => el.classList.remove('clicking'));
+
+        // Hover state on interactive elements
+        document.addEventListener('mouseover', (e) => {
+          const t = e.target;
+          if (t && t.closest && t.closest('a, button, [role="button"], input, textarea, select, label')) {
+            el.classList.add('hovering');
+          }
+        });
+        document.addEventListener('mouseout', (e) => {
+          const t = e.target;
+          if (t && t.closest && t.closest('a, button, [role="button"], input, textarea, select, label')) {
+            el.classList.remove('hovering');
+          }
+        });
+
+        // Hide when leaving window
+        document.addEventListener('mouseleave', () => { el.style.opacity = '0'; });
+        document.addEventListener('mouseenter', () => { el.style.opacity = '1'; });
+      })();
+    </script> <script>
+      const themeToggle = document.getElementById('theme-toggle');
+      if (themeToggle) {
+        themeToggle.addEventListener('click', () => {
+          const isDark = document.documentElement.classList.toggle('dark');
+          localStorage.setItem('theme', isDark ? 'dark' : 'light');
+        });
+      }
+
+      // Mobile menu
+      const mobileMenuBtn = document.getElementById('mobile-menu-btn');
+      const mobileMenuClose = document.getElementById('mobile-menu-close');
+      const mobileMenu = document.getElementById('mobile-menu');
+      const mobileMenuOverlay = document.getElementById('mobile-menu-overlay');
+
+      function openMobileMenu() {
+        mobileMenu.classList.remove('translate-x-full');
+        mobileMenuOverlay.classList.remove('hidden');
+        document.body.style.overflow = 'hidden';
+      }
+
+      function closeMobileMenu() {
+        mobileMenu.classList.add('translate-x-full');
+        mobileMenuOverlay.classList.add('hidden');
+        document.body.style.overflow = '';
+      }
+
+      if (mobileMenuBtn) {
+        mobileMenuBtn.addEventListener('click', openMobileMenu);
+      }
+      if (mobileMenuClose) {
+        mobileMenuClose.addEventListener('click', closeMobileMenu);
+      }
+      if (mobileMenuOverlay) {
+        mobileMenuOverlay.addEventListener('click', closeMobileMenu);
+      }
+    </script> </body> </html> 

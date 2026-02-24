@@ -1,0 +1,421 @@
+---
+import Layout from '@/layouts/Layout.astro';
+
+// Black theme values - hardcoded for now
+const t = {
+  topBg: 'bg-[#0A0A0A]',
+  topText: 'text-white',
+  topBorder: 'border-gray-800',
+  topMuted: 'text-gray-400',
+  topSubtle: 'text-gray-600',
+  bottomBg: 'bg-white',
+  bottomText: 'text-[#1C1732]',
+  bottomBorder: 'border-gray-200',
+  bottomMuted: 'text-gray-600',
+  bottomSubtle: 'text-gray-400',
+  cardBg: 'bg-[#0D0D0D]',
+};
+const forceDark = true;
+---
+
+<Layout title="Revyl | Proactive Reliability for Mobile Teams" hideFooter={true} forceDark={forceDark}>
+  <!-- TOP HALF - Dark (black/grey) or Light -->
+  <div class={`${t.topBg} ${t.topText}`}>
+    <!-- Hero Section -->
+    <section class="px-6 py-16 md:py-24">
+      <div class="max-w-6xl mx-auto">
+        <!-- Left-aligned text -->
+        <div class="max-w-2xl mb-12">
+          <h1 class="text-4xl md:text-5xl lg:text-6xl font-light tracking-tight mb-6">
+            Proactive reliability for mobile teams.
+          </h1>
+          <p class={`text-xl md:text-2xl ${t.topMuted} mb-10`}>
+            Ship faster. Break nothing.
+          </p>
+          <div class="flex flex-col sm:flex-row gap-4">
+            <a
+              href="https://cal.com/landseer-enga/book-a-demo"
+              class="inline-flex items-center justify-center h-12 px-8 text-base font-medium bg-[#C4A1FF] text-[#1C1732] hover:opacity-90 transition-opacity"
+            >
+              Book a Demo
+            </a>
+            <a
+              href="https://docs.revyl.com"
+              class={`inline-flex items-center justify-center h-12 px-8 text-base font-medium border ${t.topBorder} hover:bg-white/5 transition-colors`}
+            >
+              View Docs
+            </a>
+          </div>
+        </div>
+
+        <!-- Big Product Screenshot -->
+        <div class="relative">
+          <div
+            class={`relative overflow-hidden border ${t.topBorder}`}
+            style="background-image: url('/images/feature-bg-2_1.avif'); background-size: cover; background-position: center;"
+          >
+            <div class="p-4 md:p-8">
+              <img
+                src={forceDark ? "/images/hero-dark.jpg" : "/images/hero-light.jpg"}
+                alt="Revyl Dashboard"
+                class="w-full h-auto"
+              />
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Customer Logos -->
+    <section class="pt-4 pb-0">
+      <div>
+        <p class="text-center text-sm text-gray-600 mb-8 px-6">
+          Trusted by world class mobile teams
+        </p>
+        <div class="grid grid-cols-4 md:grid-cols-8 gap-0 border-y border-gray-800">
+          <div class="aspect-square border-r border-b border-gray-800 flex items-center justify-center p-4">
+            <span class="text-lg font-bold text-gray-600 tracking-tight">Stripe</span>
+          </div>
+          <div class="aspect-square border-r border-b border-gray-800 flex items-center justify-center p-4">
+            <span class="text-lg font-bold text-gray-600 tracking-tight">Notion</span>
+          </div>
+          <div class="aspect-square border-r border-b border-gray-800 flex items-center justify-center p-4">
+            <span class="text-lg font-bold text-gray-600 tracking-tight">Linear</span>
+          </div>
+          <div class="aspect-square border-b md:border-r border-gray-800 flex items-center justify-center p-4">
+            <span class="text-lg font-bold text-gray-600 tracking-tight">Vercel</span>
+          </div>
+          <div class="aspect-square border-r border-b md:border-b-0 border-gray-800 flex items-center justify-center p-4">
+            <span class="text-lg font-bold text-gray-600 tracking-tight">Figma</span>
+          </div>
+          <div class="aspect-square border-r border-b md:border-b-0 border-gray-800 flex items-center justify-center p-4">
+            <span class="text-lg font-bold text-gray-600 tracking-tight">Slack</span>
+          </div>
+          <div class="aspect-square border-r border-b md:border-b-0 border-gray-800 flex items-center justify-center p-4">
+            <span class="text-lg font-bold text-gray-600 tracking-tight">Discord</span>
+          </div>
+          <div class="aspect-square flex items-center justify-center p-4">
+            <span class="text-lg font-bold text-gray-600 tracking-tight">Airbnb</span>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Section Title -->
+    <section class="px-6 pt-16 pb-8 md:pt-24 md:pb-12">
+      <div class="max-w-6xl mx-auto">
+        <h2 class="text-4xl md:text-5xl lg:text-6xl font-light tracking-tight text-center mb-6">
+          Why engineers choose Revyl
+        </h2>
+        <p class={`text-xl md:text-2xl ${t.topMuted} text-center max-w-2xl mx-auto`}>
+          Built from the ground up for speed, reliability, and scale.
+        </p>
+      </div>
+    </section>
+
+    <!-- Feature Grid - Boxed with 60/40 Split -->
+    <section class="px-6 pb-16 md:pb-24">
+      <div class="max-w-6xl mx-auto flex flex-col gap-4">
+        <!-- Feature 1 - Image Left (60%), Text Right (40%) -->
+        <div class={`border ${t.topBorder}`}>
+          <div class="grid grid-cols-1 lg:grid-cols-5">
+            <div class={`lg:col-span-3 ${t.cardBg} border-b lg:border-b-0 lg:border-r ${t.topBorder}`}>
+              <img src="/images/feature-img-bg-1.avif" alt="Natural language test editor" class="w-full h-auto" />
+            </div>
+            <div class="lg:col-span-2 flex items-center p-8 md:p-12 lg:p-16">
+              <div>
+                <h3 class="text-2xl md:text-3xl font-light tracking-tight mb-4">
+                  Write tests in plain English
+                </h3>
+                <p class={`${t.topMuted} text-lg mb-6`}>
+                  A human-AI tester, orders of magnitude more effective than any traditional automation alone.
+                </p>
+                <a href="https://docs.revyl.com" class="inline-flex items-center gap-2 text-[#C4A1FF] hover:opacity-80 transition-opacity">
+                  Learn about Agent
+                  <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" />
+                  </svg>
+                </a>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Feature 2 - Text Left (40%), Image Right (60%) -->
+        <div class={`border ${t.topBorder}`}>
+          <div class="grid grid-cols-1 lg:grid-cols-5">
+            <div class={`lg:col-span-2 flex items-center p-8 md:p-12 lg:p-16 order-2 lg:order-1 border-t lg:border-t-0 lg:border-r ${t.topBorder}`}>
+              <div>
+                <h3 class="text-2xl md:text-3xl font-light tracking-tight mb-4">
+                  Watch tests run live
+                </h3>
+                <p class={`${t.topMuted} text-lg mb-6`}>
+                  WebRTC-powered device streaming. See exactly what your app is doing, as it happens.
+                </p>
+                <a href="https://docs.revyl.com" class="inline-flex items-center gap-2 text-[#C4A1FF] hover:opacity-80 transition-opacity">
+                  Learn about Streaming
+                  <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" />
+                  </svg>
+                </a>
+              </div>
+            </div>
+            <div class={`lg:col-span-3 ${t.cardBg} order-1 lg:order-2`}>
+              <img src="/images/feature-img-bg-2.avif" alt="Real-time device streaming" class="w-full h-auto" />
+            </div>
+          </div>
+        </div>
+
+        <!-- Feature 3 - Image Left (60%), Text Right (40%) -->
+        <div class={`border ${t.topBorder}`}>
+          <div class="grid grid-cols-1 lg:grid-cols-5">
+            <div class={`lg:col-span-3 ${t.cardBg} border-b lg:border-b-0 lg:border-r ${t.topBorder}`}>
+              <img src="/images/feature-img-bg-3.avif" alt="Intelligent test reporting" class="w-full h-auto" />
+            </div>
+            <div class="lg:col-span-2 flex items-center p-8 md:p-12 lg:p-16">
+              <div>
+                <h3 class="text-2xl md:text-3xl font-light tracking-tight mb-4">
+                  Know exactly what went wrong
+                </h3>
+                <p class={`${t.topMuted} text-lg mb-6`}>
+                  Video clips of every action. Step-by-step execution traces. Share reports with one link.
+                </p>
+                <a href="https://docs.revyl.com" class="inline-flex items-center gap-2 text-[#C4A1FF] hover:opacity-80 transition-opacity">
+                  Learn about Reports
+                  <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" />
+                  </svg>
+                </a>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+  </div>
+</Layout>
+
+<!-- BOTTOM HALF - Full width background color change -->
+<div class={`${t.bottomBg} ${t.bottomText}`}>
+  <div class={`max-w-[95%] lg:max-w-[95%] xl:max-w-[85%] mx-auto border-l border-r ${t.bottomBorder} relative`}>
+    <!-- Stats Section -->
+    <section class="py-16 md:py-24 px-6">
+      <div class="max-w-6xl mx-auto">
+        <h2 class="text-4xl md:text-5xl lg:text-6xl font-light tracking-tight text-center mb-16">
+          Engineered for speed
+        </h2>
+
+        <!-- Stats Row -->
+        <div class={`grid grid-cols-1 md:grid-cols-3 gap-0 border ${t.bottomBorder} mb-12`}>
+          <div class={`p-8 border-b md:border-b-0 md:border-r ${t.bottomBorder}`}>
+            <div class={`text-sm ${t.bottomSubtle} mb-2`}>Simulator Boot Time</div>
+            <div class="text-4xl md:text-5xl font-light text-[#9D61FF]">&lt;3s</div>
+          </div>
+          <div class={`p-8 border-b md:border-b-0 md:border-r ${t.bottomBorder}`}>
+            <div class={`text-sm ${t.bottomSubtle} mb-2`}>Faster Than Appium</div>
+            <div class="text-4xl md:text-5xl font-light text-[#FFCE6B]">3x</div>
+          </div>
+          <div class="p-8">
+            <div class={`text-sm ${t.bottomSubtle} mb-2`}>Parallel Tests</div>
+            <div class="text-4xl md:text-5xl font-light text-[#61EB91]">50+</div>
+          </div>
+        </div>
+
+        <!-- Technical Details Grid -->
+        <div class={`grid grid-cols-1 md:grid-cols-2 gap-0 border ${t.bottomBorder}`}>
+          <div class={`p-6 border-b md:border-b-0 md:border-r ${t.bottomBorder}`}>
+            <code class={`text-sm ${t.bottomMuted}`}>
+              <span class="text-[#9D61FF]">Custom GStreamer pipelines</span> for H.264 capture
+            </code>
+          </div>
+          <div class={`p-6 border-b md:border-b-0 ${t.bottomBorder}`}>
+            <code class={`text-sm ${t.bottomMuted}`}>
+              <span class="text-[#9D61FF]">Direct UIAutomator2</span> — no Appium overhead
+            </code>
+          </div>
+          <div class={`p-6 md:border-r ${t.bottomBorder}`}>
+            <code class={`text-sm ${t.bottomMuted}`}>
+              <span class="text-[#9D61FF]">fb-idb for iOS</span> — faster than XCUITest
+            </code>
+          </div>
+          <div class="p-6">
+            <code class={`text-sm ${t.bottomMuted}`}>
+              <span class="text-[#9D61FF]">WebRTC via Cloudflare</span> — sub-100ms latency
+            </code>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Works with your stack -->
+    <section class={`py-16 md:py-24 px-6 border-t ${t.bottomBorder}`}>
+      <div class="max-w-6xl mx-auto">
+        <h2 class="text-4xl md:text-5xl lg:text-6xl font-light tracking-tight text-center mb-6">
+          Works with your stack
+        </h2>
+        <p class={`text-xl md:text-2xl ${t.bottomMuted} text-center max-w-2xl mx-auto mb-16`}>
+          No SDK. No code changes. Test any mobile app in minutes.
+        </p>
+
+        <!-- Platform Grid -->
+        <div class={`grid grid-cols-2 md:grid-cols-5 gap-0 border ${t.bottomBorder} mb-12`}>
+          <div class={`p-6 md:p-8 flex flex-col items-center justify-center border-b md:border-b-0 border-r ${t.bottomBorder}`}>
+            <svg class="w-10 h-10 mb-3" viewBox="0 0 24 24" fill="currentColor">
+              <path d="M18.71 19.5c-.83 1.24-1.71 2.45-3.05 2.47-1.34.03-1.77-.79-3.29-.79-1.53 0-2 .77-3.27.82-1.31.05-2.3-1.32-3.14-2.53C4.25 17 2.94 12.45 4.7 9.39c.87-1.52 2.43-2.48 4.12-2.51 1.28-.02 2.5.87 3.29.87.78 0 2.26-1.07 3.81-.91.65.03 2.47.26 3.64 1.98-.09.06-2.17 1.28-2.15 3.81.03 3.02 2.65 4.03 2.68 4.04-.03.07-.42 1.44-1.38 2.83M13 3.5c.73-.83 1.94-1.46 2.94-1.5.13 1.17-.34 2.35-1.04 3.19-.69.85-1.83 1.51-2.95 1.42-.15-1.15.41-2.35 1.05-3.11z"/>
+            </svg>
+            <span class={`text-sm font-medium ${t.bottomMuted}`}>iOS</span>
+          </div>
+          <div class={`p-6 md:p-8 flex flex-col items-center justify-center border-b md:border-b-0 md:border-r ${t.bottomBorder}`}>
+            <svg class="w-10 h-10 mb-3" viewBox="0 0 24 24" fill="currentColor">
+              <path d="M17.523 15.341c-.5 0-.9.4-.9.9s.4.9.9.9.9-.4.9-.9-.4-.9-.9-.9m-11 0c-.5 0-.9.4-.9.9s.4.9.9.9.9-.4.9-.9-.4-.9-.9-.9m11.4-6.4l1.9-3.3c.1-.2.1-.4-.2-.5-.2-.1-.4-.1-.5.2l-1.9 3.3c-1.5-.7-3.2-1-5-1s-3.5.4-5 1l-1.9-3.3c-.1-.2-.4-.3-.5-.2-.2.1-.3.4-.2.5l1.9 3.3C3.423 10.641 1.523 13.641 1.523 17.041h21c0-3.4-1.9-6.4-4.6-8.1m-11.4 6.4c-.5 0-.9-.4-.9-.9s.4-.9.9-.9.9.4.9.9-.4.9-.9.9m11 0c-.5 0-.9-.4-.9-.9s.4-.9.9-.9.9.4.9.9-.4.9-.9.9"/>
+            </svg>
+            <span class={`text-sm font-medium ${t.bottomMuted}`}>Android</span>
+          </div>
+          <div class={`p-6 md:p-8 flex flex-col items-center justify-center border-r ${t.bottomBorder}`}>
+            <svg class="w-10 h-10 mb-3" viewBox="0 0 24 24" fill="currentColor">
+              <path d="M12.001 4.8c-3.2 0-5.2 1.6-6 4.8 1.2-1.6 2.6-2.2 4.2-1.8.913.228 1.565.89 2.288 1.624C13.666 10.618 15.027 12 18.001 12c3.2 0 5.2-1.6 6-4.8-1.2 1.6-2.6 2.2-4.2 1.8-.913-.228-1.565-.89-2.288-1.624C16.337 6.182 14.976 4.8 12.001 4.8zm-6 7.2c-3.2 0-5.2 1.6-6 4.8 1.2-1.6 2.6-2.2 4.2-1.8.913.228 1.565.89 2.288 1.624 1.177 1.194 2.538 2.576 5.512 2.576 3.2 0 5.2-1.6 6-4.8-1.2 1.6-2.6 2.2-4.2 1.8-.913-.228-1.565-.89-2.288-1.624C10.337 13.382 8.976 12 6.001 12z"/>
+            </svg>
+            <span class={`text-sm font-medium ${t.bottomMuted}`}>React Native</span>
+          </div>
+          <div class={`p-6 md:p-8 flex flex-col items-center justify-center border-r ${t.bottomBorder}`}>
+            <svg class="w-10 h-10 mb-3" viewBox="0 0 24 24" fill="currentColor">
+              <path d="M14.314 0L2.3 12 6 15.7 21.684.012h-7.357L14.314 0zm.014 11.072l-6.471 6.457 6.47 6.47H21.7l-6.46-6.468 6.46-6.46h-7.386z"/>
+            </svg>
+            <span class={`text-sm font-medium ${t.bottomMuted}`}>Flutter</span>
+          </div>
+          <div class="p-6 md:p-8 flex flex-col items-center justify-center">
+            <svg class="w-10 h-10 mb-3" viewBox="0 0 24 24" fill="currentColor">
+              <path d="M12 0C5.373 0 0 5.373 0 12s5.373 12 12 12 12-5.373 12-12S18.627 0 12 0zm3.5 17.5h-7v-1h7v1zm0-2.5h-7v-1h7v1zm0-2.5h-7v-1h7v1zm0-2.5h-7v-1h7v1zm0-2.5h-7v-1h7v1zm0-2.5h-7v-1h7v1z"/>
+            </svg>
+            <span class={`text-sm font-medium ${t.bottomMuted}`}>Any App</span>
+          </div>
+        </div>
+
+        <!-- Code Snippets Grid -->
+        <div class="grid grid-cols-1 lg:grid-cols-2 gap-4">
+          <!-- GitHub Actions -->
+          <div class={`border ${t.bottomBorder}`}>
+            <div class={`px-4 py-3 border-b ${t.bottomBorder} flex items-center gap-2`}>
+              <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 24 24"><path d="M12 0c-6.626 0-12 5.373-12 12 0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23.957-.266 1.983-.399 3.003-.404 1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576 4.765-1.589 8.199-6.086 8.199-11.386 0-6.627-5.373-12-12-12z"/></svg>
+              <span class={`text-sm font-medium ${t.bottomMuted}`}>GitHub Actions</span>
+            </div>
+            <div class={`p-4 overflow-x-auto ${forceDark ? 'bg-gray-50' : 'bg-[#161616]'}`}>
+              <pre class="text-sm"><code class={forceDark ? 'text-gray-700' : 'text-gray-300'}><span class="text-[#9D61FF]">- name:</span> Run Revyl Tests
+  <span class="text-[#9D61FF]">uses:</span> revyl/test-action@v1
+  <span class="text-[#9D61FF]">with:</span>
+    <span class="text-[#FFCE6B]">api_key:</span> $&#123;&#123; secrets.REVYL_API_KEY &#125;&#125;
+    <span class="text-[#FFCE6B]">workflow_id:</span> your-workflow-id
+    <span class="text-[#FFCE6B]">parallel:</span> <span class="text-[#61EB91]">10</span></code></pre>
+            </div>
+          </div>
+
+          <!-- API / cURL -->
+          <div class={`border ${t.bottomBorder}`}>
+            <div class={`px-4 py-3 border-b ${t.bottomBorder} flex items-center gap-2`}>
+              <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 9l3 3-3 3m5 0h3M5 20h14a2 2 0 002-2V6a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"/></svg>
+              <span class={`text-sm font-medium ${t.bottomMuted}`}>REST API</span>
+            </div>
+            <div class={`p-4 overflow-x-auto ${forceDark ? 'bg-gray-50' : 'bg-[#161616]'}`}>
+              <pre class="text-sm"><code class={forceDark ? 'text-gray-700' : 'text-gray-300'}><span class="text-[#9D61FF]">curl</span> -X POST https://api.revyl.com/v1/run \
+  -H <span class="text-[#FFCE6B]">"Authorization: Bearer $API_KEY"</span> \
+  -d <span class="text-[#FFCE6B]">'{
+    "workflow_id": "wf_123",
+    "parallel": 10
+  }'</span></code></pre>
+            </div>
+          </div>
+
+          <!-- Python SDK -->
+          <div class={`border ${t.bottomBorder}`}>
+            <div class={`px-4 py-3 border-b ${t.bottomBorder} flex items-center gap-2`}>
+              <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 24 24"><path d="M14.25.18l.9.2.73.26.59.3.45.32.34.34.25.34.16.33.1.3.04.26.02.2-.01.13V8.5l-.05.63-.13.55-.21.46-.26.38-.3.31-.33.25-.35.19-.35.14-.33.1-.3.07-.26.04-.21.02H8.77l-.69.05-.59.14-.5.22-.41.27-.33.32-.27.35-.2.36-.15.37-.1.35-.07.32-.04.27-.02.21v3.06H3.17l-.21-.03-.28-.07-.32-.12-.35-.18-.36-.26-.36-.36-.35-.46-.32-.59-.28-.73-.21-.88-.14-1.05-.05-1.23.06-1.22.16-1.04.24-.87.32-.71.36-.57.4-.44.42-.33.42-.24.4-.16.36-.1.32-.05.24-.01h.16l.06.01h8.16v-.83H6.18l-.01-2.75-.02-.37.05-.34.11-.31.17-.28.25-.26.31-.23.38-.2.44-.18.51-.15.58-.12.64-.1.71-.06.77-.04.84-.02 1.27.05zm-6.3 1.98l-.23.33-.08.41.08.41.23.34.33.22.41.09.41-.09.33-.22.23-.34.08-.41-.08-.41-.23-.33-.33-.22-.41-.09-.41.09zm13.09 3.95l.28.06.32.12.35.18.36.27.36.35.35.47.32.59.28.73.21.88.14 1.04.05 1.23-.06 1.23-.16 1.04-.24.86-.32.71-.36.57-.4.45-.42.33-.42.24-.4.16-.36.09-.32.05-.24.02-.16-.01h-8.22v.82h5.84l.01 2.76.02.36-.05.34-.11.31-.17.29-.25.25-.31.24-.38.2-.44.17-.51.15-.58.13-.64.09-.71.07-.77.04-.84.01-1.27-.04-1.07-.14-.9-.2-.73-.25-.59-.3-.45-.33-.34-.34-.25-.34-.16-.33-.1-.3-.04-.25-.02-.2.01-.13v-5.34l.05-.64.13-.54.21-.46.26-.38.3-.32.33-.24.35-.2.35-.14.33-.1.3-.06.26-.04.21-.02.13-.01h5.84l.69-.05.59-.14.5-.21.41-.28.33-.32.27-.35.2-.36.15-.36.1-.35.07-.32.04-.28.02-.21V6.07h2.09l.14.01zm-6.47 14.25l-.23.33-.08.41.08.41.23.33.33.23.41.08.41-.08.33-.23.23-.33.08-.41-.08-.41-.23-.33-.33-.23-.41-.08-.41.08z"/></svg>
+              <span class={`text-sm font-medium ${t.bottomMuted}`}>Python SDK</span>
+            </div>
+            <div class={`p-4 overflow-x-auto ${forceDark ? 'bg-gray-50' : 'bg-[#161616]'}`}>
+              <pre class="text-sm"><code class={forceDark ? 'text-gray-700' : 'text-gray-300'}><span class="text-[#9D61FF]">from</span> revyl <span class="text-[#9D61FF]">import</span> Client
+
+client = Client(api_key=<span class="text-[#FFCE6B]">"your_key"</span>)
+result = client.run_workflow(
+    workflow_id=<span class="text-[#FFCE6B]">"wf_123"</span>,
+    parallel=<span class="text-[#61EB91]">10</span>
+)</code></pre>
+            </div>
+          </div>
+
+          <!-- TypeScript SDK -->
+          <div class={`border ${t.bottomBorder}`}>
+            <div class={`px-4 py-3 border-b ${t.bottomBorder} flex items-center gap-2`}>
+              <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 24 24"><path d="M1.125 0C.502 0 0 .502 0 1.125v21.75C0 23.498.502 24 1.125 24h21.75c.623 0 1.125-.502 1.125-1.125V1.125C24 .502 23.498 0 22.875 0zm17.363 9.75c.612 0 1.154.037 1.627.111a6.38 6.38 0 0 1 1.306.34v2.458a3.95 3.95 0 0 0-.643-.361 5.093 5.093 0 0 0-.717-.26 5.453 5.453 0 0 0-1.426-.2c-.3 0-.573.028-.819.086a2.1 2.1 0 0 0-.623.242c-.17.104-.3.229-.393.374a.888.888 0 0 0-.14.49c0 .196.053.373.156.529.104.156.252.304.443.444s.423.276.696.41c.273.135.582.274.926.416.47.197.892.407 1.266.628.374.222.695.473.963.753.268.279.472.598.614.957.142.359.214.776.214 1.253 0 .657-.125 1.21-.373 1.656a3.033 3.033 0 0 1-1.012 1.085 4.38 4.38 0 0 1-1.487.596c-.566.12-1.163.18-1.79.18a9.916 9.916 0 0 1-1.84-.164 5.544 5.544 0 0 1-1.512-.493v-2.63a5.033 5.033 0 0 0 3.237 1.2c.333 0 .624-.03.872-.09.249-.06.456-.144.623-.25.166-.108.29-.234.373-.38a1.023 1.023 0 0 0-.074-1.089 2.12 2.12 0 0 0-.537-.5 5.597 5.597 0 0 0-.807-.444 27.72 27.72 0 0 0-1.007-.436c-.918-.383-1.602-.852-2.053-1.405-.45-.553-.676-1.222-.676-2.005 0-.614.123-1.141.369-1.582.246-.441.58-.804 1.004-1.089a4.494 4.494 0 0 1 1.47-.629 7.536 7.536 0 0 1 1.77-.201zm-15.113.188h9.563v2.166H9.506v9.646H6.789v-9.646H3.375z"/></svg>
+              <span class={`text-sm font-medium ${t.bottomMuted}`}>TypeScript SDK</span>
+            </div>
+            <div class={`p-4 overflow-x-auto ${forceDark ? 'bg-gray-50' : 'bg-[#161616]'}`}>
+              <pre class="text-sm"><code class={forceDark ? 'text-gray-700' : 'text-gray-300'}><span class="text-[#9D61FF]">import</span> &#123; Revyl &#125; <span class="text-[#9D61FF]">from</span> <span class="text-[#FFCE6B]">'@revyl/sdk'</span>;
+
+<span class="text-[#9D61FF]">const</span> client = <span class="text-[#9D61FF]">new</span> Revyl(<span class="text-[#FFCE6B]">'your_key'</span>);
+<span class="text-[#9D61FF]">const</span> result = <span class="text-[#9D61FF]">await</span> client.runWorkflow(&#123;
+  workflowId: <span class="text-[#FFCE6B]">'wf_123'</span>,
+  parallel: <span class="text-[#61EB91]">10</span>
+&#125;);</code></pre>
+            </div>
+          </div>
+        </div>
+
+        <!-- CI/CD Logos -->
+        <div class="mt-12 text-center">
+          <p class={`text-sm ${t.bottomSubtle} mb-6`}>Integrates with your CI/CD</p>
+          <div class="flex flex-wrap items-center justify-center gap-8">
+            <span class={`text-lg font-semibold ${t.bottomMuted}`}>GitHub Actions</span>
+            <span class={`text-lg font-semibold ${t.bottomMuted}`}>CircleCI</span>
+            <span class={`text-lg font-semibold ${t.bottomMuted}`}>GitLab CI</span>
+            <span class={`text-lg font-semibold ${t.bottomMuted}`}>Bitrise</span>
+            <span class={`text-lg font-semibold ${t.bottomMuted}`}>Jenkins</span>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- CTA -->
+    <section class={`py-24 md:py-32 px-6 border-t ${t.bottomBorder}`}>
+      <div class="max-w-3xl mx-auto text-center">
+        <h2 class="text-3xl md:text-5xl font-light tracking-tight mb-6">
+          Ready to ship with confidence?
+        </h2>
+        <p class={`text-xl ${t.bottomMuted} mb-10`}>
+          Book a demo and see how Revyl can transform your mobile releases.
+        </p>
+        <div class="flex flex-col sm:flex-row gap-4 justify-center">
+          <a
+            href="https://cal.com/landseer-enga/book-a-demo"
+            class="inline-flex items-center justify-center h-14 px-10 text-lg font-medium bg-[#9D61FF] text-white hover:bg-[#8B4EE8] transition-colors"
+          >
+            Book a Demo
+          </a>
+          <a
+            href="https://docs.revyl.com"
+            class={`inline-flex items-center justify-center h-14 px-10 text-lg font-medium border ${t.bottomBorder} hover:bg-black/5 transition-colors`}
+          >
+            Explore Docs
+          </a>
+        </div>
+      </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class={`px-6 py-8 border-t ${t.bottomBorder}`}>
+      <div class="max-w-6xl mx-auto flex flex-col md:flex-row items-center justify-between gap-4">
+        <span class={`text-sm ${t.bottomSubtle}`}>&copy; 2026 Revyl. All rights reserved.</span>
+        <div class="flex items-center gap-6">
+          <a href="https://x.com/tryrevyl" class={`${t.bottomSubtle} hover:opacity-70 transition-opacity`} aria-label="Twitter">
+            <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 24 24"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/></svg>
+          </a>
+          <a href="https://www.linkedin.com/company/revylai" class={`${t.bottomSubtle} hover:opacity-70 transition-opacity`} aria-label="LinkedIn">
+            <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 24 24"><path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433c-1.144 0-2.063-.926-2.063-2.065 0-1.138.92-2.063 2.063-2.063 1.14 0 2.064.925 2.064 2.063 0 1.139-.925 2.065-2.064 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z"/></svg>
+          </a>
+          <a href="https://github.com/RevylAI" class={`${t.bottomSubtle} hover:opacity-70 transition-opacity`} aria-label="GitHub">
+            <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 24 24"><path d="M12 0c-6.626 0-12 5.373-12 12 0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23.957-.266 1.983-.399 3.003-.404 1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576 4.765-1.589 8.199-6.086 8.199-11.386 0-6.627-5.373-12-12-12z"/></svg>
+          </a>
+        </div>
+      </div>
+    </footer>
+  </div>
+</div>
