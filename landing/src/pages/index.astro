@@ -1370,7 +1370,7 @@ import Icon from '@/components/Icon.astro';
   inset: 0;
   width: 100vw;
   height: 100vh;
-  z-index: 9999;
+  z-index: 999999;
   background: #08000f;
   display: flex;
   flex-direction: column;
@@ -1452,6 +1452,10 @@ import Icon from '@/components/Icon.astro';
       var el = document.getElementById('revyl-loader');
       if (el) { el.style.display = 'none'; el.remove(); }
       window.__loaderSkip = true;
+    } else {
+      // Lock scroll during loader
+      document.documentElement.style.overflow = 'hidden';
+      document.body.style.overflow = 'hidden';
     }
   })();
 </script>
@@ -1533,6 +1537,8 @@ import Icon from '@/components/Icon.astro';
       loader.addEventListener('transitionend', function() {
         loader.remove();
         sessionStorage.setItem(window.__LOADER_KEY || 'revyl_loader_v2', '1');
+        document.documentElement.style.overflow = '';
+        document.body.style.overflow = '';
         var hdr = document.getElementById('hud-header');
         if (hdr) hdr.classList.add('hud-visible');
       }, { once: true });
