@@ -53,6 +53,7 @@ const canonicalURL = new URL(Astro.url.pathname, Astro.site);
     <link href="https://fonts.googleapis.com/css2?family=Funnel+Display:wght@300..800&family=Public+Sans:wght@400;500;600&family=JetBrains+Mono:wght@300;400;500;600&family=Chakra+Petch:wght@400;500;600;700&display=swap" rel="stylesheet" />
 
     <title>{title}</title>
+    {forceDark && <style>{'#hud-header { opacity: 0 !important; visibility: hidden !important; transition: opacity 0.5s ease, visibility 0.5s ease; } #hud-header.hud-visible { opacity: 1 !important; visibility: visible !important; }'}</style>}
 
     <!-- Theme detection - skip if forceDark -->
     {!forceDark && (
