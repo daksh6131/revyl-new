@@ -863,8 +863,8 @@ import Icon from '@/components/Icon.astro';
 
   /* ── Fullscreen nav overlay ── */
   #hud-nav {
-    display: grid;
-    grid-template-rows: 60px 1fr auto;
+    display: flex;
+    flex-direction: column;
   }
   .fnav-topbar {
     display: grid;
@@ -921,6 +921,7 @@ import Icon from '@/components/Icon.astro';
     grid-template-columns: 1fr 1fr 1fr;
     border-bottom: 1px solid var(--border);
     overflow: hidden;
+    flex: 1;
   }
   .fnav-col {
     padding: clamp(40px,6vh,72px) clamp(28px,4vw,56px);
