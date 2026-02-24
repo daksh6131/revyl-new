@@ -1604,26 +1604,13 @@ import Icon from '@/components/Icon.astro';
   "></div>
 
   <!-- Fullscreen nav overlay -->
-  <div id="hud-nav" style="position: fixed; inset: 0; z-index: 99999; background: var(--void); visibility: hidden; opacity: 0; transition: opacity 0.26s ease, visibility 0.26s ease;">
+  <div id="hud-nav" style="position: fixed; top: calc(24px + 72px); left: var(--rail); right: var(--rail); bottom: 0; z-index: 9998; background: var(--void); visibility: hidden; opacity: 0; transform: translateY(-12px); transition: opacity 0.26s ease, visibility 0.26s ease, transform 0.26s ease; border: 1px solid var(--border); border-top: none;">
 
     <!-- dot matrix bg -->
     <div class="dot-matrix" style="position: absolute; inset: 0; opacity: 0.12; pointer-events: none;"></div>
 
-    <!-- Top bar: logo | NAV | close -->
-    <div class="fnav-topbar">
-      <div class="fnav-topbar-logo">
-        <a href="/" class="hud-logo" aria-label="Revyl">
-          <img src="/images/container.svg" alt="Revyl" width="120" height="20" />
-        </a>
-      </div>
-      <div class="fnav-topbar-center">Navigation</div>
-      <div class="fnav-topbar-close">
-        <button id="hud-nav-close">CLOSE ×</button>
-      </div>
-    </div>
-
     <!-- Main links — 3 columns, full height -->
-    <div class="fnav-body">
+    <div class="fnav-body" style="border-top: none;">
       <!-- Col 1: Products -->
       <div class="fnav-col">
         <span class="fnav-section-label">Products</span>
@@ -2567,7 +2554,7 @@ import Icon from '@/components/Icon.astro';
       if (!hudNav) return;
       isOpen = true;
       hudNav.style.visibility = 'visible';
-      requestAnimationFrame(function() { hudNav.style.opacity = '1'; });
+      requestAnimationFrame(function() { hudNav.style.opacity = '1'; hudNav.style.transform = 'translateY(0)'; });
       if (hudMenuLabel) hudMenuLabel.textContent = 'EXIT';
       if (hudMenuBtn) { hudMenuBtn.setAttribute('aria-label', 'Close menu'); hudMenuBtn.classList.add('is-open'); }
       document.body.style.overflow = 'hidden';
@@ -2576,7 +2563,8 @@ import Icon from '@/components/Icon.astro';
       if (!hudNav) return;
       isOpen = false;
       hudNav.style.opacity = '0';
-      hudNav.style.visibility = 'hidden';
+      hudNav.style.transform = 'translateY(-12px)';
+      setTimeout(function() { if (!isOpen) hudNav.style.visibility = 'hidden'; }, 260);
       if (hudMenuLabel) hudMenuLabel.textContent = 'MENU';
       if (hudMenuBtn) { hudMenuBtn.setAttribute('aria-label', 'Open menu'); hudMenuBtn.classList.remove('is-open'); }
       document.body.style.overflow = '';
