@@ -52,13 +52,13 @@
     -moz-osx-font-smoothing: grayscale;
   }
 
-  /* Headers use Funnel Display - same as dashboard */
+  /* Headers use Funnel Display */
   h1, h2, h3, h4, h5, h6 {
-    font-family: "Funnel Display", sans-serif;
+    font-family: "Funnel Display", sans-serif !important;
   }
 
-  /* Body elements use Public Sans - same as dashboard */
-  p, span, div, a, li, td, th, label, input, textarea, select, button, time {
+  /* Body elements use Public Sans */
+  p, span, a, li, td, th, label, input, textarea, select, button, time {
     font-family: "Public Sans", ui-sans-serif, system-ui, sans-serif;
   }
 }
