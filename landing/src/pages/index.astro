@@ -1102,6 +1102,16 @@ import Icon from '@/components/Icon.astro';
     .flex-1.flex.flex-col.relative.w-full > div[class*="absolute"] {
       display: none !important;
     }
+    /* Hide nav header during loader — revealed by JS after loader finishes */
+    #hud-header {
+      opacity: 0 !important;
+      visibility: hidden !important;
+      transition: opacity 0.5s ease, visibility 0.5s ease;
+    }
+    #hud-header.hud-visible {
+      opacity: 1 !important;
+      visibility: visible !important;
+    }
     #revyl-loader.fade-out {
       opacity: 0 !important;
       transform: scale(1.02) !important;
@@ -1523,17 +1533,28 @@ import Icon from '@/components/Icon.astro';
       loader.addEventListener('transitionend', function() {
         loader.remove();
         sessionStorage.setItem(window.__LOADER_KEY || 'revyl_loader_v2', '1');
+        var hdr = document.getElementById('hud-header');
+        if (hdr) hdr.classList.add('hud-visible');
       }, { once: true });
     }, 3500);
   })();
 </script>
 
-<!-- HUD HEADER -->
-<div class="hud-header">
+<!-- HUD HEADER — hidden until loader finishes (or skipped) -->
+<script is:inline>
+  // If loader already skipped (return visit or ?skiploader), reveal header immediately
+  if (window.__loaderSkip || sessionStorage.getItem('revyl_loader_v2') || sessionStorage.getItem('revyl_loader_v1')) {
+    document.addEventListener('DOMContentLoaded', function() {
+      var hdr = document.getElementById('hud-header');
+      if (hdr) { hdr.style.transition = 'none'; hdr.classList.add('hud-visible'); }
+    });
+  }
+</script>
+<div class="hud-header" id="hud-header">
     <!-- Col 1: Menu -->
     <div class="hud-col-menu">
       <button class="hud-menu-btn" id="hud-menu-btn" aria-label="Open menu">
-        MENU
+        <span id="hud-menu-label">MENU</span>
         <div class="hud-menu-lines" aria-hidden="true">
           <span></span>
           <span></span>
@@ -2519,19 +2540,29 @@ import Icon from '@/components/Icon.astro';
 <script is:inline>
   document.addEventListener('DOMContentLoaded', function() {
     var hudMenuBtn = document.getElementById('hud-menu-btn');
+    var hudMenuLabel = document.getElementById('hud-menu-label');
     var hudNavClose = document.getElementById('hud-nav-close');
     var hudNav = document.getElementById('hud-nav');
+    var isOpen = false;
     function openNav() {
       if (!hudNav) return;
+      isOpen = true;
       hudNav.style.visibility = 'visible';
       requestAnimationFrame(function() { hudNav.style.opacity = '1'; });
+      if (hudMenuLabel) hudMenuLabel.textContent = 'EXIT';
+      if (hudMenuBtn) hudMenuBtn.setAttribute('aria-label', 'Close menu');
     }
     function closeNav() {
       if (!hudNav) return;
+      isOpen = false;
       hudNav.style.opacity = '0';
       hudNav.style.visibility = 'hidden';
+      if (hudMenuLabel) hudMenuLabel.textContent = 'MENU';
+      if (hudMenuBtn) hudMenuBtn.setAttribute('aria-label', 'Open menu');
     }
-    if (hudMenuBtn) hudMenuBtn.addEventListener('click', openNav);
+    if (hudMenuBtn) hudMenuBtn.addEventListener('click', function() {
+      isOpen ? closeNav() : openNav();
+    });
     if (hudNavClose) hudNavClose.addEventListener('click', closeNav);
     document.addEventListener('keydown', function(e) { if (e.key === 'Escape') closeNav(); });
   });
