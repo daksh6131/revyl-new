@@ -86,7 +86,7 @@ import Icon from '@/components/Icon.astro';
   /* HUD header — Good-fella layout × Hex style */
   .hud-header {
     position: fixed !important;
-    top: 16px;
+    top: 24px;
     left: var(--rail);
     right: var(--rail);
     z-index: 9999;
@@ -170,6 +170,19 @@ import Icon from '@/components/Icon.astro';
   }
   .hud-menu-lines span:last-child { width: 10px; }
   .hud-menu-btn:hover .hud-menu-lines span { width: 16px; }
+
+  /* Cross state when nav is open */
+  .hud-menu-btn.is-open .hud-menu-lines span:first-child {
+    transform: translateY(3px) rotate(45deg);
+    width: 16px;
+  }
+  .hud-menu-btn.is-open .hud-menu-lines span:last-child {
+    transform: translateY(-3px) rotate(-45deg);
+    width: 16px;
+  }
+  .hud-menu-lines span {
+    transition: width 0.2s, transform 0.2s ease;
+  }
 
   .hud-col-ctas {
     display: flex;
@@ -2556,7 +2569,8 @@ import Icon from '@/components/Icon.astro';
       hudNav.style.visibility = 'visible';
       requestAnimationFrame(function() { hudNav.style.opacity = '1'; });
       if (hudMenuLabel) hudMenuLabel.textContent = 'EXIT';
-      if (hudMenuBtn) hudMenuBtn.setAttribute('aria-label', 'Close menu');
+      if (hudMenuBtn) { hudMenuBtn.setAttribute('aria-label', 'Close menu'); hudMenuBtn.classList.add('is-open'); }
+      document.body.style.overflow = 'hidden';
     }
     function closeNav() {
       if (!hudNav) return;
@@ -2564,7 +2578,8 @@ import Icon from '@/components/Icon.astro';
       hudNav.style.opacity = '0';
       hudNav.style.visibility = 'hidden';
       if (hudMenuLabel) hudMenuLabel.textContent = 'MENU';
-      if (hudMenuBtn) hudMenuBtn.setAttribute('aria-label', 'Open menu');
+      if (hudMenuBtn) { hudMenuBtn.setAttribute('aria-label', 'Open menu'); hudMenuBtn.classList.remove('is-open'); }
+      document.body.style.overflow = '';
     }
     if (hudMenuBtn) hudMenuBtn.addEventListener('click', function() {
       isOpen ? closeNav() : openNav();
