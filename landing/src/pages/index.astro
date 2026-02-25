@@ -1464,15 +1464,54 @@ import Icon from '@/components/Icon.astro';
 </div>
 <script is:inline>
   (function() {
+    function lockLoaderScroll() {
+      var root = document.documentElement;
+      var body = document.body;
+      var prevRootOverflow = root.style.overflow;
+      var prevBodyOverflow = body.style.overflow;
+      var prevBodyTouchAction = body.style.touchAction;
+
+      root.style.overflow = 'hidden';
+      body.style.overflow = 'hidden';
+      body.style.touchAction = 'none';
+
+      var prevent = function(e) { e.preventDefault(); };
+      var preventKeys = function(e) {
+        if (
+          e.key === 'ArrowUp' ||
+          e.key === 'ArrowDown' ||
+          e.key === 'PageUp' ||
+          e.key === 'PageDown' ||
+          e.key === 'Home' ||
+          e.key === 'End' ||
+          e.key === ' '
+        ) {
+          e.preventDefault();
+        }
+      };
+
+      window.addEventListener('wheel', prevent, { passive: false });
+      window.addEventListener('touchmove', prevent, { passive: false });
+      window.addEventListener('keydown', preventKeys, { passive: false });
+
+      window.__unlockLoaderScroll = function() {
+        root.style.overflow = prevRootOverflow || '';
+        body.style.overflow = prevBodyOverflow || '';
+        body.style.touchAction = prevBodyTouchAction || '';
+        window.removeEventListener('wheel', prevent);
+        window.removeEventListener('touchmove', prevent);
+        window.removeEventListener('keydown', preventKeys);
+        window.__unlockLoaderScroll = null;
+      };
+    }
+
     var params = new URLSearchParams(location.search);
     if (params.has('skiploader')) {
       var el = document.getElementById('revyl-loader');
       if (el) { el.style.display = 'none'; el.remove(); }
       window.__loaderSkip = true;
     } else {
-      // Lock scroll during loader
-      document.documentElement.style.overflow = 'hidden';
-      document.body.style.overflow = 'hidden';
+      lockLoaderScroll();
     }
   })();
 </script>
@@ -1508,7 +1547,10 @@ import Icon from '@/components/Icon.astro';
     const pct       = document.getElementById('rl-pct');
     const status    = document.getElementById('rl-status');
     const loader    = document.getElementById('revyl-loader');
-    if (!container || !bar || !pct || !loader) return;
+    if (!container || !bar || !pct || !loader) {
+      if (window.__unlockLoaderScroll) window.__unlockLoaderScroll();
+      return;
+    }
 
     // keep a blinking cursor element at the bottom
     const cursor = document.createElement('span');
@@ -1554,12 +1596,16 @@ import Icon from '@/components/Icon.astro';
       loader.addEventListener('transitionend', function() {
         loader.remove();
         sessionStorage.setItem(window.__LOADER_KEY || 'revyl_loader_v2', '1');
-        document.documentElement.style.overflow = '';
-        document.body.style.overflow = '';
+        if (window.__unlockLoaderScroll) window.__unlockLoaderScroll();
         var hdr = document.getElementById('hud-header');
         if (hdr) hdr.classList.add('hud-visible');
       }, { once: true });
     }, 3500);
+
+    // Fallback: ensure scroll unlock even if transition event is missed
+    setTimeout(function() {
+      if (window.__unlockLoaderScroll) window.__unlockLoaderScroll();
+    }, 5000);
   })();
 </script>
 
@@ -2515,7 +2561,7 @@ import Icon from '@/components/Icon.astro';
       });
     }
 
-    document.addEventListener('DOMContentLoaded', function() {
+    function init() {
       var headings = document.querySelectorAll('h1, h2, h3, h4, h5, h6');
       headings.forEach(function(h) {
         if (h.closest('#hud-nav') || h.closest('#revyl-loader')) return;
@@ -2540,7 +2586,10 @@ import Icon from '@/components/Icon.astro';
         if (h.closest('#hud-nav') || h.closest('#revyl-loader')) return;
         if (!h.closest('.hero-grid')) obs.observe(h);
       });
-    });
+    }
+
+    // Wait for fonts to load so char width measurements use the real font
+    document.fonts.ready.then(init);
   })();
 </script>
 
