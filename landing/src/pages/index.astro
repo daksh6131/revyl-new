@@ -1371,6 +1371,8 @@ import Icon from '@/components/Icon.astro';
     display: inline-block;
     opacity: 0;
     white-space: pre;
+    text-align: center;  /* keep scrambled chars centered in fixed-width box */
+    overflow: hidden;    /* never wider than measured original */
   }
   .rv-char.rv-space {
     display: inline;
@@ -2390,8 +2392,50 @@ import Icon from '@/components/Icon.astro';
     }
 
     function splitHeading(el) {
-      // Collect child nodes, preserving <br> and inline elements
       var nodes = Array.from(el.childNodes);
+
+      // 1. Lock the element's natural dimensions BEFORE any DOM change
+      var elW = el.offsetWidth;
+      var elH = el.offsetHeight;
+
+      // 2. Place a hidden measurer INSIDE the heading so it inherits all
+      //    computed styles (font, size, weight, letter-spacing, transform…)
+      var measure = document.createElement('span');
+      measure.setAttribute('aria-hidden', 'true');
+      measure.style.cssText = 'position:absolute;left:-9999px;top:0;visibility:hidden;white-space:pre;pointer-events:none;';
+      el.appendChild(measure);
+
+      function getCharW(ch) {
+        measure.textContent = ch;
+        return measure.offsetWidth;
+      }
+
+      // 3. Pre-measure every character width while original text is still in DOM
+      var charWidths = [];
+      nodes.forEach(function(node) {
+        if (node.nodeType === Node.TEXT_NODE) {
+          var text = node.textContent;
+          for (var i = 0; i < text.length; i++) {
+            var ch = text[i];
+            charWidths.push(ch === ' ' ? 0 : getCharW(ch));
+          }
+        } else if (node.nodeName !== 'BR') {
+          var inner = node.textContent;
+          for (var j = 0; j < inner.length; j++) {
+            var ch2 = inner[j];
+            charWidths.push(ch2 === ' ' ? 0 : getCharW(ch2));
+          }
+        }
+      });
+
+      el.removeChild(measure);
+
+      // 4. Now apply locked dimensions so the container never collapses
+      el.style.width    = elW + 'px';
+      el.style.minHeight = elH + 'px';
+
+      // 5. Split into spans with pre-measured fixed widths
+      var idx = 0;
       el.innerHTML = '';
 
       nodes.forEach(function(node) {
@@ -2409,11 +2453,12 @@ import Icon from '@/components/Icon.astro';
               span.className = 'rv-char';
               span.dataset.final = ch;
               span.textContent = ch;
+              span.style.width = charWidths[idx] + 'px';
             }
+            idx++;
             el.appendChild(span);
           }
         } else {
-          // Inline element (e.g. <em>) — wrap its text chars too
           var clone = node.cloneNode(true);
           var inner = clone.textContent;
           clone.textContent = '';
@@ -2427,7 +2472,9 @@ import Icon from '@/components/Icon.astro';
               s.className = 'rv-char';
               s.dataset.final = ch2;
               s.textContent = ch2;
+              s.style.width = charWidths[idx] + 'px';
             }
+            idx++;
             clone.appendChild(s);
           }
           el.appendChild(clone);
