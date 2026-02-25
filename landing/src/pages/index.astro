@@ -57,7 +57,7 @@ import Icon from '@/components/Icon.astro';
   }
   .page-wrap::before { left: var(--rail); }
   .page-wrap::after  { right: var(--rail); }
-  h1, h2, h3, h4, h5, h6 { font-family: var(--display); }
+  h1, h2, h3, h4, h5, h6 { font-family: var(--display); text-wrap: balance; }
   ::-webkit-scrollbar { width: 0px; }
 
   /* Hide Layout.astro's native header on this page only */
@@ -260,6 +260,7 @@ import Icon from '@/components/Icon.astro';
     font-size: clamp(3rem, 7vw, 8rem);
     line-height: 0.88;
     letter-spacing: -0.04em;
+    text-wrap: balance;
     font-weight: 300;
     margin-bottom: 40px;
     text-transform: uppercase;
@@ -478,6 +479,7 @@ import Icon from '@/components/Icon.astro';
     font-weight: 300;
     letter-spacing: -0.04em;
     line-height: 1.05;
+    text-wrap: balance;
     text-transform: uppercase;
     margin-bottom: 24px;
     color: var(--fg);
@@ -640,6 +642,7 @@ import Icon from '@/components/Icon.astro';
     letter-spacing: -0.04em;
     line-height: 0.88;
     text-transform: uppercase;
+    text-wrap: balance;
     margin-bottom: 48px;
     color: var(--fg);
   }
